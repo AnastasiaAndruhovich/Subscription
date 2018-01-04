@@ -1,5 +1,7 @@
 package by.andruhovich.subscription.pool;
 
+import by.andruhovich.subscription.exception.InterruptedTechnicalException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,14 +19,15 @@ public class ConnectionPool {
     private static Lock getConnectionLock = new ReentrantLock();
     private Queue<Connection> connections;
 
-    //private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
+    //TODO private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private ConnectionPool() {
-        final int POOL_SIZE = Integer.valueOf(DatabaseManager.getProperty("pool_size"));
-        final String URL = DatabaseManager.getProperty("url");
-        final String DRIVER_NAME = DatabaseManager.getProperty("driver");
-        final String USER = DatabaseManager.getProperty("user");
-        final String PASSWORD = DatabaseManager.getProperty("password");
+        DatabaseManager databaseManager = DatabaseManager.getInstance();
+        final int POOL_SIZE = Integer.valueOf(databaseManager.getProperty("pool_size"));
+        final String URL = databaseManager.getProperty("url");
+        final String DRIVER_NAME = databaseManager.getProperty("driver");
+        final String USER = databaseManager.getProperty("user");
+        final String PASSWORD = databaseManager.getProperty("password");
 
         connections = new LinkedList<>();
         try {
@@ -34,12 +37,11 @@ public class ConnectionPool {
                 connections.add(connection);
             }
         } catch (SQLException ex) {
-            // ???
-          ryruntime exc
+            // TODO log
+            throw new RuntimeException(ex.getMessage());
         } catch(ClassNotFoundException ex) {
-            // ???
-            //LOGGER.log(Level.ERROR, "Driver" + DRIVER_NAME +  "not found.");
-            System.out.println("Driver" + DRIVER_NAME +  "not found.");
+            // TODO LOGGER.log(Level.ERROR, "Driver" + DRIVER_NAME +  "not found.");
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -47,7 +49,7 @@ public class ConnectionPool {
         if (!instanceCreated.get()) {
             try {
                 instanceLock.lock();
-                if (instanceCreated != null && !instanceCreated.get()) {//null - что проверять?
+                if (instance != null && !instanceCreated.get()) {
                     instance = new ConnectionPool();
                     instanceCreated.set(true);
                 }
@@ -58,7 +60,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection(long maxSeconds) {
+    public Connection getConnection(long maxSeconds) throws InterruptedTechnicalException {
         Connection connection;
         try {
             if (getConnectionLock.tryLock(maxSeconds, TimeUnit.SECONDS)) {
@@ -66,7 +68,8 @@ public class ConnectionPool {
                 return connection;
             }
         } catch (InterruptedException e) {
-           //LOGGER.log(Level.ERROR, e.getMessage());
+           //TODO LOGGER.log(Level.ERROR, e.getMessage());
+            throw new InterruptedTechnicalException(e.getMessage());
         } finally {
             getConnectionLock.unlock();
         }
