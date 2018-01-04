@@ -3,10 +3,20 @@ package by.andruhovich.subscription.pool;
 import java.util.ResourceBundle;
 
 class DatabaseManager {
-    private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
-    // класс извлекает информацию из файла messages.properties
-    public DatabaseManager() { }
-    public static String getProperty(String key) {
+    private static DatabaseManager instance;
+    private static ResourceBundle resourceBundle;
+
+    private DatabaseManager() {}
+
+    static DatabaseManager getInstance() {
+        if (instance == null) {
+            instance = new DatabaseManager();
+            resourceBundle = ResourceBundle.getBundle("database");
+        }
+        return instance;
+    }
+
+    String getProperty(String key) {
         return resourceBundle.getString(key);
     }
 }
