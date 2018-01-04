@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.User;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -30,8 +31,10 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
+            return false;
+        } catch (DAOTechnicalException e) {
+            //TODO log
             return false;
         } finally {
             close(preparedStatement);
@@ -48,8 +51,7 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
             return false;
         } finally {
             close(preparedStatement);
@@ -66,8 +68,7 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
             return false;
         } finally {
             close(preparedStatement);
@@ -75,7 +76,7 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public User findEntityById(int userId) {
+    public User findEntityById(int userId) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         List<User> users;
 
@@ -86,16 +87,14 @@ public class UserDAO extends UserManagerDAO {
             users = createUserList(resultSet);
             return users.get(0);
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
-            return null;
+            throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public List findAll() {
+    public List findAll() throws DAOTechnicalException {
         List<User> users;
         PreparedStatement preparedStatement = null;
 
@@ -105,9 +104,7 @@ public class UserDAO extends UserManagerDAO {
             users = createUserList(resultSet);
             return users;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
-            return null;
+            throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
         }
@@ -123,8 +120,10 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
+            return false;
+        } catch (DAOTechnicalException e) {
+            //TODO log
             return false;
         }
     }
@@ -139,15 +138,14 @@ public class UserDAO extends UserManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             password = resultSet.getString("password");
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
         } finally {
             close(preparedStatement);
             return password;
         }
     }
 
-    private PreparedStatement fillOutStatementByUser(PreparedStatement preparedStatement, User user) {
+    private PreparedStatement fillOutStatementByUser(PreparedStatement preparedStatement, User user) throws DAOTechnicalException {
         try {
             preparedStatement.setInt(1, user.getRoleId());
             preparedStatement.setString(2, user.getFirstname());
@@ -159,14 +157,14 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.setInt(8, user.getAccountNumber());
             preparedStatement.setString(9, user.getLogin());
             preparedStatement.setString(10, user.getPassword());
+            return preparedStatement;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
+            throw new DAOTechnicalException(e.getMessage());
         }
-        return preparedStatement;
     }
 
-    private List<User> createUserList(ResultSet resultSet) {
+    private List<User> createUserList(ResultSet resultSet) throws DAOTechnicalException {
         List<User> users = new LinkedList<>();
         User user;
         try {
@@ -186,10 +184,10 @@ public class UserDAO extends UserManagerDAO {
                         login, password);
                 users.add(user);
             }
+            return users;
         } catch (SQLException e) {
-            //System.err.println("SQL exception (request or table failed): " + e);
-            //log
+            //TODO log
+            throw new DAOTechnicalException(e.getMessage());
         }
-        return users;
     }
 }
