@@ -1,7 +1,5 @@
 package by.andruhovich.subscription.pool;
 
-import by.andruhovich.subscription.exception.InterruptedTechnicalException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -60,7 +58,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection(long maxSeconds) throws InterruptedTechnicalException {
+    public Connection getConnection(long maxSeconds) {
         Connection connection;
         try {
             if (getConnectionLock.tryLock(maxSeconds, TimeUnit.SECONDS)) {
@@ -69,7 +67,6 @@ public class ConnectionPool {
             }
         } catch (InterruptedException e) {
            //TODO LOGGER.log(Level.ERROR, e.getMessage());
-            throw new InterruptedTechnicalException(e.getMessage());
         } finally {
             getConnectionLock.unlock();
         }
