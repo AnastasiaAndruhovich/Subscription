@@ -14,7 +14,7 @@ public abstract class BaseDAO <T> {
         this.connection = connection;
     }
 
-    public abstract boolean create(T entity);
+    public abstract int create(T entity);
     public abstract boolean delete(int id);
     public abstract boolean delete(T entity);
     public abstract T findEntityById(int id) throws DAOTechnicalException;
