@@ -27,7 +27,7 @@ public abstract class BaseDAO <T> {
                 statement.close();
             }
         } catch (SQLException e) {
-            // log
+            // TODO log
         }
     }
 }
