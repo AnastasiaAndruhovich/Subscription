@@ -11,6 +11,7 @@ public class UserDAO extends UserManagerDAO {
     private static final String SELECT_PASSWORD_BY_LOGIN = "SELECT password FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_USER_BY_ID = "DELETE users WHERE user_id = ?";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
@@ -22,20 +23,24 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public boolean create(User user) {
+    public int create(User user) {
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_USER);
             preparedStatement = fillOutStatementByUser(preparedStatement, user);
             preparedStatement.executeQuery();
-            return true;
+            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id = resultSet.getInt("user_id");
+            return id;
         } catch (SQLException e) {
             //TODO log
-            return false;
+            //????? -1
+            return -1;
         } catch (DAOTechnicalException e) {
             //TODO log
-            return false;
+            return -1;
         } finally {
             close(preparedStatement);
         }
