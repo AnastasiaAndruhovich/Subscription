@@ -42,7 +42,6 @@ public class PublicationType {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(publicationTypeId, name);
     }
 
