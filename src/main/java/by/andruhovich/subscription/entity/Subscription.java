@@ -1,12 +1,32 @@
 package by.andruhovich.subscription.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Subscription {
     private int subscriptionId;
+    private int userId;
+    private int publicationId;
     private Date startData;
     private Date endData;
-    private String subscriptionIsActive;
+    private boolean subscriptionIsActive;
+
+    public Subscription(int userId, int publicationId, Date startData, Date endData, boolean subscriptionIsActive) {
+        this.userId = userId;
+        this.publicationId = publicationId;
+        this.startData = startData;
+        this.endData = endData;
+        this.subscriptionIsActive = subscriptionIsActive;
+    }
+
+    public Subscription(int subscriptionId, int userId, int publicationId, Date startData, Date endData, boolean subscriptionIsActive) {
+        this.subscriptionId = subscriptionId;
+        this.userId = userId;
+        this.publicationId = publicationId;
+        this.startData = startData;
+        this.endData = endData;
+        this.subscriptionIsActive = subscriptionIsActive;
+    }
 
     public int getSubscriptionId() {
         return subscriptionId;
@@ -14,6 +34,22 @@ public class Subscription {
 
     public void setSubscriptionId(int subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getPublicationId() {
+        return publicationId;
+    }
+
+    public void setPublicationId(int publicationId) {
+        this.publicationId = publicationId;
     }
 
     public Date getStartData() {
@@ -32,36 +68,29 @@ public class Subscription {
         this.endData = endData;
     }
 
-    public String getSubscriptionIsActive() {
+    public boolean isSubscriptionIsActive() {
         return subscriptionIsActive;
     }
 
-    public void setSubscriptionIsActive(String subscriptionIsActive) {
+    public void setSubscriptionIsActive(boolean subscriptionIsActive) {
         this.subscriptionIsActive = subscriptionIsActive;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Subscription)) return false;
         Subscription that = (Subscription) o;
-
-        if (subscriptionId != that.subscriptionId) return false;
-        if (startData != null ? !startData.equals(that.startData) : that.startData != null) return false;
-        if (endData != null ? !endData.equals(that.endData) : that.endData != null) return false;
-        if (subscriptionIsActive != null ? !subscriptionIsActive.equals(that.subscriptionIsActive) : that.subscriptionIsActive != null)
-            return false;
-
-        return true;
+        return subscriptionId == that.subscriptionId &&
+                userId == that.userId &&
+                publicationId == that.publicationId &&
+                subscriptionIsActive == that.subscriptionIsActive &&
+                Objects.equals(startData, that.startData) &&
+                Objects.equals(endData, that.endData);
     }
 
     @Override
     public int hashCode() {
-        int result = subscriptionId;
-        result = 31 * result + (startData != null ? startData.hashCode() : 0);
-        result = 31 * result + (endData != null ? endData.hashCode() : 0);
-        result = 31 * result + (subscriptionIsActive != null ? subscriptionIsActive.hashCode() : 0);
-        return result;
+        return Objects.hash(subscriptionId, userId, publicationId, startData, endData, subscriptionIsActive);
     }
 }
