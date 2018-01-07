@@ -4,6 +4,11 @@ public class AuthorPublication {
     private int authorId;
     private int publicationId;
 
+    public AuthorPublication(int authorId, int publicationId) {
+        this.authorId = authorId;
+        this.publicationId = publicationId;
+    }
+
     public int getAuthorId() {
         return authorId;
     }
