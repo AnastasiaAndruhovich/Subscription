@@ -7,6 +7,11 @@ public class Account {
     private BigDecimal balance;
     private BigDecimal credit;
 
+    public Account(BigDecimal balance, BigDecimal credit) {
+        this.balance = balance;
+        this.credit = credit;
+    }
+
     public Account(int accountNumber, BigDecimal balance, BigDecimal credit) {
         this.accountNumber = accountNumber;
         this.balance = balance;
