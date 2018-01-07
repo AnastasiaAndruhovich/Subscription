@@ -7,6 +7,12 @@ public class Block {
     private int adminId;
     private Date date;
 
+    public Block(int userId, int adminId, Date date) {
+        this.userId = userId;
+        this.adminId = adminId;
+        this.date = date;
+    }
+
     public int getUserId() {
         return userId;
     }
