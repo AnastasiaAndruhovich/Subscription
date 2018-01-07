@@ -2,12 +2,32 @@ package by.andruhovich.subscription.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 public class Payment {
     private int paymentNumber;
+    private int userId;
+    private int subscriptionId;
     private BigDecimal sum;
     private Date date;
     private String statement;
+
+    public Payment(int userId, int subscriptionId, BigDecimal sum, Date date, String statement) {
+        this.userId = userId;
+        this.subscriptionId = subscriptionId;
+        this.sum = sum;
+        this.date = date;
+        this.statement = statement;
+    }
+
+    public Payment(int paymentNumber, int userId, int subscriptionId, BigDecimal sum, Date date, String statement) {
+        this.paymentNumber = paymentNumber;
+        this.userId = userId;
+        this.subscriptionId = subscriptionId;
+        this.sum = sum;
+        this.date = date;
+        this.statement = statement;
+    }
 
     public int getPaymentNumber() {
         return paymentNumber;
@@ -15,6 +35,22 @@ public class Payment {
 
     public void setPaymentNumber(int paymentNumber) {
         this.paymentNumber = paymentNumber;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(int subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     public BigDecimal getSum() {
@@ -44,24 +80,18 @@ public class Payment {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Payment)) return false;
         Payment payment = (Payment) o;
-
-        if (paymentNumber != payment.paymentNumber) return false;
-        if (sum != null ? !sum.equals(payment.sum) : payment.sum != null) return false;
-        if (date != null ? !date.equals(payment.date) : payment.date != null) return false;
-        if (statement != null ? !statement.equals(payment.statement) : payment.statement != null) return false;
-
-        return true;
+        return paymentNumber == payment.paymentNumber &&
+                userId == payment.userId &&
+                subscriptionId == payment.subscriptionId &&
+                Objects.equals(sum, payment.sum) &&
+                Objects.equals(date, payment.date) &&
+                Objects.equals(statement, payment.statement);
     }
 
     @Override
     public int hashCode() {
-        int result = paymentNumber;
-        result = 31 * result + (sum != null ? sum.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (statement != null ? statement.hashCode() : 0);
-        return result;
+        return Objects.hash(paymentNumber, userId, subscriptionId, sum, date, statement);
     }
 }
