@@ -5,6 +5,17 @@ public class Genre {
     private String name;
     private String description;
 
+    public Genre(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Genre(int genreId, String name, String description) {
+        this.genreId = genreId;
+        this.name = name;
+        this.description = description;
+    }
+
     public int getGenreId() {
         return genreId;
     }
