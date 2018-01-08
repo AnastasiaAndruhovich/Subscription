@@ -14,49 +14,30 @@ public class AccountDAO extends AccountManagerDAO{
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE accounts WHERE account_number = ?";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts";
-    private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, credit = ?";
-
-    public AccountDAO(Connection connection) {
-        super(connection);
-    }
+    private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, credit = ? WHERE account_number = ?";
 
     @Override
-    public int create(Account entity) {
-        PreparedStatement preparedStatement;
+    public int create(Account entity) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ACCOUNT);
-            preparedStatement.setBigDecimal(1, entity.getBalance());
-            preparedStatement.setBigDecimal(2, entity.getCredit());
+            preparedStatement = fillOutStatementByAccount(preparedStatement, entity);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
             int id = resultSet.getInt("account_number");
             return id;
         } catch (SQLException e) {
-            //TODO log
-            return -1;
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
         }
     }
 
     @Override
-    public boolean delete(int id) {
-        PreparedStatement preparedStatement;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            //TODO log
-            return false;
-        }
-    }
-
-    @Override
-    public boolean delete(Account entity) {
-        PreparedStatement preparedStatement;
+    public boolean delete(Account entity) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
@@ -64,8 +45,9 @@ public class AccountDAO extends AccountManagerDAO{
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            //TODO log
-            return false;
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
         }
     }
 
@@ -105,8 +87,8 @@ public class AccountDAO extends AccountManagerDAO{
     }
 
     @Override
-    public boolean update(Account entity) {
-        PreparedStatement preparedStatement;
+    public boolean update(Account entity) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT);
@@ -114,17 +96,10 @@ public class AccountDAO extends AccountManagerDAO{
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            //TODO log
-            return false;
-        } catch (DAOTechnicalException e) {
-            //TODO log
-            return false;
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
         }
-    }
-
-    @Override
-    public void close(Statement statement) {
-        super.close(statement);
     }
 
     private List<Account> createAccountList(ResultSet resultSet) throws DAOTechnicalException {
@@ -140,7 +115,6 @@ public class AccountDAO extends AccountManagerDAO{
             }
             return accounts;
         } catch (SQLException e) {
-            //TODO log
             throw new DAOTechnicalException(e.getMessage());
         }
     }
@@ -150,9 +124,9 @@ public class AccountDAO extends AccountManagerDAO{
         try {
             preparedStatement.setBigDecimal(1, account.getBalance());
             preparedStatement.setBigDecimal(2, account.getCredit());
+            preparedStatement.setInt(3, account.getAccountNumber());
             return preparedStatement;
         } catch (SQLException e) {
-            //TODO log
             throw new DAOTechnicalException(e.getMessage());
         }
     }
