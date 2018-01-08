@@ -7,24 +7,24 @@ public class Subscription {
     private int subscriptionId;
     private int userId;
     private int publicationId;
-    private Date startData;
-    private Date endData;
+    private Date startDate;
+    private Date endDate;
     private boolean subscriptionIsActive;
 
-    public Subscription(int userId, int publicationId, Date startData, Date endData, boolean subscriptionIsActive) {
+    public Subscription(int userId, int publicationId, Date startDate, Date endDate, boolean subscriptionIsActive) {
         this.userId = userId;
         this.publicationId = publicationId;
-        this.startData = startData;
-        this.endData = endData;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.subscriptionIsActive = subscriptionIsActive;
     }
 
-    public Subscription(int subscriptionId, int userId, int publicationId, Date startData, Date endData, boolean subscriptionIsActive) {
+    public Subscription(int subscriptionId, int userId, int publicationId, Date startDate, Date endDate, boolean subscriptionIsActive) {
         this.subscriptionId = subscriptionId;
         this.userId = userId;
         this.publicationId = publicationId;
-        this.startData = startData;
-        this.endData = endData;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.subscriptionIsActive = subscriptionIsActive;
     }
 
@@ -52,28 +52,28 @@ public class Subscription {
         this.publicationId = publicationId;
     }
 
-    public Date getStartData() {
-        return startData;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStartData(Date startData) {
-        this.startData = startData;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getEndData() {
-        return endData;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setEndData(Date endData) {
-        this.endData = endData;
-    }
-
-    public boolean isSubscriptionIsActive() {
-        return subscriptionIsActive;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public void setSubscriptionIsActive(boolean subscriptionIsActive) {
         this.subscriptionIsActive = subscriptionIsActive;
+    }
+
+    public boolean getSubscriptionIsActive() {
+        return subscriptionIsActive;
     }
 
     @Override
@@ -85,12 +85,12 @@ public class Subscription {
                 userId == that.userId &&
                 publicationId == that.publicationId &&
                 subscriptionIsActive == that.subscriptionIsActive &&
-                Objects.equals(startData, that.startData) &&
-                Objects.equals(endData, that.endData);
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscriptionId, userId, publicationId, startData, endData, subscriptionIsActive);
+        return Objects.hash(subscriptionId, userId, publicationId, startDate, endDate, subscriptionIsActive);
     }
 }
