@@ -17,7 +17,7 @@ public class ConnectionPool {
     private static Lock getConnectionLock = new ReentrantLock();
     private Queue<Connection> connections;
 
-    //TODO private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
+    //private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private ConnectionPool() {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
@@ -47,7 +47,7 @@ public class ConnectionPool {
         if (!instanceCreated.get()) {
             try {
                 instanceLock.lock();
-                if (instance != null && !instanceCreated.get()) {
+                if (instance == null && !instanceCreated.get()) {
                     instance = new ConnectionPool();
                     instanceCreated.set(true);
                 }
