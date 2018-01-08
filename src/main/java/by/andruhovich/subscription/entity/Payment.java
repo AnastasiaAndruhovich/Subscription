@@ -10,9 +10,9 @@ public class Payment {
     private int subscriptionId;
     private BigDecimal sum;
     private Date date;
-    private String statement;
+    private boolean statement;
 
-    public Payment(int userId, int subscriptionId, BigDecimal sum, Date date, String statement) {
+    public Payment(int userId, int subscriptionId, BigDecimal sum, Date date, boolean statement) {
         this.userId = userId;
         this.subscriptionId = subscriptionId;
         this.sum = sum;
@@ -20,7 +20,7 @@ public class Payment {
         this.statement = statement;
     }
 
-    public Payment(int paymentNumber, int userId, int subscriptionId, BigDecimal sum, Date date, String statement) {
+    public Payment(int paymentNumber, int userId, int subscriptionId, BigDecimal sum, Date date, boolean statement) {
         this.paymentNumber = paymentNumber;
         this.userId = userId;
         this.subscriptionId = subscriptionId;
@@ -69,11 +69,11 @@ public class Payment {
         this.date = date;
     }
 
-    public String getStatement() {
+    public boolean getStatement() {
         return statement;
     }
 
-    public void setStatement(String statement) {
+    public void setStatement(boolean statement) {
         this.statement = statement;
     }
 
@@ -85,9 +85,9 @@ public class Payment {
         return paymentNumber == payment.paymentNumber &&
                 userId == payment.userId &&
                 subscriptionId == payment.subscriptionId &&
+                statement == payment.statement &&
                 Objects.equals(sum, payment.sum) &&
-                Objects.equals(date, payment.date) &&
-                Objects.equals(statement, payment.statement);
+                Objects.equals(date, payment.date);
     }
 
     @Override
