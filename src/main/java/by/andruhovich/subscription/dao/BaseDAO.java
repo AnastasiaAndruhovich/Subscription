@@ -10,16 +10,15 @@ import java.util.List;
 public abstract class BaseDAO <T> {
     protected Connection connection;
 
-    public BaseDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public abstract int create(T entity);
-    public abstract boolean delete(int id);
-    public abstract boolean delete(T entity);
+    public abstract int create(T entity) throws DAOTechnicalException;
+    public abstract boolean delete(T entity) throws DAOTechnicalException;
     public abstract T findEntityById(int id) throws DAOTechnicalException;
     public abstract List<T> findAll() throws DAOTechnicalException;
-    public abstract boolean update(T entity);
+    public abstract boolean update(T entity) throws DAOTechnicalException;
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     public void close(Statement statement) {
         try {
