@@ -3,7 +3,10 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,18 +15,14 @@ public class UserDAO extends UserManagerDAO {
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
-    private static final String DELETE_USER_BY_ID = "DELETE users WHERE user_id = ?";
+    private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
 
-    public UserDAO(Connection connection) {
-        super(connection);
-    }
-
     @Override
-    public int create(User user) {
+    public int create(User user) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
 
         try {
@@ -35,59 +34,36 @@ public class UserDAO extends UserManagerDAO {
             int id = resultSet.getInt("user_id");
             return id;
         } catch (SQLException e) {
-            //TODO log
-            //????? -1
-            return -1;
-        } catch (DAOTechnicalException e) {
-            //TODO log
-            return -1;
+            throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public boolean delete(int userId) {
+    public boolean delete(User entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID);
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, entity.getUserId());
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            //TODO log
-            return false;
+            throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public boolean delete(User user) {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID);
-            preparedStatement.setInt(1, user.getUserId());
-            preparedStatement.execute();
-            return true;
-        } catch (SQLException e) {
-            //TODO log
-            return false;
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public User findEntityById(int userId) throws DAOTechnicalException {
+    public User findEntityById(int id) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         List<User> users;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             users = createUserList(resultSet);
             return users.get(0);
@@ -116,24 +92,20 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public boolean update(User user) {
+    public boolean update(User entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement;
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_USER);
-            preparedStatement = fillOutStatementByUser(preparedStatement, user);
+            preparedStatement = fillOutStatementByUser(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            //TODO log
-            return false;
-        } catch (DAOTechnicalException e) {
-            //TODO log
-            return false;
+            throw new DAOTechnicalException(e.getMessage());
         }
     }
 
-    public String findPasswordByLogin(String login) {
+    public String findPasswordByLogin(String login) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         String password = null;
 
@@ -141,12 +113,14 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement = connection.prepareStatement(SELECT_PASSWORD_BY_LOGIN);
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            password = resultSet.getString("password");
+            while(resultSet.next()) {
+                password = resultSet.getString("password");
+            }
+            return password;
         } catch (SQLException e) {
-            //TODO log
+            throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
-            return password;
         }
     }
 
@@ -162,9 +136,9 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.setInt(8, user.getAccountNumber());
             preparedStatement.setString(9, user.getLogin());
             preparedStatement.setString(10, user.getPassword());
+            preparedStatement.setInt(11, user.getUserId());
             return preparedStatement;
         } catch (SQLException e) {
-            //TODO log
             throw new DAOTechnicalException(e.getMessage());
         }
     }
@@ -191,7 +165,6 @@ public class UserDAO extends UserManagerDAO {
             }
             return users;
         } catch (SQLException e) {
-            //TODO log
             throw new DAOTechnicalException(e.getMessage());
         }
     }
