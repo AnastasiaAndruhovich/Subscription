@@ -2,6 +2,7 @@ package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.dao.DAOManager;
 import by.andruhovich.subscription.dao.UserDAO;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 
@@ -16,8 +17,7 @@ public class UserService {
             userDAO = (UserDAO) daoManager.initializeDAO(userDAO);
             String dataBasePassword = userDAO.findPasswordByLogin(login);
             return password.equals(dataBasePassword);
-        } catch (ResourceTechnicalException e) {
-            //TODO log
+        } catch (ResourceTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         }
     }
