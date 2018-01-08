@@ -1,13 +1,8 @@
 package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.User;
-
-import java.sql.Connection;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 public abstract class UserManagerDAO extends BaseDAO<User> {
-    public UserManagerDAO(Connection connection) {
-        super(connection);
-    }
-
-    public abstract String findPasswordByLogin(String login);
+    public abstract String findPasswordByLogin(String login) throws DAOTechnicalException;
 }
