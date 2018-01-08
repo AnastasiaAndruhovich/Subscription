@@ -11,7 +11,7 @@ import java.util.List;
 public class AccountDAO extends AccountManagerDAO{
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, credit) VALUES (?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
-    private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE accounts WHERE account_number = ?";
+    private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, credit = ? WHERE account_number = ?";
