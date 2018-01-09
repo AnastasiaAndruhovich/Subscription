@@ -3,6 +3,7 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,10 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
             "author_firstname = ? WHERE author_id = ?";
+
+    public AuthorDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Author entity) throws DAOTechnicalException {

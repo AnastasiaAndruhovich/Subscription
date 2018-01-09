@@ -3,6 +3,7 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,10 @@ public class GenreDAO extends BaseDAO<Genre> {
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
     private static final String SELECT_ALL_GENRES = "SELECT * FROM genres";
     private static final String UPDATE_GENRE = "UPDATE genres SET name = ?, description = ? WHERE genre_id = ?";
+
+    public GenreDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Genre entity) throws DAOTechnicalException {

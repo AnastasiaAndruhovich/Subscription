@@ -4,6 +4,7 @@ import by.andruhovich.subscription.entity.Payment;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,9 @@ public class PaymentDAO extends PaymentManagerDAO {
     private static final String UPDATE_PAYMENT = "UPDATE payments SET user_id = ?, subscription_id = ?, sum = ?, " +
             "date = ?, statement = ? WHERE payment_number = ?";
 
+    public PaymentDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Payment entity) throws DAOTechnicalException {

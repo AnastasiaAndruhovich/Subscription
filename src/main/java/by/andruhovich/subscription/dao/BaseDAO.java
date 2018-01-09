@@ -16,6 +16,10 @@ public abstract class BaseDAO <T> {
     public abstract List<T> findAll() throws DAOTechnicalException;
     public abstract boolean update(T entity) throws DAOTechnicalException;
 
+    public BaseDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     public void setConnection(Connection connection) {
         this.connection = connection;
     }

@@ -4,6 +4,7 @@ import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,10 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String SELECT_ALL_PUBLICATIONS = "SELECT * FROM publications";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ? WHERE publication_id = ?";
+
+    public PublicationDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Publication entity) throws DAOTechnicalException {

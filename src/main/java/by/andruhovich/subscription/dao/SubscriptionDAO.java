@@ -10,14 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SubscriptionDAO extends SubscriptionManagerDAO {
-    private static final String INSERT_SUBSCRIPTION= "INSERT INTO subscriptions(user_id, publication_id, start_data, " +
-            "end_data, subscription_is_active) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_SUBSCRIPTION= "INSERT INTO subscriptions(user_id, publication_id, start_date, " +
+            "end_date, subscription_is_active) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_SUBSCRIPTION_BY_ID = "DELETE FROM subscriptions WHERE subscription_id = ?";
     private static final String SELECT_SUBSCRIPTION_BY_ID = "SELECT * FROM subscriptions WHERE subscription_id = ?";
     private static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT * FROM subscriptions";
     private static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET user_id = ?, publication_id = ?, " +
-            "start_data = ?, end_data = ?, subscription_is_active = ? WHERE subscription_id = ?";
+            "start_date = ?, end_date = ?, subscription_is_active = ? WHERE subscription_id = ?";
 
     @Override
     public int create(Subscription entity) throws DAOTechnicalException {

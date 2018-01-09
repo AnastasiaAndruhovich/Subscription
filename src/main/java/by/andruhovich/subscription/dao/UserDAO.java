@@ -3,10 +3,7 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +17,10 @@ public class UserDAO extends UserManagerDAO {
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
+
+    public UserDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(User user) throws DAOTechnicalException {

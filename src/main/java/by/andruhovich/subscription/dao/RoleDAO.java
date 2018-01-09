@@ -3,6 +3,7 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,10 @@ public class RoleDAO extends BaseDAO<Role> {
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM roles WHERE role_id = ?";
     private static final String SELECT_ALL_ROLES = "SELECT * FROM roles";
     private static final String UPDATE_ROLE = "UPDATE roles SET name = ? WHERE role_id = ?";
+
+    public RoleDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Role entity) throws DAOTechnicalException {
