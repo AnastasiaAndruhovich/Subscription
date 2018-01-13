@@ -11,4 +11,6 @@ public abstract class UserManagerDAO extends BaseDAO<User> {
     }
 
     public abstract String findPasswordByLogin(String login) throws DAOTechnicalException;
+
+    public abstract boolean isLoginExist(String login) throws DAOTechnicalException;
 }
