@@ -140,7 +140,7 @@ public class PaymentDAO extends PaymentManagerDAO {
                 int paymentNumber = resultSet.getInt("payment_number");
                 int userId = resultSet.getInt("user_id");
                 int subscriptionId = resultSet.getInt("subscription_id");
-                BigDecimal sum = new BigDecimal("sum");
+                BigDecimal sum = resultSet.getBigDecimal("sum");
                 java.util.Date date = new java.util.Date(resultSet.getDate("date").getTime());
                 boolean statement = typeConverter.convertStringToBoolean(resultSet.getString("subscription_is_active"));
                 payment = new Payment(paymentNumber, userId, subscriptionId, sum, date, statement);
