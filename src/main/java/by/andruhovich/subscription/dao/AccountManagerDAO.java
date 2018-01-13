@@ -11,6 +11,8 @@ public abstract class AccountManagerDAO extends BaseDAO<Account> {
         super(connection);
     }
 
+    public abstract int createEmptyAccount() throws DAOTechnicalException;
+
     public abstract BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException;
     public abstract BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException;
 
