@@ -10,6 +10,7 @@ import java.util.List;
 
 public class AccountDAO extends AccountManagerDAO{
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, loan) VALUES (?, ?)";
+    private static final String INSERT_EMPTY_ACCOUNT= "INSERT INTO accounts() VALUES ()";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
@@ -138,6 +139,24 @@ public class AccountDAO extends AccountManagerDAO{
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
+        }
+    }
+
+    @Override
+    public int createEmptyAccount() throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(INSERT_EMPTY_ACCOUNT);
+            preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id = resultSet.getInt("account_number");
+            return id;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
         }
     }
 
