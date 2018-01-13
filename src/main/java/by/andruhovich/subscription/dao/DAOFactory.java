@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.ResourceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionPool;
 
@@ -7,11 +8,11 @@ import java.sql.Connection;
 
 public class DAOFactory {
     private static DAOFactory instance;
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private ConnectionPool connectionPool;
     private static final int WAITING_TIME = 10;
 
     private DAOFactory() {
-        instance = new DAOFactory();
+        connectionPool = ConnectionPool.getInstance();
     }
 
     public static DAOFactory getInstance() {
@@ -30,7 +31,14 @@ public class DAOFactory {
     }
 
     public UserDAO createUserDAO() throws ResourceTechnicalException {
-        UserDAO userDAO = new UserDAO(getConnection());
-        return userDAO;
+        return new UserDAO(getConnection());
+    }
+
+    public AccountDAO createAccountDAO() throws ResourceTechnicalException {
+        return new AccountDAO(getConnection());
+    }
+
+    public RoleDAO createRoleDAO() throws ResourceTechnicalException {
+        return new RoleDAO(getConnection());
     }
 }
