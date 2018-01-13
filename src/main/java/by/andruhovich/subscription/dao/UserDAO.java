@@ -9,6 +9,7 @@ import java.util.List;
 
 public class UserDAO extends UserManagerDAO {
     private static final String SELECT_PASSWORD_BY_LOGIN = "SELECT password FROM users WHERE login = ?";
+    private static final String SELECT_LOGIN = "SELECT COUNT(user_id) FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
@@ -125,12 +126,31 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    @Override
+    public boolean isLoginExist(String login) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_LOGIN);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int quantity = resultSet.getInt("COUNT(user_id)");
+            return quantity == 1;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
     private PreparedStatement fillOutStatementByUser(PreparedStatement preparedStatement, User user) throws DAOTechnicalException {
+        java.sql.Date birthdate = new java.sql.Date(user.getBirthdate().getTime());
+
         try {
             preparedStatement.setInt(1, user.getRoleId());
             preparedStatement.setString(2, user.getFirstname());
             preparedStatement.setString(3, user.getLastname());
-            preparedStatement.setDate(4, user.getBirthdate());
+            preparedStatement.setDate(4, birthdate);
             preparedStatement.setString(5, user.getAddress());
             preparedStatement.setString(6, user.getCity());
             preparedStatement.setInt(7, user.getPostalIndex());
