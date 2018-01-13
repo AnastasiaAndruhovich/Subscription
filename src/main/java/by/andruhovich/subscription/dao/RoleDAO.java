@@ -10,7 +10,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RoleDAO extends BaseDAO<Role> {
+public class RoleDAO extends RoleManagerDAO {
+    private static final String SELECT_ID_BY_NAME = "SELECT role_id FROM roles WHERE name = ?";
     private static final String INSERT_ROLE= "INSERT INTO roles(name) VALUE (?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_ROLE_BY_ID = "DELETE FROM roles WHERE role_id = ?";
@@ -23,8 +24,29 @@ public class RoleDAO extends BaseDAO<Role> {
     }
 
     @Override
+    public int findIdByName(String name) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        int id = -1;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_ID_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                id = resultSet.getInt("role_id");
+            }
+            return id;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
     public int create(Role entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ROLE);
@@ -32,7 +54,9 @@ public class RoleDAO extends BaseDAO<Role> {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("role_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("role_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
