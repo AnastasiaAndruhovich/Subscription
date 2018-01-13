@@ -3,6 +3,7 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,10 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT * FROM subscriptions";
     private static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET user_id = ?, publication_id = ?, " +
             "start_date = ?, end_date = ?, subscription_is_active = ? WHERE subscription_id = ?";
+
+    public SubscriptionDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public int create(Subscription entity) throws DAOTechnicalException {
