@@ -18,7 +18,7 @@ public class LoginCommand implements BaseCommand{
         String password = request.getParameter(PASSWORD);
 
         try {
-            if (userService.checkLogin(login, password)) {
+            if (userService.checkLoginByPassword(login, password)) {
                 request.setAttribute("user", login);
                 page = ConfigurationManager.getProperty("path.page.main");
             } else {
