@@ -1,19 +1,26 @@
 package by.andruhovich.subscription.entity;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Genre {
     private int genreId;
     private String name;
     private String description;
 
-    public Genre(String name, String description) {
+    private List<Publication> publications;
+
+    public Genre(String name, String description, List<Publication> publications) {
         this.name = name;
         this.description = description;
+        this.publications = publications;
     }
 
-    public Genre(int genreId, String name, String description) {
+    public Genre(int genreId, String name, String description, List<Publication> publications) {
         this.genreId = genreId;
         this.name = name;
         this.description = description;
+        this.publications = publications;
     }
 
     public int getGenreId() {
@@ -40,25 +47,29 @@ public class Genre {
         this.description = description;
     }
 
+    public List<Publication> getPublications() {
+        return publications;
+    }
+
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Genre)) return false;
         Genre genre = (Genre) o;
-
-        if (genreId != genre.genreId) return false;
-        if (name != null ? !name.equals(genre.name) : genre.name != null) return false;
-        if (description != null ? !description.equals(genre.description) : genre.description != null) return false;
-
-        return true;
+        return genreId == genre.genreId &&
+                Objects.equals(name, genre.name) &&
+                Objects.equals(description, genre.description) &&
+                Objects.equals(publications, genre.publications);
     }
 
     @Override
     public int hashCode() {
-        int result = genreId;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+
+        return Objects.hash(genreId, name, description, publications);
     }
 }

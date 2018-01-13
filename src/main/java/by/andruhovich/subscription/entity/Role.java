@@ -1,16 +1,27 @@
 package by.andruhovich.subscription.entity;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Role {
     private int roleId;
     private String name;
+
+    private List<User> users;
 
     public Role(String name) {
         this.name = name;
     }
 
-    public Role(int roleId, String name) {
+    public Role(String name, List<User> users) {
+        this.name = name;
+        this.users = users;
+    }
+
+    public Role(int roleId, String name, List<User> users) {
         this.roleId = roleId;
         this.name = name;
+        this.users = users;
     }
 
     public int getRoleId() {
@@ -29,23 +40,26 @@ public class Role {
         this.name = name;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Role)) return false;
         Role role = (Role) o;
-
-        if (roleId != role.roleId) return false;
-        if (name != null ? !name.equals(role.name) : role.name != null) return false;
-
-        return true;
+        return roleId == role.roleId &&
+                Objects.equals(name, role.name) &&
+                Objects.equals(users, role.users);
     }
 
     @Override
     public int hashCode() {
-        int result = roleId;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+        return Objects.hash(roleId, name, users);
     }
 }

@@ -1,31 +1,37 @@
 package by.andruhovich.subscription.entity;
 
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Publication {
     private int publicationId;
     private String name;
-    private int publicationTypeId;
-    private int genreId;
     private String description;
     private BigDecimal price;
 
-    public Publication(String name, int publicationTypeId, int genreId, String description, BigDecimal price) {
+    private List<Author> authors;
+    private Genre genre;
+    private PublicationType publicationType;
+
+    public Publication(String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
         this.name = name;
-        this.publicationTypeId = publicationTypeId;
-        this.genreId = genreId;
         this.description = description;
         this.price = price;
+        this.authors = authors;
+        this.genre = genre;
+        this.publicationType = publicationType;
     }
 
-    public Publication(int publicationId, String name, int publicationTypeId, int genreId, String description, BigDecimal price) {
+    public Publication(int publicationId, String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
         this.publicationId = publicationId;
         this.name = name;
-        this.publicationTypeId = publicationTypeId;
-        this.genreId = genreId;
         this.description = description;
         this.price = price;
+        this.authors = authors;
+        this.genre = genre;
+        this.publicationType = publicationType;
     }
 
     public int getPublicationId() {
@@ -44,22 +50,6 @@ public class Publication {
         this.name = name;
     }
 
-    public int getPublicationTypeId() {
-        return publicationTypeId;
-    }
-
-    public void setPublicationTypeId(int publicationTypeId) {
-        this.publicationTypeId = publicationTypeId;
-    }
-
-    public int getGenreId() {
-        return genreId;
-    }
-
-    public void setGenreId(int genreId) {
-        this.genreId = genreId;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -76,33 +66,46 @@ public class Publication {
         this.price = price;
     }
 
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public PublicationType getPublicationType() {
+        return publicationType;
+    }
+
+    public void setPublicationType(PublicationType publicationType) {
+        this.publicationType = publicationType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Publication)) return false;
         Publication that = (Publication) o;
         return publicationId == that.publicationId &&
-                publicationTypeId == that.publicationTypeId &&
-                genreId == that.genreId &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(price, that.price);
+                Objects.equals(price, that.price) &&
+                Objects.equals(authors, that.authors) &&
+                Objects.equals(genre, that.genre) &&
+                Objects.equals(publicationType, that.publicationType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(publicationId, name, publicationTypeId, genreId, description, price);
-    }
-
-    @Override
-    public String toString() {
-        return "Publication{" +
-                "publicationId=" + publicationId +
-                ", name='" + name + '\'' +
-                ", publicationTypeId=" + publicationTypeId +
-                ", genreId=" + genreId +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
+        return Objects.hash(publicationId, name, description, price, authors, genre, publicationType);
     }
 }

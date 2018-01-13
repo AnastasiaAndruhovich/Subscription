@@ -1,48 +1,74 @@
 package by.andruhovich.subscription.entity;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
     private int userId;
-    private int roleId;
     private String lastname;
     private String firstname;
     private Date birthdate;
     private String address;
     private String city;
     private int postalIndex;
-    private int accountNumber;
     private String login;
     private String password;
 
-    public User(int roleId, String lastname, String firstname, Date birthdate, String address, String city,
-                int postalIndex, int accountNumber, String login, String password) {
-        this.roleId = roleId;
+    private Role role;
+    private Account account;
+    private List<Subscription> subscriptions = new LinkedList<>();
+    private List<Payment> payments = new LinkedList<>();
+    private User admin;
+    private List<User> users;
+
+    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.birthdate = birthdate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
-        this.accountNumber = accountNumber;
         this.login = login;
         this.password = password;
+        this.role = role;
+        this.account = account;
     }
 
-    public User(int userId, int roleId, String lastname, String firstname, Date birthdate, String address, String city,
-                int postalIndex, int accountNumber, String login, String password) {
-        this.userId = userId;
-        this.roleId = roleId;
+    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account, List<Subscription> subscriptions, List<Payment> payments, User admin, List<User> users) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.birthdate = birthdate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
-        this.accountNumber = accountNumber;
         this.login = login;
         this.password = password;
+        this.role = role;
+        this.account = account;
+        this.subscriptions = subscriptions;
+        this.payments = payments;
+        this.admin = admin;
+        this.users = users;
+    }
+
+    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account, List<Subscription> subscriptions, List<Payment> payments, User admin, List<User> users) {
+        this.userId = userId;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.city = city;
+        this.postalIndex = postalIndex;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.account = account;
+        this.subscriptions = subscriptions;
+        this.payments = payments;
+        this.admin = admin;
+        this.users = users;
     }
 
     public int getUserId() {
@@ -117,20 +143,52 @@ public class User {
         this.password = password;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -139,20 +197,24 @@ public class User {
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return userId == user.userId &&
-                roleId == user.roleId &&
                 postalIndex == user.postalIndex &&
-                accountNumber == user.accountNumber &&
                 Objects.equals(lastname, user.lastname) &&
                 Objects.equals(firstname, user.firstname) &&
                 Objects.equals(birthdate, user.birthdate) &&
                 Objects.equals(address, user.address) &&
                 Objects.equals(city, user.city) &&
                 Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password);
+                Objects.equals(password, user.password) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(account, user.account) &&
+                Objects.equals(subscriptions, user.subscriptions) &&
+                Objects.equals(payments, user.payments) &&
+                Objects.equals(admin, user.admin) &&
+                Objects.equals(users, user.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, roleId, lastname, firstname, birthdate, address, city, postalIndex, accountNumber, login, password);
+        return Objects.hash(userId, lastname, firstname, birthdate, address, city, postalIndex, login, password, role, account, subscriptions, payments, admin, users);
     }
 }

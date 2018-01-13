@@ -1,32 +1,19 @@
 package by.andruhovich.subscription.entity;
 
 import java.util.Date;
+import java.util.Objects;
+
 
 public class Block {
-    private int userId;
-    private int adminId;
     private Date date;
 
-    public Block(int userId, int adminId, Date date) {
-        this.userId = userId;
-        this.adminId = adminId;
+    private User user;
+    private User admin;
+
+    public Block(Date date, User user, User admin) {
         this.date = date;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+        this.user = user;
+        this.admin = admin;
     }
 
     public Date getDate() {
@@ -37,25 +24,35 @@ public class Block {
         this.date = date;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Block)) return false;
         Block block = (Block) o;
-
-        if (userId != block.userId) return false;
-        if (adminId != block.adminId) return false;
-        if (date != null ? !date.equals(block.date) : block.date != null) return false;
-
-        return true;
+        return Objects.equals(date, block.date) &&
+                Objects.equals(user, block.user) &&
+                Objects.equals(admin, block.admin);
     }
 
     @Override
     public int hashCode() {
-        int result = userId;
-        result = 31 * result + adminId;
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        return result;
+
+        return Objects.hash(date, user, admin);
     }
 }

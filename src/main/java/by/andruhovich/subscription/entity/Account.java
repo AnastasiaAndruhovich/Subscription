@@ -8,9 +8,17 @@ public class Account {
     private BigDecimal balance;
     private BigDecimal loan;
 
+    private User user;
+
     public Account(BigDecimal balance, BigDecimal loan) {
         this.balance = balance;
         this.loan = loan;
+    }
+
+    public Account(BigDecimal balance, BigDecimal loan, User user) {
+        this.balance = balance;
+        this.loan = loan;
+        this.user = user;
     }
 
     public Account(int accountNumber, BigDecimal balance, BigDecimal loan) {
@@ -43,6 +51,15 @@ public class Account {
         this.loan = loan;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,11 +67,13 @@ public class Account {
         Account account = (Account) o;
         return accountNumber == account.accountNumber &&
                 Objects.equals(balance, account.balance) &&
-                Objects.equals(loan, account.loan);
+                Objects.equals(loan, account.loan) &&
+                Objects.equals(user, account.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, balance, loan);
+
+        return Objects.hash(accountNumber, balance, loan, user);
     }
 }

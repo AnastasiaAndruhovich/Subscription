@@ -1,15 +1,28 @@
 package by.andruhovich.subscription.entity;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+
 public class Author {
     private int authorId;
     private String publisherName;
     private String authorLastname;
     private String authorFirstname;
 
+    private List<Publication> publications = new LinkedList<>();
+
     public Author(String publisherName, String authorLastname, String authorFirstname) {
         this.publisherName = publisherName;
         this.authorLastname = authorLastname;
         this.authorFirstname = authorFirstname;
+    }
+
+    public Author(String publisherName, String authorLastname, String authorFirstname, List<Publication> publications) {
+        this.publisherName = publisherName;
+        this.authorLastname = authorLastname;
+        this.authorFirstname = authorFirstname;
+        this.publications = publications;
     }
 
     public Author(int authorId, String publisherName, String authorLastname, String authorFirstname) {
@@ -51,30 +64,30 @@ public class Author {
         this.authorFirstname = authorFirstname;
     }
 
+    public List<Publication> getPublications() {
+        return publications;
+    }
+
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Author)) return false;
         Author author = (Author) o;
-
-        if (authorId != author.authorId) return false;
-        if (publisherName != null ? !publisherName.equals(author.publisherName) : author.publisherName != null)
-            return false;
-        if (authorLastname != null ? !authorLastname.equals(author.authorLastname) : author.authorLastname != null)
-            return false;
-        if (authorFirstname != null ? !authorFirstname.equals(author.authorFirstname) : author.authorFirstname != null)
-            return false;
-
-        return true;
+        return authorId == author.authorId &&
+                Objects.equals(publisherName, author.publisherName) &&
+                Objects.equals(authorLastname, author.authorLastname) &&
+                Objects.equals(authorFirstname, author.authorFirstname) &&
+                Objects.equals(publications, author.publications);
     }
 
     @Override
     public int hashCode() {
-        int result = authorId;
-        result = 31 * result + (publisherName != null ? publisherName.hashCode() : 0);
-        result = 31 * result + (authorLastname != null ? authorLastname.hashCode() : 0);
-        result = 31 * result + (authorFirstname != null ? authorFirstname.hashCode() : 0);
-        return result;
+
+        return Objects.hash(authorId, publisherName, authorLastname, authorFirstname, publications);
     }
 }

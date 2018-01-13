@@ -6,27 +6,34 @@ import java.util.Objects;
 
 public class Payment {
     private int paymentNumber;
-    private int userId;
-    private int subscriptionId;
     private BigDecimal sum;
     private Date date;
     private boolean statement;
 
-    public Payment(int userId, int subscriptionId, BigDecimal sum, Date date, boolean statement) {
-        this.userId = userId;
-        this.subscriptionId = subscriptionId;
+    private User user;
+    private Subscription subscription;
+
+    public Payment(BigDecimal sum, Date date, boolean statement) {
         this.sum = sum;
         this.date = date;
         this.statement = statement;
     }
 
-    public Payment(int paymentNumber, int userId, int subscriptionId, BigDecimal sum, Date date, boolean statement) {
-        this.paymentNumber = paymentNumber;
-        this.userId = userId;
-        this.subscriptionId = subscriptionId;
+    public Payment(BigDecimal sum, Date date, boolean statement, User user, Subscription subscription) {
         this.sum = sum;
         this.date = date;
         this.statement = statement;
+        this.user = user;
+        this.subscription = subscription;
+    }
+
+    public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement, User user, Subscription subscription) {
+        this.paymentNumber = paymentNumber;
+        this.sum = sum;
+        this.date = date;
+        this.statement = statement;
+        this.user = user;
+        this.subscription = subscription;
     }
 
     public int getPaymentNumber() {
@@ -35,22 +42,6 @@ public class Payment {
 
     public void setPaymentNumber(int paymentNumber) {
         this.paymentNumber = paymentNumber;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    public void setSubscriptionId(int subscriptionId) {
-        this.subscriptionId = subscriptionId;
     }
 
     public BigDecimal getSum() {
@@ -69,12 +60,28 @@ public class Payment {
         this.date = date;
     }
 
-    public boolean getStatement() {
+    public boolean isStatement() {
         return statement;
     }
 
     public void setStatement(boolean statement) {
         this.statement = statement;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     @Override
@@ -83,15 +90,15 @@ public class Payment {
         if (!(o instanceof Payment)) return false;
         Payment payment = (Payment) o;
         return paymentNumber == payment.paymentNumber &&
-                userId == payment.userId &&
-                subscriptionId == payment.subscriptionId &&
                 statement == payment.statement &&
                 Objects.equals(sum, payment.sum) &&
-                Objects.equals(date, payment.date);
+                Objects.equals(date, payment.date) &&
+                Objects.equals(user, payment.user) &&
+                Objects.equals(subscription, payment.subscription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(paymentNumber, userId, subscriptionId, sum, date, statement);
+        return Objects.hash(paymentNumber, sum, date, statement, user, subscription);
     }
 }

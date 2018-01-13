@@ -1,31 +1,36 @@
 package by.andruhovich.subscription.entity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Subscription {
     private int subscriptionId;
-    private int userId;
-    private int publicationId;
     private Date startDate;
     private Date endDate;
     private boolean subscriptionIsActive;
 
-    public Subscription(int userId, int publicationId, Date startDate, Date endDate, boolean subscriptionIsActive) {
-        this.userId = userId;
-        this.publicationId = publicationId;
+    private User user;
+    private Publication publication;
+    private List<Payment> payments;
+
+    public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.subscriptionIsActive = subscriptionIsActive;
+        this.user = user;
+        this.publication = publication;
+        this.payments = payments;
     }
 
-    public Subscription(int subscriptionId, int userId, int publicationId, Date startDate, Date endDate, boolean subscriptionIsActive) {
+    public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
         this.subscriptionId = subscriptionId;
-        this.userId = userId;
-        this.publicationId = publicationId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.subscriptionIsActive = subscriptionIsActive;
+        this.user = user;
+        this.publication = publication;
+        this.payments = payments;
     }
 
     public int getSubscriptionId() {
@@ -34,22 +39,6 @@ public class Subscription {
 
     public void setSubscriptionId(int subscriptionId) {
         this.subscriptionId = subscriptionId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getPublicationId() {
-        return publicationId;
-    }
-
-    public void setPublicationId(int publicationId) {
-        this.publicationId = publicationId;
     }
 
     public Date getStartDate() {
@@ -68,12 +57,36 @@ public class Subscription {
         this.endDate = endDate;
     }
 
+    public boolean isSubscriptionIsActive() {
+        return subscriptionIsActive;
+    }
+
     public void setSubscriptionIsActive(boolean subscriptionIsActive) {
         this.subscriptionIsActive = subscriptionIsActive;
     }
 
-    public boolean getSubscriptionIsActive() {
-        return subscriptionIsActive;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Publication getPublication() {
+        return publication;
+    }
+
+    public void setPublication(Publication publication) {
+        this.publication = publication;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 
     @Override
@@ -82,15 +95,17 @@ public class Subscription {
         if (!(o instanceof Subscription)) return false;
         Subscription that = (Subscription) o;
         return subscriptionId == that.subscriptionId &&
-                userId == that.userId &&
-                publicationId == that.publicationId &&
                 subscriptionIsActive == that.subscriptionIsActive &&
                 Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate);
+                Objects.equals(endDate, that.endDate) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(publication, that.publication) &&
+                Objects.equals(payments, that.payments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscriptionId, userId, publicationId, startDate, endDate, subscriptionIsActive);
+
+        return Objects.hash(subscriptionId, startDate, endDate, subscriptionIsActive, user, publication, payments);
     }
 }
