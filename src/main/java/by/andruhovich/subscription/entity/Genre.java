@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.entity;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +9,12 @@ public class Genre {
     private String name;
     private String description;
 
-    private List<Publication> publications;
+    private List<Publication> publications = new LinkedList<>();
+
+    public Genre(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Genre(String name, String description, List<Publication> publications) {
         this.name = name;

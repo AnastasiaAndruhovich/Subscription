@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.entity;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +13,16 @@ public class Subscription {
 
     private User user;
     private Publication publication;
-    private List<Payment> payments;
+    private List<Payment> payments = new LinkedList<>();
+
+    public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, Payment payment) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.subscriptionIsActive = subscriptionIsActive;
+        this.user = user;
+        this.publication = publication;
+        payments.add(payment);
+    }
 
     public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
         this.startDate = startDate;

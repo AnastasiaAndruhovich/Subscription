@@ -11,9 +11,18 @@ public class Publication {
     private String description;
     private BigDecimal price;
 
-    private List<Author> authors;
+    private List<Author> authors = new LinkedList<>();
     private Genre genre;
     private PublicationType publicationType;
+
+    public Publication(String name, String description, BigDecimal price, Author author, Genre genre, PublicationType publicationType) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        authors.add(author);
+        this.genre = genre;
+        this.publicationType = publicationType;
+    }
 
     public Publication(String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
         this.name = name;

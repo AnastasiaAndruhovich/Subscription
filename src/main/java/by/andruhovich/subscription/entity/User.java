@@ -53,6 +53,20 @@ public class User {
         this.users = users;
     }
 
+    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account) {
+        this.userId = userId;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.city = city;
+        this.postalIndex = postalIndex;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.account = account;
+    }
+
     public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account, List<Subscription> subscriptions, List<Payment> payments, User admin, List<User> users) {
         this.userId = userId;
         this.lastname = lastname;

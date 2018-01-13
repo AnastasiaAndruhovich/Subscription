@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.entity;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,7 +8,7 @@ public class PublicationType {
     private int publicationTypeId;
     private String name;
 
-    private List<Publication> publications;
+    private List<Publication> publications = new LinkedList<>();
 
     public PublicationType(String name) {
         this.name = name;
