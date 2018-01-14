@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.RoleMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class RoleDAO extends RoleManagerDAO {
     @Override
     public int findIdByName(String name) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int id = -1;
+        int id = 0;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ID_BY_NAME);
@@ -46,11 +47,12 @@ public class RoleDAO extends RoleManagerDAO {
     @Override
     public int create(Role entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int id = -1;
+        RoleMapper mapper = new RoleMapper();
+        int id = 0;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ROLE);
-            preparedStatement = fillOutStatementByRole(preparedStatement, entity);
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -90,7 +92,8 @@ public class RoleDAO extends RoleManagerDAO {
             preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            roles = createRoleList(resultSet);
+            RoleMapper mapper = new RoleMapper();
+            roles = mapper.mapResultSetToEntity(resultSet);
             return roles.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -107,7 +110,8 @@ public class RoleDAO extends RoleManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_ROLES);
             ResultSet resultSet = preparedStatement.executeQuery();
-            roles = createRoleList(resultSet);
+            RoleMapper mapper = new RoleMapper();
+            roles = mapper.mapResultSetToEntity(resultSet);
             return roles;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -122,39 +126,14 @@ public class RoleDAO extends RoleManagerDAO {
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_ROLE);
-            preparedStatement = fillOutStatementByRole(preparedStatement, entity);
+            RoleMapper mapper = new RoleMapper();
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
-        }
-    }
-
-    private PreparedStatement fillOutStatementByRole(PreparedStatement preparedStatement, Role role) throws DAOTechnicalException {
-        try {
-            preparedStatement.setString(1, role.getName());
-            return preparedStatement;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    private List<Role> createRoleList(ResultSet resultSet) throws DAOTechnicalException {
-        List<Role> roles = new LinkedList<>();
-        Role role;
-
-        try {
-            while (resultSet.next()) {
-                int roleId = resultSet.getInt("role_id");
-                String name = resultSet.getString("name");
-                role = new Role(roleId, name);
-                roles.add(role);
-            }
-            return roles;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
         }
     }
 }

@@ -10,12 +10,6 @@ import java.util.List;
 public abstract class BaseDAO <T> {
     protected Connection connection;
 
-    public abstract int create(T entity) throws DAOTechnicalException;
-    public abstract boolean delete(T entity) throws DAOTechnicalException;
-    public abstract T findEntityById(int id) throws DAOTechnicalException;
-    public abstract List<T> findAll() throws DAOTechnicalException;
-    public abstract boolean update(T entity) throws DAOTechnicalException;
-
     public BaseDAO(Connection connection) {
         this.connection = connection;
     }

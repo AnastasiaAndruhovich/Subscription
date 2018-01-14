@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.UserMapper;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -14,8 +15,10 @@ public class UserDAO extends UserManagerDAO {
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
-    private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?";
-    private static final String SELECT_ALL_USERS = "SELECT * FROM users";
+    private static final String SELECT_USER_BY_ID = "SELECT user_id, lastname, firstname, birthdate, address, city, " +
+            "postal_index, login, password FROM users WHERE user_id = ?";
+    private static final String SELECT_ALL_USERS = "SELECT user_id, lastname, firstname, birthdate, address, " +
+            "city, postal_index, login, password FROM users";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
 
@@ -26,10 +29,11 @@ public class UserDAO extends UserManagerDAO {
     @Override
     public int create(User user) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        UserMapper mapper = new UserMapper();
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_USER);
-            preparedStatement = fillOutStatementByUser(preparedStatement, user);
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, user);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -67,7 +71,8 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            users = createUserList(resultSet);
+            UserMapper mapper = new UserMapper();
+            users = mapper.mapResultSetToEntity(resultSet);
             return users.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -84,7 +89,8 @@ public class UserDAO extends UserManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            users = createUserList(resultSet);
+            UserMapper mapper = new UserMapper();
+            users = mapper.mapResultSetToEntity(resultSet);
             return users;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -95,15 +101,18 @@ public class UserDAO extends UserManagerDAO {
 
     @Override
     public boolean update(User entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_USER);
-            preparedStatement = fillOutStatementByUser(preparedStatement, entity);
+            UserMapper mapper = new UserMapper();
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
         }
     }
 
@@ -140,53 +149,6 @@ public class UserDAO extends UserManagerDAO {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
-        }
-    }
-
-    private PreparedStatement fillOutStatementByUser(PreparedStatement preparedStatement, User user) throws DAOTechnicalException {
-        java.sql.Date birthdate = new java.sql.Date(user.getBirthdate().getTime());
-
-        try {
-            preparedStatement.setInt(1, user.getRoleId());
-            preparedStatement.setString(2, user.getFirstname());
-            preparedStatement.setString(3, user.getLastname());
-            preparedStatement.setDate(4, birthdate);
-            preparedStatement.setString(5, user.getAddress());
-            preparedStatement.setString(6, user.getCity());
-            preparedStatement.setInt(7, user.getPostalIndex());
-            preparedStatement.setInt(8, user.getAccountNumber());
-            preparedStatement.setString(9, user.getLogin());
-            preparedStatement.setString(10, user.getPassword());
-            preparedStatement.setInt(11, user.getUserId());
-            return preparedStatement;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    private List<User> createUserList(ResultSet resultSet) throws DAOTechnicalException {
-        List<User> users = new LinkedList<>();
-        User user;
-        try {
-            while (resultSet.next()) {
-                int userId = resultSet.getInt("user_id");
-                int roleId = resultSet.getInt("role_id");
-                String firstname = resultSet.getString("firstname");
-                String lastname = resultSet.getString("lastname");
-                Date birthdate = resultSet.getDate("birthdate");
-                String address = resultSet.getString("address");
-                String city = resultSet.getString("city");
-                int postalIndex = resultSet.getInt("postal_index");
-                int accountNumber = resultSet.getInt("account_number");
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
-                user = new User(userId, roleId, firstname, lastname, birthdate, address, city, postalIndex, accountNumber,
-                        login, password);
-                users.add(user);
-            }
-            return users;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
         }
     }
 }

@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.ResourceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionPool;
 

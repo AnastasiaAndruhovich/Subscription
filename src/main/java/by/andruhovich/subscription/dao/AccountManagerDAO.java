@@ -1,12 +1,13 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.dao.ManagerDAO;
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 
-public abstract class AccountManagerDAO extends BaseDAO<Account> {
+public abstract class AccountManagerDAO extends ManagerDAO<Account> {
     public AccountManagerDAO(Connection connection) {
         super(connection);
     }

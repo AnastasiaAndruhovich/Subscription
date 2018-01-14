@@ -1,7 +1,10 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
+import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.PublicationMapper;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -16,8 +19,10 @@ public class PublicationDAO extends PublicationManagerDAO {
             "description, price) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
-    private static final String SELECT_PUBLICATION_BY_ID = "SELECT * FROM publications WHERE publication_id = ?";
-    private static final String SELECT_ALL_PUBLICATIONS = "SELECT * FROM publications";
+    private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price " +
+            "FROM publications WHERE publication_id = ?";
+    private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price " +
+            "FROM publications";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ? WHERE publication_id = ?";
 
@@ -28,14 +33,15 @@ public class PublicationDAO extends PublicationManagerDAO {
     @Override
     public int create(Publication entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        PublicationMapper mapper = new PublicationMapper();
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PUBLICATION);
-            preparedStatement = fillOutStatementByPublication(preparedStatement, entity);
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("genre_id");
+            int id = resultSet.getInt("publication_id");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -69,7 +75,8 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            publications = createPublicationList(resultSet);
+            PublicationMapper mapper = new PublicationMapper();
+            publications = mapper.mapResultSetToEntity(resultSet);
             return publications.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -86,7 +93,8 @@ public class PublicationDAO extends PublicationManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_PUBLICATIONS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            publications = createPublicationList(resultSet);
+            PublicationMapper mapper = new PublicationMapper();
+            publications = mapper.mapResultSetToEntity(resultSet);
             return publications;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -101,48 +109,14 @@ public class PublicationDAO extends PublicationManagerDAO {
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PUBLICATION);
-            preparedStatement = fillOutStatementByPublication(preparedStatement, entity);
+            PublicationMapper mapper = new PublicationMapper();
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
-        }
-    }
-
-    private PreparedStatement fillOutStatementByPublication(PreparedStatement preparedStatement, Publication publication)
-            throws DAOTechnicalException {
-        try {
-            preparedStatement.setString(1, publication.getName());
-            preparedStatement.setInt(2, publication.getPublicationTypeId());
-            preparedStatement.setInt(3, publication.getGenreId());
-            preparedStatement.setString(4, publication.getDescription());
-            preparedStatement.setBigDecimal(5, publication.getPrice());
-            return preparedStatement;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    private List<Publication> createPublicationList(ResultSet resultSet) throws DAOTechnicalException {
-        List<Publication> publications = new LinkedList<>();
-        Publication publication;
-
-        try {
-            while (resultSet.next()) {
-                int publicationId = resultSet.getInt("publication_id");
-                String name = resultSet.getString("name");
-                int publicationTypeId = resultSet.getInt("publication_type_id");
-                int genreId = resultSet.getInt("genre_id");
-                String description = resultSet.getString("description");
-                BigDecimal price = new BigDecimal("price");
-                publication = new Publication(publicationId, name, publicationTypeId, genreId, description, price);
-                publications.add(publication);
-            }
-            return publications;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
         }
     }
 }

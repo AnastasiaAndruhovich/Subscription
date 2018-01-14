@@ -2,6 +2,8 @@ package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.AccountMapper;
+import by.andruhovich.subscription.mapper.EntityMapper;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -30,10 +32,11 @@ public class AccountDAO extends AccountManagerDAO{
     @Override
     public int create(Account entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        AccountMapper mapper = new AccountMapper();
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ACCOUNT);
-            preparedStatement = fillOutStatementByAccount(preparedStatement, entity);
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,7 +74,8 @@ public class AccountDAO extends AccountManagerDAO{
             preparedStatement = connection.prepareStatement(SELECT_ACCOUNT_BY_ACCOUNT_NUMBER);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            accounts = createAccountList(resultSet);
+            AccountMapper mapper = new AccountMapper();
+            accounts = mapper.mapResultSetToEntity(resultSet);
             return accounts.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -84,11 +88,12 @@ public class AccountDAO extends AccountManagerDAO{
     public List<Account> findAll() throws DAOTechnicalException {
         List<Account> accounts;
         PreparedStatement preparedStatement = null;
+        AccountMapper mapper = new AccountMapper();
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_ACCOUNTS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            accounts = createAccountList(resultSet);
+            accounts = mapper.mapResultSetToEntity(resultSet);
             return accounts;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -103,42 +108,14 @@ public class AccountDAO extends AccountManagerDAO{
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT);
-            preparedStatement = fillOutStatementByAccount(preparedStatement, entity);
+            AccountMapper mapper = new AccountMapper();
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
             close(preparedStatement);
-        }
-    }
-
-    private List<Account> createAccountList(ResultSet resultSet) throws DAOTechnicalException {
-        List<Account> accounts = new LinkedList<>();
-        Account account;
-        try {
-            while (resultSet.next()) {
-                int accountNumber = resultSet.getInt("account_number");
-                BigDecimal balance = resultSet.getBigDecimal("balance");
-                BigDecimal loan = resultSet.getBigDecimal("credit");
-                account = new Account(accountNumber, balance, loan);
-                accounts.add(account);
-            }
-            return accounts;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    private PreparedStatement fillOutStatementByAccount(PreparedStatement preparedStatement, Account account)
-            throws DAOTechnicalException {
-        try {
-            preparedStatement.setBigDecimal(1, account.getBalance());
-            preparedStatement.setBigDecimal(2, account.getLoan());
-            preparedStatement.setInt(3, account.getAccountNumber());
-            return preparedStatement;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
         }
     }
 

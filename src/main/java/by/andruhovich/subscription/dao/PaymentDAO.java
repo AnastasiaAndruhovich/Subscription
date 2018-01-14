@@ -1,7 +1,9 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.converter.TypeConverter;
 import by.andruhovich.subscription.entity.Payment;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.PaymentMapper;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -16,8 +18,9 @@ public class PaymentDAO extends PaymentManagerDAO {
             "VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
-    private static final String SELECT_PAYMENT_BY_ID = "SELECT * FROM payments WHERE payment_number = ?";
-    private static final String SELECT_ALL_PAYMENTS = "SELECT * FROM payments";
+    private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
+            "WHERE payment_number = ?";
+    private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments";
     private static final String UPDATE_PAYMENT = "UPDATE payments SET user_id = ?, subscription_id = ?, sum = ?, " +
             "date = ?, statement = ? WHERE payment_number = ?";
 
@@ -28,10 +31,11 @@ public class PaymentDAO extends PaymentManagerDAO {
     @Override
     public int create(Payment entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        PaymentMapper mapper = new PaymentMapper();
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PAYMENT);
-            preparedStatement = fillOutStatementByPayment(preparedStatement, entity);
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -69,7 +73,8 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement = connection.prepareStatement(SELECT_PAYMENT_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            payments = createPaymentList(resultSet);
+            PaymentMapper mapper = new PaymentMapper();
+            payments = mapper.mapResultSetToEntity(resultSet);
             return payments.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -86,7 +91,8 @@ public class PaymentDAO extends PaymentManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_PAYMENTS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            payments = createPaymentList(resultSet);
+            PaymentMapper mapper = new PaymentMapper();
+            payments = mapper.mapResultSetToEntity(resultSet);
             return payments;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -101,7 +107,8 @@ public class PaymentDAO extends PaymentManagerDAO {
 
         try {
             preparedStatement = connection.prepareStatement(UPDATE_PAYMENT);
-            preparedStatement = fillOutStatementByPayment(preparedStatement, entity);
+            PaymentMapper mapper = new PaymentMapper();
+            preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
@@ -111,44 +118,4 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
-    private PreparedStatement fillOutStatementByPayment(PreparedStatement preparedStatement, Payment payment)
-            throws DAOTechnicalException {
-        TypeConverter typeConverter = new TypeConverter();
-
-        java.sql.Date date = new java.sql.Date(payment.getDate().getTime());
-        String statement = typeConverter.convertBooleanToString(payment.getStatement());
-
-        try {
-            preparedStatement.setInt(1, payment.getUserId());
-            preparedStatement.setInt(2, payment.getSubscriptionId());
-            preparedStatement.setBigDecimal(3, payment.getSum());
-            preparedStatement.setDate(4, date);
-            preparedStatement.setString(5, statement);
-            return preparedStatement;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    private List<Payment> createPaymentList(ResultSet resultSet) throws DAOTechnicalException {
-        List<Payment> subscriptions = new LinkedList<>();
-        Payment payment;
-        TypeConverter typeConverter = new TypeConverter();
-
-        try {
-            while (resultSet.next()) {
-                int paymentNumber = resultSet.getInt("payment_number");
-                int userId = resultSet.getInt("user_id");
-                int subscriptionId = resultSet.getInt("subscription_id");
-                BigDecimal sum = resultSet.getBigDecimal("sum");
-                java.util.Date date = new java.util.Date(resultSet.getDate("date").getTime());
-                boolean statement = typeConverter.convertStringToBoolean(resultSet.getString("subscription_is_active"));
-                payment = new Payment(paymentNumber, userId, subscriptionId, sum, date, statement);
-                subscriptions.add(payment);
-            }
-            return subscriptions;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
 }
