@@ -1,7 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.dao.ManagerDAO;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
@@ -10,10 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
-public class PublicationTypeDAO extends ManagerDAO<PublicationType> {
+public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
     private static final String INSERT_PUBLICATION_TYPE = "INSERT INTO publication_types(name) VALUE (?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publications WHERE publication_id = ?";

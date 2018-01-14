@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.dao.ManagerDAO;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
@@ -9,10 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
-public class GenreDAO extends ManagerDAO<Genre> {
+public class GenreDAO extends MediatorManagerDAO<Genre> {
     private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";

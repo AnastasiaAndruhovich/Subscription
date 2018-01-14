@@ -5,7 +5,7 @@ import by.andruhovich.subscription.entity.Payment;
 
 import java.sql.Connection;
 
-public abstract class PaymentManagerDAO extends ManagerDAO<Payment> {
+public abstract class PaymentManagerDAO extends MediatorManagerDAO<Payment> {
     public PaymentManagerDAO(Connection connection) {
         super(connection);
     }

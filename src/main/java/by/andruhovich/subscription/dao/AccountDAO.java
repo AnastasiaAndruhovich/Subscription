@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AccountDAO extends AccountManagerDAO{
+public class AccountDAO extends AccountManagerDAO {
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, loan) VALUES (?, ?)";
     private static final String INSERT_EMPTY_ACCOUNT= "INSERT INTO accounts() VALUES ()";
     private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";

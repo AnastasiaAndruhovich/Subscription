@@ -3,16 +3,15 @@ package by.andruhovich.subscription.dao;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.AuthorMapper;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AuthorPublicationDAO {
-    Connection connection;
-
+public class AuthorPublicationDAO extends BaseDAO {
     public AuthorPublicationDAO(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     final static String INSERT_RECORD = "INSERT INTO(author_id, publication_id) VALUES(?, ?)";
@@ -44,7 +43,8 @@ public class AuthorPublicationDAO {
             preparedStatement = connection.prepareStatement(SELECT_AUTHOR_BY_PUBLICATION_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            authors = createAuthorList(resultSet);
+            AuthorMapper authorMapper = new AuthorMapper();
+            authors = authorMapper.mapResultSetToEntity(resultSet);
             return authors;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -55,31 +55,4 @@ public class AuthorPublicationDAO {
         }
     }
 
-    private List<Author> createAuthorList(ResultSet resultSet) throws DAOTechnicalException {
-        List<Author> authors = new LinkedList<>();
-        Author author;
-        try {
-            while (resultSet.next()) {
-                int authorId = resultSet.getInt("author_id");
-                String publisherName = resultSet.getString("publisher_name");
-                String authorLastname = resultSet.getString("author_firstname");
-                String authorFirstname = resultSet.getString("author_lastname");
-                author = new Author(authorId, publisherName, authorLastname, authorFirstname);
-                authors.add(author);
-            }
-            return authors;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        }
-    }
-
-    public void close(Statement statement) {
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            // TODO log
-        }
-    }
 }

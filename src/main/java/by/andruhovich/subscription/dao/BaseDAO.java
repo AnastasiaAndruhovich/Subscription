@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public abstract class BaseDAO <T> {
+public abstract class BaseDAO {
     protected Connection connection;
 
     public BaseDAO(Connection connection) {

@@ -40,4 +40,20 @@ public class DAOFactory {
     public RoleDAO createRoleDAO() throws ResourceTechnicalException {
         return new RoleDAO(getConnection());
     }
+
+    public GenreDAO createGenreDAO() throws ResourceTechnicalException {
+        return new GenreDAO(getConnection());
+    }
+
+    public PublicationDAO createPublicationDAO() throws ResourceTechnicalException {
+        return new PublicationDAO(getConnection());
+    }
+
+    public PublicationTypeDAO createPublicationTypeDAO() throws ResourceTechnicalException {
+        return new PublicationTypeDAO(getConnection());
+    }
+
+    public AuthorPublicationDAO createAuthorPublicationDAO() throws ResourceTechnicalException {
+        return new AuthorPublicationDAO(getConnection());
+    }
 }

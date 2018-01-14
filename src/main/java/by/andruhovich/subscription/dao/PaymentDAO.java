@@ -1,16 +1,13 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.converter.TypeConverter;
 import by.andruhovich.subscription.entity.Payment;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PaymentMapper;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PaymentDAO extends PaymentManagerDAO {

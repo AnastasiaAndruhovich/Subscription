@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.dao.ManagerDAO;
 import by.andruhovich.subscription.entity.Block;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.BlockMapper;
@@ -9,14 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class BlockDAO extends ManagerDAO<Block> {
     private static final String INSERT_BLOCK = "INSERT INTO block (user_id, admin_id, date) VALUES(?, ?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_BLOCK_BY_USER_ID = "DELETE FROM block WHERE user_id = ?";
-    private static final String SELECT_BLOCK_BY_ID = "SELECT * FROM block WHERE user_id = ?";
     private static final String SELECT_ALL_BLOCKS = "SELECT * FROM block";
     private static final String UPDATE_BLOCK = "UPDATE users SET user_id = ?, admin_id = ?, date = ?";
 
@@ -51,25 +47,6 @@ public class BlockDAO extends ManagerDAO<Block> {
             preparedStatement.setInt(1, userId);
             preparedStatement.execute();
             return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public Block findEntityById(int id) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-        List<Block> blocks;
-        BlockMapper mapper = new BlockMapper();
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_BLOCK_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            blocks = mapper.mapResultSetToEntity(resultSet);
-            return blocks.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
