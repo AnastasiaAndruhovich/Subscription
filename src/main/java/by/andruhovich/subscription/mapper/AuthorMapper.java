@@ -1,10 +1,8 @@
 package by.andruhovich.subscription.mapper;
 
-import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.mapper.EntityMapper;
 import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
