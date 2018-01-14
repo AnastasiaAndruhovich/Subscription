@@ -33,6 +33,13 @@ public class Publication {
         this.publicationType = publicationType;
     }
 
+    public Publication(int publicationId, String name, String description, BigDecimal price) {
+        this.publicationId = publicationId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     public Publication(int publicationId, String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
         this.publicationId = publicationId;
         this.name = name;

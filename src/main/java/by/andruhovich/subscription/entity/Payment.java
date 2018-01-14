@@ -19,6 +19,13 @@ public class Payment {
         this.statement = statement;
     }
 
+    public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement) {
+        this.paymentNumber = paymentNumber;
+        this.sum = sum;
+        this.date = date;
+        this.statement = statement;
+    }
+
     public Payment(BigDecimal sum, Date date, boolean statement, User user, Subscription subscription) {
         this.sum = sum;
         this.date = date;

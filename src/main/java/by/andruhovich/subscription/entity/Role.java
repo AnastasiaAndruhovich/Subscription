@@ -14,6 +14,11 @@ public class Role {
         this.name = name;
     }
 
+    public Role(int roleId, String name) {
+        this.roleId = roleId;
+        this.name = name;
+    }
+
     public Role(String name, List<User> users) {
         this.name = name;
         this.users = users;

@@ -33,6 +33,13 @@ public class Subscription {
         this.payments = payments;
     }
 
+    public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive) {
+        this.subscriptionId = subscriptionId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.subscriptionIsActive = subscriptionIsActive;
+    }
+
     public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
         this.subscriptionId = subscriptionId;
         this.startDate = startDate;
