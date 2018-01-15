@@ -13,7 +13,6 @@ import java.util.List;
 
 public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
     private static final String INSERT_PUBLICATION_TYPE = "INSERT INTO publication_types(name) VALUE (?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
     private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications";
     private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";

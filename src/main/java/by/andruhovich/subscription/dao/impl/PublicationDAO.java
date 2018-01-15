@@ -14,7 +14,6 @@ import java.util.List;
 public class PublicationDAO extends PublicationManagerDAO {
     private static final String INSERT_PUBLICATION= "INSERT INTO publications(name, publication_type_id, genre_id, " +
             "description, price) VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price " +
             "FROM publications WHERE publication_id = ?";

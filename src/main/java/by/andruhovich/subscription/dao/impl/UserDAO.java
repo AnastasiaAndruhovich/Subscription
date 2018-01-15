@@ -16,7 +16,6 @@ public class UserDAO extends UserManagerDAO {
     private static final String SELECT_LOGIN = "SELECT COUNT(user_id) FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
     private static final String SELECT_USER_BY_ID = "SELECT user_id, lastname, firstname, birthdate, address, city, " +
             "postal_index, login, password FROM users WHERE user_id = ?";

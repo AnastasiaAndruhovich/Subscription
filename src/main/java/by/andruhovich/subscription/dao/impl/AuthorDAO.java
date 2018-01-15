@@ -14,7 +14,6 @@ import java.util.List;
 public class AuthorDAO extends AuthorManagerDAO {
     private static final String INSERT_AUTHOR = "INSERT INTO authors(publisher_name, author_lastname, author_firstname) " +
             "VALUES (?, ?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM authors WHERE author_id = ?";
     private static final String SELECT_AUTHOR_BY_ID = "SELECT * FROM authors WHERE author_id = ?";
     private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors";

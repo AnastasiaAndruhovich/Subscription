@@ -13,7 +13,6 @@ import java.util.List;
 
 public class GenreDAO extends MediatorManagerDAO<Genre> {
     private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
     private static final String SELECT_ALL_GENRES = "SELECT * FROM genres";

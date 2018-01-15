@@ -14,7 +14,6 @@ import java.util.List;
 public class PaymentDAO extends PaymentManagerDAO {
     private static final String INSERT_PAYMENT= "INSERT INTO payments(user_id, subscription_id, sum, date, statement) " +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
             "WHERE payment_number = ?";
