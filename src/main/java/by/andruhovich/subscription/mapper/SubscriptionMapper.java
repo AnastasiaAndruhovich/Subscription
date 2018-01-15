@@ -1,8 +1,6 @@
 package by.andruhovich.subscription.mapper;
 
-import by.andruhovich.subscription.converter.TypeConverter;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.mapper.EntityMapper;
 import by.andruhovich.subscription.entity.Subscription;
 
 import java.sql.Date;
@@ -40,7 +38,7 @@ public class SubscriptionMapper implements EntityMapper<Subscription> {
 
         Date startDate = new Date(entity.getStartDate().getTime());
         Date endDate = new Date(entity.getEndDate().getTime());
-        String subscriptionIsActive = typeConverter.convertBooleanToString(entity.isSubscriptionIsActive());
+        String subscriptionIsActive = TypeConverter.convertBooleanToString(entity.isSubscriptionIsActive());
 
         try {
             preparedStatement.setInt(1, entity.getUser().getUserId());

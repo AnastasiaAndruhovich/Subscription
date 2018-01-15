@@ -1,12 +1,7 @@
 package by.andruhovich.subscription.mapper;
 
-import by.andruhovich.subscription.converter.TypeConverter;
-import by.andruhovich.subscription.dao.GenreDAO;
-import by.andruhovich.subscription.dao.PublicationTypeDAO;
-import by.andruhovich.subscription.entity.Genre;
-import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.mapper.EntityMapper;
+import by.andruhovich.subscription.exception.ResourceTechnicalException;
 import by.andruhovich.subscription.entity.Publication;
 
 import java.math.BigDecimal;
@@ -47,7 +42,7 @@ public class PublicationMapper implements EntityMapper<Publication> {
             preparedStatement.setString(4, entity.getDescription());
             preparedStatement.setBigDecimal(5, entity.getPrice());
             return preparedStatement;
-        } catch (SQLException e) {
+        } catch (SQLException | ResourceTechnicalException e ) {
             throw new DAOTechnicalException(e.getMessage());
         }
     }

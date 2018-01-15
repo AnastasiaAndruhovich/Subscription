@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.mapper;
 
-import by.andruhovich.subscription.converter.TypeConverter;
 import by.andruhovich.subscription.entity.Payment;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
@@ -39,7 +38,7 @@ public class PaymentMapper implements EntityMapper<Payment> {
         TypeConverter typeConverter = new TypeConverter();
 
         Date date = new Date(entity.getDate().getTime());
-        String statement = typeConverter.convertBooleanToString(entity.isStatement());
+        String statement = TypeConverter.convertBooleanToString(entity.isStatement());
 
         try {
             preparedStatement.setInt(1, entity.getUser().getUserId());
