@@ -1,12 +1,15 @@
-package by.andruhovich.subscription.dao;
+package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.BaseDAO;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
 
-import java.sql.*;
-import java.util.LinkedList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AuthorPublicationDAO extends BaseDAO {

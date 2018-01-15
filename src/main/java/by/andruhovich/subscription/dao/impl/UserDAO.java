@@ -1,5 +1,6 @@
-package by.andruhovich.subscription.dao;
+package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.UserManagerDAO;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.UserMapper;

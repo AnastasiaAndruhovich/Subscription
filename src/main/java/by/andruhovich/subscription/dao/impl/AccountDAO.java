@@ -1,13 +1,15 @@
-package by.andruhovich.subscription.dao;
+package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.AccountManagerDAO;
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
-import by.andruhovich.subscription.mapper.EntityMapper;
 
 import java.math.BigDecimal;
-import java.sql.*;
-import java.util.LinkedList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AccountDAO extends AccountManagerDAO {

@@ -1,5 +1,6 @@
-package by.andruhovich.subscription.dao;
+package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.AuthorManagerDAO;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
