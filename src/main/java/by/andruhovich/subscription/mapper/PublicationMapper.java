@@ -1,10 +1,13 @@
 package by.andruhovich.subscription.mapper;
 
+import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.exception.ResourceTechnicalException;
 import by.andruhovich.subscription.entity.Publication;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +19,6 @@ public class PublicationMapper implements EntityMapper<Publication> {
     public List<Publication> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
         List<Publication> subscriptions = new LinkedList<>();
         Publication publication;
-        TypeConverter typeConverter = new TypeConverter();
 
         try {
             while (resultSet.next()) {
@@ -24,7 +26,12 @@ public class PublicationMapper implements EntityMapper<Publication> {
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
                 BigDecimal price = resultSet.getBigDecimal("price");
-                publication = new Publication(publicationId, name, description, price);
+                String pictureName = resultSet.getString("picture_name");
+                Blob blob = resultSet.getBlob("picture");
+                int blobLength = (int) blob.length();
+                byte[] picture = blob.getBytes(1, blobLength);
+                blob.free();
+                publication = new Publication(publicationId, name, description, price, pictureName, picture);
                 subscriptions.add(publication);
             }
             return subscriptions;
@@ -41,8 +48,11 @@ public class PublicationMapper implements EntityMapper<Publication> {
             preparedStatement.setInt(3, entity.getGenre().getGenreId());
             preparedStatement.setString(4, entity.getDescription());
             preparedStatement.setBigDecimal(5, entity.getPrice());
+            preparedStatement.setString(6, entity.getPictureName());
+            InputStream is = new ByteArrayInputStream(entity.getPicture());
+            preparedStatement.setBlob(7, is);
             return preparedStatement;
-        } catch (SQLException | ResourceTechnicalException e ) {
+        } catch (SQLException | ConnectionTechnicalException e ) {
             throw new DAOTechnicalException(e.getMessage());
         }
     }
