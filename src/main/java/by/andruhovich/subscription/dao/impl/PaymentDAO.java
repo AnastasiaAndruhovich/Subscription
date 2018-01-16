@@ -29,6 +29,7 @@ public class PaymentDAO extends PaymentManagerDAO {
     public int create(Payment entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         PaymentMapper mapper = new PaymentMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PAYMENT);
@@ -36,7 +37,9 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("payment_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("payment_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -72,6 +75,9 @@ public class PaymentDAO extends PaymentManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PaymentMapper mapper = new PaymentMapper();
             payments = mapper.mapResultSetToEntity(resultSet);
+            if (payments.isEmpty()) {
+                return null;
+            }
             return payments.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

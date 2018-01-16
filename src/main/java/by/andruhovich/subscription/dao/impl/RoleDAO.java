@@ -26,7 +26,7 @@ public class RoleDAO extends RoleManagerDAO {
     @Override
     public int findIdByName(String name) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int id = 0;
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ID_BY_NAME);

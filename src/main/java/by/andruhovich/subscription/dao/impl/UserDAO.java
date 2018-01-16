@@ -32,6 +32,7 @@ public class UserDAO extends UserManagerDAO {
     public int create(User user) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         UserMapper mapper = new UserMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_USER);
@@ -39,7 +40,9 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("user_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("user_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -75,6 +78,9 @@ public class UserDAO extends UserManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             UserMapper mapper = new UserMapper();
             users = mapper.mapResultSetToEntity(resultSet);
+            if (users.isEmpty()) {
+                return null;
+            }
             return users.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -140,12 +146,15 @@ public class UserDAO extends UserManagerDAO {
     @Override
     public boolean isLoginExist(String login) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        int quantity = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_LOGIN);
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int quantity = resultSet.getInt("COUNT(user_id)");
+            while (resultSet.next()) {
+                quantity = resultSet.getInt("COUNT(user_id)");
+            }
             return quantity == 1;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

@@ -34,6 +34,7 @@ public class AccountDAO extends AccountManagerDAO {
     public int create(Account entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         AccountMapper mapper = new AccountMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ACCOUNT);
@@ -41,10 +42,12 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("account_number");
+            while (resultSet.next()) {
+                id = resultSet.getInt("account_number");
+            }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Can't add Account entity into account table", e);
         } finally {
             close(preparedStatement);
         }
@@ -77,6 +80,9 @@ public class AccountDAO extends AccountManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             AccountMapper mapper = new AccountMapper();
             accounts = mapper.mapResultSetToEntity(resultSet);
+            if (accounts.isEmpty()) {
+                return null;
+            }
             return accounts.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -123,13 +129,16 @@ public class AccountDAO extends AccountManagerDAO {
     @Override
     public int createEmptyAccount() throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_EMPTY_ACCOUNT);
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("account_number");
+            while (resultSet.next()) {
+                id = resultSet.getInt("account_number");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -158,12 +167,15 @@ public class AccountDAO extends AccountManagerDAO {
     @Override
     public BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
+        BigDecimal loan = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_LOAN_BY_ID);
             preparedStatement.setInt(1, accountNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
-            BigDecimal loan = resultSet.getBigDecimal("loan");
+            while (resultSet.next()) {
+                loan = resultSet.getBigDecimal("loan");
+            }
             return loan;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

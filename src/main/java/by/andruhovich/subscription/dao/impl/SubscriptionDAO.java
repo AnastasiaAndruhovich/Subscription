@@ -30,6 +30,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     public int create(Subscription entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         SubscriptionMapper mapper = new SubscriptionMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
@@ -37,7 +38,9 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("subscription_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("subscription_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -73,6 +76,9 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             SubscriptionMapper mapper = new SubscriptionMapper();
             subscriptions = mapper.mapResultSetToEntity(resultSet);
+            if (subscriptions.isEmpty()) {
+                return null;
+            }
             return subscriptions.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

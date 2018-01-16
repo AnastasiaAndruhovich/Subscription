@@ -25,6 +25,7 @@ public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
     public int create(PublicationType entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         PublicationTypeMapper mapper = new PublicationTypeMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PUBLICATION_TYPE);
@@ -32,7 +33,9 @@ public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("publication_type_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("publication_type_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

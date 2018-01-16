@@ -26,6 +26,7 @@ public class GenreDAO extends MediatorManagerDAO<Genre> {
     public int create(Genre entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         GenreMapper mapper = new GenreMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_GENRE);
@@ -33,7 +34,9 @@ public class GenreDAO extends MediatorManagerDAO<Genre> {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("genre_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("genre_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -69,6 +72,9 @@ public class GenreDAO extends MediatorManagerDAO<Genre> {
             ResultSet resultSet = preparedStatement.executeQuery();
             GenreMapper mapper = new GenreMapper();
             genres = mapper.mapResultSetToEntity(resultSet);
+            if (genres.isEmpty()) {
+                return null;
+            }
             return genres.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

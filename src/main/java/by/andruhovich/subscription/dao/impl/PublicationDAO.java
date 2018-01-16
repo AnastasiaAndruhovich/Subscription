@@ -13,14 +13,14 @@ import java.util.List;
 
 public class PublicationDAO extends PublicationManagerDAO {
     private static final String INSERT_PUBLICATION= "INSERT INTO publications(name, publication_type_id, genre_id, " +
-            "description, price) VALUES (?, ?, ?, ?, ?)";
+            "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
-    private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price " +
-            "FROM publications WHERE publication_id = ?";
-    private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price " +
-            "FROM publications";
+    private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
+            "picture_name, picture FROM publications WHERE publication_id = ?";
+    private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price, " +
+            "picture_name, picture FROM publications";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
-            "genre_id = ?, description = ?, price = ? WHERE publication_id = ?";
+            "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
 
     private static final String SELECT_GENRE_ID_BY_PUBLICATION_ID = "SELECT genre_id FROM publications " +
             "WHERE publication_id = ?";
@@ -35,7 +35,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     public int create(Publication entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         PublicationMapper mapper = new PublicationMapper();
-        int id = 0;
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PUBLICATION);
@@ -81,6 +81,9 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);
+            if (publications.isEmpty()) {
+                return null;
+            }
             return publications.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -127,7 +130,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     @Override
     public int findGenreIdByPublicationId(int id) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int genreId = 0;
+        int genreId = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_GENRE_ID_BY_PUBLICATION_ID);
@@ -147,7 +150,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     @Override
     public int findPublicationTypeIdByPublicationId(int id) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int genreId = 0;
+        int genreId = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_ID);

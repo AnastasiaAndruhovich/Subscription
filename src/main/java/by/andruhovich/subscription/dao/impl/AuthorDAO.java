@@ -30,6 +30,7 @@ public class AuthorDAO extends AuthorManagerDAO {
     public int create(Author entity) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         AuthorMapper mapper = new AuthorMapper();
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_AUTHOR);
@@ -37,7 +38,9 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement.executeQuery();
             preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int id = resultSet.getInt("author_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("author_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -65,7 +68,7 @@ public class AuthorDAO extends AuthorManagerDAO {
     @Override
     public int findIdByEntity(Author author) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int id;
+        int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ID_BY_AUTHOR);
@@ -73,7 +76,9 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement.setString(2, author.getAuthorLastname());
             preparedStatement.setString(3, author.getAuthorFirstname());
             ResultSet resultSet = preparedStatement.executeQuery();
-            id = resultSet.getInt("author_id");
+            while (resultSet.next()) {
+                id = resultSet.getInt("author_id");
+            }
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
@@ -93,6 +98,9 @@ public class AuthorDAO extends AuthorManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             AuthorMapper mapper = new AuthorMapper();
             authors = mapper.mapResultSetToEntity(resultSet);
+            if (authors.isEmpty()) {
+                return null;
+            }
             return authors.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
