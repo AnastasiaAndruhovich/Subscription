@@ -122,7 +122,6 @@ public class Subscription {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(subscriptionId, startDate, endDate, subscriptionIsActive, user, publication, payments);
     }
 }
