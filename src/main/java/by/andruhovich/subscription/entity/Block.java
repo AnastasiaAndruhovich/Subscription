@@ -6,14 +6,13 @@ import java.util.Objects;
 
 public class Block {
     private Date date;
-
     private User user;
     private User admin;
 
-    public Block(Date date, User user, User admin) {
-        this.date = date;
+    public Block(User user, User admin, Date date) {
         this.user = user;
         this.admin = admin;
+        this.date = date;
     }
 
     public Date getDate() {
