@@ -10,7 +10,6 @@ public class Payment {
     private Date date;
     private boolean statement;
 
-    private User user;
     private Subscription subscription;
 
     public Payment(BigDecimal sum, Date date, boolean statement) {
@@ -26,20 +25,18 @@ public class Payment {
         this.statement = statement;
     }
 
-    public Payment(BigDecimal sum, Date date, boolean statement, User user, Subscription subscription) {
+    public Payment(BigDecimal sum, Date date, boolean statement, Subscription subscription) {
         this.sum = sum;
         this.date = date;
         this.statement = statement;
-        this.user = user;
         this.subscription = subscription;
     }
 
-    public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement, User user, Subscription subscription) {
+    public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement, Subscription subscription) {
         this.paymentNumber = paymentNumber;
         this.sum = sum;
         this.date = date;
         this.statement = statement;
-        this.user = user;
         this.subscription = subscription;
     }
 
@@ -75,14 +72,6 @@ public class Payment {
         this.statement = statement;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Subscription getSubscription() {
         return subscription;
     }
@@ -100,12 +89,11 @@ public class Payment {
                 statement == payment.statement &&
                 Objects.equals(sum, payment.sum) &&
                 Objects.equals(date, payment.date) &&
-                Objects.equals(user, payment.user) &&
                 Objects.equals(subscription, payment.subscription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(paymentNumber, sum, date, statement, user, subscription);
+        return Objects.hash(paymentNumber, sum, date, statement, subscription);
     }
 }
