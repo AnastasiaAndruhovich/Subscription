@@ -41,7 +41,8 @@ public class PublicationMapper implements EntityMapper<Publication> {
     }
 
     @Override
-    public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Publication entity) throws DAOTechnicalException {
+    public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Publication entity)
+            throws DAOTechnicalException {
         try {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setInt(2, entity.getPublicationType().getPublicationTypeId());
@@ -49,10 +50,10 @@ public class PublicationMapper implements EntityMapper<Publication> {
             preparedStatement.setString(4, entity.getDescription());
             preparedStatement.setBigDecimal(5, entity.getPrice());
             preparedStatement.setString(6, entity.getPictureName());
-            InputStream is = new ByteArrayInputStream(entity.getPicture());
-            preparedStatement.setBlob(7, is);
+            InputStream inputStream = new ByteArrayInputStream(entity.getPicture());
+            preparedStatement.setBlob(7, inputStream);
             return preparedStatement;
-        } catch (SQLException | ConnectionTechnicalException e ) {
+        } catch (SQLException e ) {
             throw new DAOTechnicalException(e.getMessage());
         }
     }

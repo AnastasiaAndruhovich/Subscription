@@ -35,17 +35,14 @@ public class PaymentMapper implements EntityMapper<Payment> {
 
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Payment entity) throws DAOTechnicalException {
-        TypeConverter typeConverter = new TypeConverter();
-
         Date date = new Date(entity.getDate().getTime());
         String statement = TypeConverter.convertBooleanToString(entity.isStatement());
 
         try {
-            preparedStatement.setInt(1, entity.getUser().getUserId());
-            preparedStatement.setInt(2, entity.getSubscription().getSubscriptionId());
-            preparedStatement.setBigDecimal(3, entity.getSum());
-            preparedStatement.setDate(4, date);
-            preparedStatement.setString(5, statement);
+            preparedStatement.setInt(1, entity.getSubscription().getSubscriptionId());
+            preparedStatement.setBigDecimal(2, entity.getSum());
+            preparedStatement.setDate(3, date);
+            preparedStatement.setString(4, statement);
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
