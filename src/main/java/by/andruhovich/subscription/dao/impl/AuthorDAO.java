@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.AuthorManagerDAO;
 import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
 
@@ -19,8 +20,6 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
             "author_firstname = ? WHERE author_id = ?";
-    private static final String SELECT_ID_BY_AUTHOR = "SELECT author_id FROM authors WHERE publisher_name = ? && " +
-            "author_lastname = ? && author_firstname = ?";
 
     public AuthorDAO(Connection connection) {
         super(connection);
@@ -58,28 +57,6 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement.setInt(1, entity.getAuthorId());
             preparedStatement.executeQuery();
             return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public int findIdByEntity(Author author) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-        int id = -1;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_ID_BY_AUTHOR);
-            preparedStatement.setString(1, author.getPublisherName());
-            preparedStatement.setString(2, author.getAuthorLastname());
-            preparedStatement.setString(3, author.getAuthorFirstname());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                id = resultSet.getInt("author_id");
-            }
-            return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
@@ -142,5 +119,11 @@ public class AuthorDAO extends AuthorManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public List<Publication> findPublicationsByAuthorId(int id) throws DAOTechnicalException {
+        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+        return authorPublicationDAO.findPublicationsByAuthorId(id);
     }
 }

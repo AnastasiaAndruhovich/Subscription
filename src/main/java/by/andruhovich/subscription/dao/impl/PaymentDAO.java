@@ -2,8 +2,12 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.PaymentManagerDAO;
 import by.andruhovich.subscription.entity.Payment;
+import by.andruhovich.subscription.entity.Subscription;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PaymentMapper;
+import by.andruhovich.subscription.mapper.SubscriptionMapper;
+import by.andruhovich.subscription.mapper.UserMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,14 +16,20 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PaymentDAO extends PaymentManagerDAO {
-    private static final String INSERT_PAYMENT= "INSERT INTO payments(user_id, subscription_id, sum, date, statement) " +
-            "VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_PAYMENT= "INSERT INTO payments(subscription_id, sum, date, statement) " +
+            "VALUES (?, ?, ?, ?)";
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
             "WHERE payment_number = ?";
     private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments";
     private static final String UPDATE_PAYMENT = "UPDATE payments SET user_id = ?, subscription_id = ?, sum = ?, " +
             "date = ?, statement = ? WHERE payment_number = ?";
+
+    private static final String SELECT_SUBSCRIPTION_BY_PAYMENT_NUMBER = "SELECT  s.subscription_id, s.start_date, " +
+            "s.end_date, s.subscription_is_active FROM payments JOIN subscriptions s USING (subscription_id) " +
+            "WHERE payment_number = ?";
+    private static final String SELECT_PAYMENTS_BY_SUBSCRIPTION_ID = "SELECT payment_number, sum, date, statement " +
+            "FROM payments WHERE subscription_id = ?";
 
     public PaymentDAO(Connection connection) {
         super(connection);
@@ -121,4 +131,42 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    @Override
+    public Subscription findSubscriptionByPaymentNumber(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        List<Subscription> subscriptions;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_SUBSCRIPTION_BY_PAYMENT_NUMBER);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            SubscriptionMapper subscriptionMapper = new SubscriptionMapper();
+            subscriptions = subscriptionMapper.mapResultSetToEntity(resultSet);
+            if (!subscriptions.isEmpty()) {
+                return subscriptions.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Payment> findPaymentsBySubscriptionId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PAYMENTS_BY_SUBSCRIPTION_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PaymentMapper paymentMapper = new PaymentMapper();
+            return paymentMapper.mapResultSetToEntity(resultSet);
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
 }

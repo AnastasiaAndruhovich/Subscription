@@ -1,14 +1,21 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.UserManagerDAO;
+import by.andruhovich.subscription.entity.Account;
+import by.andruhovich.subscription.entity.Role;
+import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.AccountMapper;
+import by.andruhovich.subscription.mapper.PublicationMapper;
+import by.andruhovich.subscription.mapper.RoleMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO extends UserManagerDAO {
@@ -23,6 +30,13 @@ public class UserDAO extends UserManagerDAO {
             "city, postal_index, login, password FROM users";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
+    private static final String SELECT_USERS_BY_ROLE_ID = "";
+
+    private static final String SELECT_USER_BY_ACCOUNT_NUMBER = "";
+    private static final String SELECT_ROLE_BY_USER_ID = "SELECT  r.role_id, r.name FROM users " +
+            "JOIN roles r USING (role_id) WHERE user_id = ?";
+    private static final String SELECT_ACCOUNT_BY_USER_ID = "SELECT a.account_number, a.balance, a.loan FROM users " +
+            "JOIN accounts a USING (account_number) WHERE user_id = ?";
 
     public UserDAO(Connection connection) {
         super(connection);
@@ -124,6 +138,28 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    @Override
+    public User findUserByAccountNumber(int id) throws DAOTechnicalException {
+        return null;
+    }
+
+    @Override
+    public List<User> findUsersByRoleId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_USERS_BY_ROLE_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            UserMapper userMapper = new UserMapper();
+            return userMapper.mapResultSetToEntity(resultSet);
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
     public String findPasswordByLogin(String login) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         String password = null;
@@ -161,5 +197,67 @@ public class UserDAO extends UserManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public Role findRoleByUserId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        List<Role> roles;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            RoleMapper roleMapper = new RoleMapper();
+            roles = roleMapper.mapResultSetToEntity(resultSet);
+            if (!roles.isEmpty()) {
+                return roles.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public Account findAccountByUserId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        List<Account> accounts;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_ACCOUNT_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            AccountMapper accountMapper = new AccountMapper();
+            accounts = accountMapper.mapResultSetToEntity(resultSet);
+            if (!accounts.isEmpty()) {
+                return accounts.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException {
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+        return subscriptionDAO.findSubscriptionsByUserId(id);
+    }
+
+    @Override
+    public User findBlockedAdminByUserId(int id) throws DAOTechnicalException {
+        BlockDAO blockDAO = new BlockDAO(connection);
+        return blockDAO.findAdminByUserId(id);
+    }
+
+    @Override
+    public List<User> findBlockedUsersByAdminId(int id) throws DAOTechnicalException {
+        BlockDAO blockDAO = new BlockDAO(connection);
+        return blockDAO.findUsersByAdminId(id);
     }
 }

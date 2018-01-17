@@ -1,7 +1,9 @@
 package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.GenreManagerDAO;
 import by.andruhovich.subscription.dao.MediatorManagerDAO;
 import by.andruhovich.subscription.entity.Genre;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
 
@@ -11,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class GenreDAO extends MediatorManagerDAO<Genre> {
+public class GenreDAO extends GenreManagerDAO {
     private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
@@ -118,4 +120,9 @@ public class GenreDAO extends MediatorManagerDAO<Genre> {
         }
     }
 
+    @Override
+    public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
+        PublicationDAO publicationDAO = new PublicationDAO(connection);
+        return publicationDAO.findPublicationsByGenreId(id);
+    }
 }

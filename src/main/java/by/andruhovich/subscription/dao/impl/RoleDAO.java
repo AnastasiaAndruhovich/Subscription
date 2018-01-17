@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.RoleManagerDAO;
 import by.andruhovich.subscription.entity.Role;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.RoleMapper;
 
@@ -134,5 +135,11 @@ public class RoleDAO extends RoleManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public List<User> findUsersByRoleId(int id) throws DAOTechnicalException {
+        UserDAO userDAO = new UserDAO(connection);
+        return userDAO.findUsersByRoleId(id);
     }
 }

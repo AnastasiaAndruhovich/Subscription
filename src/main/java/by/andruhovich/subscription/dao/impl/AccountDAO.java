@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.AccountManagerDAO;
 import by.andruhovich.subscription.entity.Account;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
 
@@ -145,6 +146,12 @@ public class AccountDAO extends AccountManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public User findUserByAccountNumber(int id) throws DAOTechnicalException {
+        UserDAO userDAO = new UserDAO(connection);
+        return userDAO.findUserByAccountNumber(id);
     }
 
     @Override

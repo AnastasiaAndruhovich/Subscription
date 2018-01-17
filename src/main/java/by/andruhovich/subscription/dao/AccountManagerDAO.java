@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.Account;
+import by.andruhovich.subscription.entity.Subscription;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.math.BigDecimal;
@@ -12,6 +14,8 @@ public abstract class AccountManagerDAO  extends MediatorManagerDAO <Account>{
     }
 
     public abstract int createEmptyAccount() throws DAOTechnicalException;
+
+    public abstract User findUserByAccountNumber(int id) throws DAOTechnicalException;
 
     public abstract BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException;
     public abstract BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException;

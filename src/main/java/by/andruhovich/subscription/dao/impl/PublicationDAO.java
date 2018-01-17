@@ -1,18 +1,25 @@
 package by.andruhovich.subscription.dao.impl;
 
+import by.andruhovich.subscription.dao.DAOFactory;
 import by.andruhovich.subscription.dao.PublicationManagerDAO;
+import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
+import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.GenreMapper;
 import by.andruhovich.subscription.mapper.PublicationMapper;
+import by.andruhovich.subscription.mapper.PublicationTypeMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PublicationDAO extends PublicationManagerDAO {
-    private static final String INSERT_PUBLICATION= "INSERT INTO publications(name, publication_type_id, genre_id, " +
+    private static final String INSERT_PUBLICATION = "INSERT INTO publications(name, publication_type_id, genre_id, " +
             "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
@@ -22,10 +29,12 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
 
-    private static final String SELECT_GENRE_ID_BY_PUBLICATION_ID = "SELECT genre_id FROM publications " +
-            "WHERE publication_id = ?";
-    private static final String SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_ID = "SELECT publication_type_id " +
-            "FROM publications WHERE publication_id = ?";
+    private static final String SELECT_PUBLICATIONS_BY_GENRE_ID = "SELECT publication_id, name, description, price, " +
+            "picture_name, picture FROM publications WHERE genre_id = ?";
+    private static final String SELECT_GENRE_BY_PUBLICATION_ID = "SELECT g.genre_id, g.name, g.description " +
+            "FROM publications JOIN genres g USING (genre_id) WHERE publication_id = ?";
+    private static final String SELECT_PUBLICATION_TYPE_BY_PUBLICATION_ID = "SELECT  p.publication_type_id, p.name " +
+            "FROM publications JOIN publication_types p USING (publication_type_id) WHERE publication_id = ?";
 
     public PublicationDAO(Connection connection) {
         super(connection);
@@ -128,18 +137,20 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public int findGenreIdByPublicationId(int id) throws DAOTechnicalException {
+    public Genre findGenreByPublicationId(int id) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int genreId = -1;
+        List<Genre> genres;
 
         try {
-            preparedStatement = connection.prepareStatement(SELECT_GENRE_ID_BY_PUBLICATION_ID);
+            preparedStatement = connection.prepareStatement(SELECT_GENRE_BY_PUBLICATION_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                genreId = resultSet.getInt("genre_id");
+            GenreMapper genreMapper = new GenreMapper();
+            genres = genreMapper.mapResultSetToEntity(resultSet);
+            if (!genres.isEmpty()) {
+                return genres.get(0);
             }
-            return genreId;
+            return null;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {
@@ -148,18 +159,43 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public int findPublicationTypeIdByPublicationId(int id) throws DAOTechnicalException {
+    public PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
-        int genreId = -1;
+        List<PublicationType> publicationTypes;
 
         try {
-            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_ID);
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_TYPE_BY_PUBLICATION_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                genreId = resultSet.getInt("publication_type_id");
+            PublicationTypeMapper publicationTypeMapper = new PublicationTypeMapper();
+            publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);
+            if (!publicationTypes.isEmpty()) {
+                return publicationTypes.get(0);
             }
-            return genreId;
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException {
+        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+        return authorPublicationDAO.findAuthorByPublicationId(id);
+    }
+
+    @Override
+    public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATIONS_BY_GENRE_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationMapper publicationMapper = new PublicationMapper();
+            return publicationMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
         } finally {

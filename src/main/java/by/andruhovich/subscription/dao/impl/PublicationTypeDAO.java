@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.MediatorManagerDAO;
+import by.andruhovich.subscription.dao.PublicationTypeManagerDAO;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
@@ -11,9 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
+public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     private static final String INSERT_PUBLICATION_TYPE = "INSERT INTO publication_types(name) VALUE (?)";
     private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
+    private static final String SELECT_PUBLICATION_TYPE_BY_ID = "SELECT publication_type_id, name FROM publication_types " +
+            "WHERE publication_type_id = ?";
     private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications";
     private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";
 
@@ -62,12 +65,42 @@ public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
 
     @Override
     public PublicationType findEntityById(int id) throws DAOTechnicalException {
-        return null;
+        PreparedStatement preparedStatement = null;
+        List<PublicationType> publicationTypes;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_TYPE_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationTypeMapper publicationTypeMapper = new PublicationTypeMapper();
+            publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);
+            if (publicationTypes.isEmpty()) {
+                return null;
+            }
+            return publicationTypes.get(0);
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
     }
 
     @Override
     public List<PublicationType> findAll() throws DAOTechnicalException {
-        return null;
+        List<PublicationType> publicationTypes;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_ALL_PUBLICATION_TYPES);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationTypeMapper publicationTypeMapper = new PublicationTypeMapper();
+            publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);
+            return publicationTypes;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
     }
 
     @Override
@@ -87,4 +120,8 @@ public class PublicationTypeDAO extends MediatorManagerDAO<PublicationType> {
         }
     }
 
+    @Override
+    public List<PublicationType> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
+        return null;
+    }
 }

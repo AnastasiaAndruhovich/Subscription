@@ -1,9 +1,14 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.SubscriptionManagerDAO;
+import by.andruhovich.subscription.entity.Payment;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.Subscription;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
+import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.SubscriptionMapper;
+import by.andruhovich.subscription.mapper.UserMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +26,15 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             "subscription_is_active FROM subscriptions";
     private static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET user_id = ?, publication_id = ?, " +
             "start_date = ?, end_date = ?, subscription_is_active = ? WHERE subscription_id = ?";
+
+    private static final String SELECT_USER_BY_SUBSCRIPTION_ID = "SELECT u.user_id, u.lastname, u.firstname, " +
+            "u.birthdate, u.address, u.city, u.postal_index FROM subscriptions JOIN users u USING (user_id) " +
+            "WHERE subscription_id = ?";
+    private static final String SELECT_PUBLICATION_BY_SUBSCRIPTION_ID = "SELECT p.publication_id, p.name, p.description, " +
+            "p.price, p.picture_name, p.picture FROM subscriptions JOIN publications p USING (publication_id) " +
+            "WHERE subscription_id = ?";
+    private static final String SELECT_SUBSCRIPTIONS_BY_USER_ID = "SELECT subscription_id, start_date, end_date, " +
+            "subscription_is_active FROM subscriptions WHERE user_id = ?";
 
     public SubscriptionDAO(Connection connection) {
         super(connection);
@@ -122,4 +136,70 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    @Override
+    public User findUserBySubscriptionId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        List<User> users;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_USER_BY_SUBSCRIPTION_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            UserMapper userMapper = new UserMapper();
+            users = userMapper.mapResultSetToEntity(resultSet);
+            if (!users.isEmpty()) {
+                return users.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+        List<Publication> publications;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_SUBSCRIPTION_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationMapper publicationMapper = new PublicationMapper();
+            publications = publicationMapper.mapResultSetToEntity(resultSet);
+            if (!publications.isEmpty()) {
+                return publications.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Payment> findPaymentsBySubscriptionId(int id) throws DAOTechnicalException {
+        PaymentDAO paymentDAO = new PaymentDAO(connection);
+        return paymentDAO.findPaymentsBySubscriptionId(id);
+    }
+
+    @Override
+    public List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_SUBSCRIPTIONS_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            SubscriptionMapper subscriptionMapper = new SubscriptionMapper();
+            return subscriptionMapper.mapResultSetToEntity(resultSet);
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage());
+        } finally {
+            close(preparedStatement);
+        }
+    }
 }
