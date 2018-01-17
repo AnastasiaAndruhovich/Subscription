@@ -1,13 +1,5 @@
 package by.andruhovich.subscription.entity;
 
-import by.andruhovich.subscription.dao.*;
-import by.andruhovich.subscription.dao.impl.AuthorPublicationDAO;
-import by.andruhovich.subscription.dao.impl.GenreDAO;
-import by.andruhovich.subscription.dao.impl.PublicationDAO;
-import by.andruhovich.subscription.dao.impl.PublicationTypeDAO;
-import by.andruhovich.subscription.exception.ConnectionTechnicalException;
-import by.andruhovich.subscription.exception.DAOTechnicalException;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -120,12 +112,7 @@ public class Publication {
         this.picture = picture;
     }
 
-    public List<Author> getAuthors() throws ConnectionTechnicalException, DAOTechnicalException {
-        if (authors == null) {
-            DAOFactory daoFactory = DAOFactory.getInstance();
-            AuthorPublicationDAO authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
-            authors = authorPublicationDAO.findAuthorByPublicationId(publicationId);
-        }
+    public List<Author> getAuthors() {
         return authors;
     }
 
@@ -133,18 +120,7 @@ public class Publication {
         this.authors = authors;
     }
 
-    public Genre getGenre() throws ConnectionTechnicalException, DAOTechnicalException {
-        if (genre == null) {
-                DAOFactory daoFactory = DAOFactory.getInstance();
-                PublicationDAO publicationDAO = daoFactory.createPublicationDAO();
-                int genreId = publicationDAO.findGenreIdByPublicationId(publicationId);
-                if (genreId != 0) {
-                    GenreDAO genreDAO = daoFactory.createGenreDAO();
-                    genre = genreDAO.findEntityById(genreId);
-                }
-                //???
-                else return null;
-        }
+    public Genre getGenre()  {
         return genre;
     }
 
@@ -152,16 +128,7 @@ public class Publication {
         this.genre = genre;
     }
 
-    public PublicationType getPublicationType() throws ConnectionTechnicalException, DAOTechnicalException {
-        if (publicationType == null) {
-            DAOFactory daoFactory = DAOFactory.getInstance();
-            PublicationDAO publicationDAO = daoFactory.createPublicationDAO();
-            int publicationTypeId = publicationDAO.findGenreIdByPublicationId(publicationId);
-            if (publicationTypeId != 0) {
-                PublicationTypeDAO publicationTypeDAO = daoFactory.createPublicationTypeDAO();
-                publicationType = publicationTypeDAO.findEntityById(publicationTypeId);
-            }
-        }
+    public PublicationType getPublicationType() {
         return publicationType;
     }
 
