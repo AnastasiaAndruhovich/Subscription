@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Subscription {
+public class Subscription extends Entity{
     private int subscriptionId;
     private Date startDate;
     private Date endDate;

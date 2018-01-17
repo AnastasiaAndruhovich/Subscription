@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Author {
+public class Author extends Entity{
     private int authorId;
     private String publisherName;
     private String authorLastname;

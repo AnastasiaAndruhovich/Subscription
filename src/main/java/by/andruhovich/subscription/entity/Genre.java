@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Genre {
+public class Genre extends Entity{
     private int genreId;
     private String name;
     private String description;

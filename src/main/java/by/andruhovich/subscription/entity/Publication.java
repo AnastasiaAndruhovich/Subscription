@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Publication {
+public class Publication extends Entity{
     private int publicationId;
     private String name;
     private String description;

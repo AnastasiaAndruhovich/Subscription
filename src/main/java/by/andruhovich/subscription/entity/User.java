@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class User {
+public class User extends Entity{
     private int userId;
     private String lastname;
     private String firstname;
@@ -22,7 +22,8 @@ public class User {
     private User admin;
     private List<User> users;
 
-    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account) {
+    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+                String login, String password, Role role, Account account) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.birthdate = birthdate;

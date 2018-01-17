@@ -3,7 +3,7 @@ package by.andruhovich.subscription.entity;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Account {
+public class Account extends Entity{
     private int accountNumber;
     private BigDecimal balance;
     private BigDecimal loan;

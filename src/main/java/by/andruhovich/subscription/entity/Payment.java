@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-public class Payment {
+public class Payment extends Entity{
     private int paymentNumber;
     private BigDecimal sum;
     private Date date;

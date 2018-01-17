@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Role {
+public class Role extends Entity{
     private int roleId;
     private String name;
 

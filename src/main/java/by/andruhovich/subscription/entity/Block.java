@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 
-public class Block {
+public class Block  extends Entity{
     private Date date;
     private User user;
     private User admin;
