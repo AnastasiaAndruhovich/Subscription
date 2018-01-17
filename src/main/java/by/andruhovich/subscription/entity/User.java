@@ -19,7 +19,6 @@ public class User {
     private Role role;
     private Account account;
     private List<Subscription> subscriptions = new LinkedList<>();
-    private List<Payment> payments = new LinkedList<>();
     private User admin;
     private List<User> users;
 
@@ -36,7 +35,9 @@ public class User {
         this.account = account;
     }
 
-    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account, List<Subscription> subscriptions, List<Payment> payments, User admin, List<User> users) {
+    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+                String login, String password, Role role, Account account, List<Subscription> subscriptions,
+                User admin, List<User> users) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.birthdate = birthdate;
@@ -48,7 +49,6 @@ public class User {
         this.role = role;
         this.account = account;
         this.subscriptions = subscriptions;
-        this.payments = payments;
         this.admin = admin;
         this.users = users;
     }
@@ -79,7 +79,9 @@ public class User {
         this.account = account;
     }
 
-    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account, List<Subscription> subscriptions, List<Payment> payments, User admin, List<User> users) {
+    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city,
+                int postalIndex, String login, String password, Role role, Account account,
+                List<Subscription> subscriptions, User admin, List<User> users) {
         this.userId = userId;
         this.lastname = lastname;
         this.firstname = firstname;
@@ -92,7 +94,6 @@ public class User {
         this.role = role;
         this.account = account;
         this.subscriptions = subscriptions;
-        this.payments = payments;
         this.admin = admin;
         this.users = users;
     }
@@ -193,14 +194,6 @@ public class User {
         this.subscriptions = subscriptions;
     }
 
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
-
     public User getAdmin() {
         return admin;
     }
@@ -234,13 +227,13 @@ public class User {
                 Objects.equals(role, user.role) &&
                 Objects.equals(account, user.account) &&
                 Objects.equals(subscriptions, user.subscriptions) &&
-                Objects.equals(payments, user.payments) &&
                 Objects.equals(admin, user.admin) &&
                 Objects.equals(users, user.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, lastname, firstname, birthdate, address, city, postalIndex, login, password, role, account, subscriptions, payments, admin, users);
+        return Objects.hash(userId, lastname, firstname, birthdate, address, city, postalIndex, login, password, role,
+                account, subscriptions, admin, users);
     }
 }
