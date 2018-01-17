@@ -1,11 +1,12 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.entity.Entity;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.sql.Connection;
 import java.util.List;
 
-public abstract class ManagerDAO <T> extends BaseDAO {
+public abstract class ManagerDAO <T extends Entity> extends BaseDAO {
     public ManagerDAO(Connection connection) {
         super(connection);
     }
