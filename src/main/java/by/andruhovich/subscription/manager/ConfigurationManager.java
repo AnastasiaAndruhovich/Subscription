@@ -10,7 +10,7 @@ public class ConfigurationManager {
 
     private ConfigurationManager() {}
 
-    static ConfigurationManager getInstance() {
+    public static ConfigurationManager getInstance() {
         if (instance == null) {
             instance = new ConfigurationManager();
             try {
@@ -23,7 +23,7 @@ public class ConfigurationManager {
         return instance;
     }
 
-    String getProperty(String key) {
+    public String getProperty(String key) {
         return resourceBundle.getString(key);
     }
 }

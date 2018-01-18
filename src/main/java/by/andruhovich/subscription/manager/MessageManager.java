@@ -10,7 +10,7 @@ public class MessageManager {
 
     private MessageManager() {}
 
-    static MessageManager getInstance() {
+    public static MessageManager getInstance() {
         if (instance == null) {
             instance = new MessageManager();
             try {
@@ -23,7 +23,7 @@ public class MessageManager {
         return instance;
     }
 
-    String getProperty(String key) {
+    public String getProperty(String key) {
         return resourceBundle.getString(key);
     }
 }
