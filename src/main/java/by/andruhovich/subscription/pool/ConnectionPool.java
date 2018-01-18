@@ -30,16 +30,23 @@ public class ConnectionPool {
         connections = new LinkedList<>();
         try {
             Class.forName(DRIVER_NAME);
-            for (int i = 0; i < POOL_SIZE; i++) {
-                Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                connections.add(connection);
+        } catch (ClassNotFoundException e) {
+            // TODO LOGGER.log(Level.FATAL, "Driver" + DRIVER_NAME +  "not found.");
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < POOL_SIZE; i++) {
+            try {
+                 Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                 connections.add(connection);
+            } catch (SQLException e) {
+                // TODO LOGGER.log(Level.ERROR, "");
             }
-        } catch (SQLException ex) {
-            // TODO log
-            throw new RuntimeException(ex.getMessage());
-        } catch(ClassNotFoundException ex) {
-            // TODO LOGGER.log(Level.ERROR, "Driver" + DRIVER_NAME +  "not found.");
-            throw new RuntimeException(ex.getMessage());
+        }
+
+        if (connections.isEmpty()) {
+            //TODO log
+            throw new RuntimeException("");
         }
     }
 
@@ -75,5 +82,15 @@ public class ConnectionPool {
 
     public void returnConnection(Connection connection) {
         connections.add(connection);
+    }
+
+    public void closeConnectionPool() {
+        for (Connection connection : connections) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                //TODO log
+            }
+        }
     }
 }
