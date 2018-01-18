@@ -2,6 +2,7 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.MediatorManagerDAO;
 import by.andruhovich.subscription.dao.PublicationTypeManagerDAO;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
@@ -41,7 +42,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -57,7 +58,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -79,7 +80,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             }
             return publicationTypes.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -97,7 +98,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);
             return publicationTypes;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -114,14 +115,15 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public List<PublicationType> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
-        return null;
+    public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
+        PublicationDAO publicationDAO = new PublicationDAO(connection);
+        return publicationDAO.findPublicationsByPublicationTypeId(id);
     }
 }

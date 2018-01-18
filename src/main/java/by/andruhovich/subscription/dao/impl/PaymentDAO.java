@@ -52,7 +52,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -68,7 +68,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -90,7 +90,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             }
             return payments.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -108,7 +108,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             payments = mapper.mapResultSetToEntity(resultSet);
             return payments;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -125,7 +125,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -147,7 +147,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -164,7 +164,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             PaymentMapper paymentMapper = new PaymentMapper();
             return paymentMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

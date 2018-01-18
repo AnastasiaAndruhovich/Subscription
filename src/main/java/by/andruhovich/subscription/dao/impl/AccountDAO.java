@@ -48,7 +48,7 @@ public class AccountDAO extends AccountManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException("Can't add Account entity into account table", e);
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -64,7 +64,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -86,7 +86,7 @@ public class AccountDAO extends AccountManagerDAO {
             }
             return accounts.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -104,7 +104,7 @@ public class AccountDAO extends AccountManagerDAO {
             accounts = mapper.mapResultSetToEntity(resultSet);
             return accounts;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -121,14 +121,14 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public int createEmptyAccount() throws DAOTechnicalException {
+    public Account createEmptyAccount() throws DAOTechnicalException {
         PreparedStatement preparedStatement = null;
         int id = -1;
 
@@ -140,9 +140,9 @@ public class AccountDAO extends AccountManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("account_number");
             }
-            return id;
+            return findEntityById(id);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -165,7 +165,7 @@ public class AccountDAO extends AccountManagerDAO {
             BigDecimal balance = resultSet.getBigDecimal("balance");
             return balance;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -185,7 +185,7 @@ public class AccountDAO extends AccountManagerDAO {
             }
             return loan;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -202,7 +202,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return findBalanceById(accountNumber);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -219,7 +219,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return findBalanceById(accountNumber);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -236,7 +236,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return findLoanById(accountNumber);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -253,7 +253,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.executeQuery();
             return findLoanById(accountNumber);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

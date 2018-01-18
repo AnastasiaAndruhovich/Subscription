@@ -41,7 +41,7 @@ public class GenreDAO extends GenreManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -57,7 +57,7 @@ public class GenreDAO extends GenreManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -79,7 +79,7 @@ public class GenreDAO extends GenreManagerDAO {
             }
             return genres.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -97,7 +97,7 @@ public class GenreDAO extends GenreManagerDAO {
             genres = mapper.mapResultSetToEntity(resultSet);
             return genres;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -114,7 +114,7 @@ public class GenreDAO extends GenreManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

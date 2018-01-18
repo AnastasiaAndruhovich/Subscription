@@ -57,7 +57,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -73,7 +73,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -95,7 +95,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             }
             return subscriptions.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -113,7 +113,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             subscriptions = mapper.mapResultSetToEntity(resultSet);
             return subscriptions;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -130,7 +130,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -152,7 +152,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -174,7 +174,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -197,7 +197,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             SubscriptionMapper subscriptionMapper = new SubscriptionMapper();
             return subscriptionMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

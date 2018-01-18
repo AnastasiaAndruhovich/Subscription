@@ -35,6 +35,8 @@ public class PublicationDAO extends PublicationManagerDAO {
             "FROM publications JOIN genres g USING (genre_id) WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_TYPE_BY_PUBLICATION_ID = "SELECT  p.publication_type_id, p.name " +
             "FROM publications JOIN publication_types p USING (publication_type_id) WHERE publication_id = ?";
+    private static final String SELECT_PUBLICATIONS_BY_PUBLICATION_TYPE_ID = "SELECT publication_id, name, " +
+            "description, price, picture_name, picture FROM publications WHERE publication_type_id = ?";
 
     public PublicationDAO(Connection connection) {
         super(connection);
@@ -57,7 +59,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -73,7 +75,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -95,7 +97,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             }
             return publications.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -113,7 +115,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             publications = mapper.mapResultSetToEntity(resultSet);
             return publications;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -130,7 +132,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -152,7 +154,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -174,7 +176,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -197,7 +199,25 @@ public class PublicationDAO extends PublicationManagerDAO {
             PublicationMapper publicationMapper = new PublicationMapper();
             return publicationMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATIONS_BY_PUBLICATION_TYPE_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationMapper publicationMapper = new PublicationMapper();
+            List<Publication> publications = publicationMapper.mapResultSetToEntity(resultSet);
+            return publications;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

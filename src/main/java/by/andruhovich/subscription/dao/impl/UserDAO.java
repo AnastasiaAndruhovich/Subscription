@@ -32,7 +32,10 @@ public class UserDAO extends UserManagerDAO {
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
     private static final String SELECT_USERS_BY_ROLE_ID = "";
 
-    private static final String SELECT_USER_BY_ACCOUNT_NUMBER = "";
+    private static final String SELECT_USER_BY_ACCOUNT_NUMBER = "SELECT user_id, lastname, firstname, birthdate, " +
+            "address, city, postal_index, login, password FROM users WHERE account_number = ?";
+    private static final String SELECT_USER_BY_LOGIN = "SELECT user_id, lastname, firstname, birthdate, " +
+            "address, city, postal_index, login, password FROM users WHERE login = ?";
     private static final String SELECT_ROLE_BY_USER_ID = "SELECT  r.role_id, r.name FROM users " +
             "JOIN roles r USING (role_id) WHERE user_id = ?";
     private static final String SELECT_ACCOUNT_BY_USER_ID = "SELECT a.account_number, a.balance, a.loan FROM users " +
@@ -59,7 +62,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return id;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -75,7 +78,7 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -97,7 +100,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return users.get(0);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -115,7 +118,7 @@ public class UserDAO extends UserManagerDAO {
             users = mapper.mapResultSetToEntity(resultSet);
             return users;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -132,15 +135,30 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
     }
 
     @Override
-    public User findUserByAccountNumber(int id) throws DAOTechnicalException {
-        return null;
+    public User findUserByAccountNumber(int accountNumber) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_USER_BY_ACCOUNT_NUMBER);
+            preparedStatement.setInt(1, accountNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<User> users = new UserMapper().mapResultSetToEntity(resultSet);
+            if (!users.isEmpty()) {
+                return users.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
     }
 
     @Override
@@ -154,7 +172,7 @@ public class UserDAO extends UserManagerDAO {
             UserMapper userMapper = new UserMapper();
             return userMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -173,7 +191,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return password;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -193,7 +211,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return quantity == 1;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -215,7 +233,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -237,7 +255,7 @@ public class UserDAO extends UserManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -259,5 +277,32 @@ public class UserDAO extends UserManagerDAO {
     public List<User> findBlockedUsersByAdminId(int id) throws DAOTechnicalException {
         BlockDAO blockDAO = new BlockDAO(connection);
         return blockDAO.findUsersByAdminId(id);
+    }
+
+    @Override
+    public User findUserByLogin(String login) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_USER_BY_LOGIN);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            UserMapper userMapper = new UserMapper();
+            List<User> users = userMapper.mapResultSetToEntity(resultSet);
+            if (!users.isEmpty()) {
+                return users.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public User findUserBySubscriptionId(int id) throws DAOTechnicalException {
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+        return subscriptionDAO.findUserBySubscriptionId(id);
     }
 }

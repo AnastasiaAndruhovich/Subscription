@@ -55,7 +55,7 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement.executeQuery();
             return 0;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -72,7 +72,7 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -90,7 +90,7 @@ public class BlockDAO extends BlockManagerDAO {
             blocks = mapper.mapResultSetToEntity(resultSet);
             return blocks;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -107,7 +107,7 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -126,7 +126,7 @@ public class BlockDAO extends BlockManagerDAO {
             users = userMapper.mapResultSetToEntity(resultSet);
             return users;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -147,7 +147,23 @@ public class BlockDAO extends BlockManagerDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public boolean deleteBlockByUserId(int id) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(DELETE_BLOCK_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            return true;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

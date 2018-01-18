@@ -35,7 +35,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             preparedStatement.executeQuery();
             return true;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -53,7 +53,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             authors = authorMapper.mapResultSetToEntity(resultSet);
             return authors;
         } catch (SQLException | DAOTechnicalException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
@@ -71,7 +71,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             publications = publicationMapper.mapResultSetToEntity(resultSet);
             return publications;
         } catch (SQLException | DAOTechnicalException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
