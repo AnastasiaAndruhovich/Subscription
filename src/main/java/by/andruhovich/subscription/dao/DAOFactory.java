@@ -59,4 +59,12 @@ public class DAOFactory {
     public AuthorPublicationDAO createAuthorPublicationDAO() throws ConnectionTechnicalException {
         return new AuthorPublicationDAO(getConnection());
     }
+
+    public BlockDAO createBlockDAO() throws ConnectionTechnicalException {
+        return new BlockDAO(getConnection());
+    }
+
+    public PaymentDAO createPaymentDAO() throws ConnectionTechnicalException {
+        return new PaymentDAO(getConnection());
+    }
 }

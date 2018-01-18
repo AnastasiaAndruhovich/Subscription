@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.dao;
 
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
@@ -12,5 +13,5 @@ public abstract class PublicationTypeManagerDAO extends MediatorManagerDAO<Publi
         super(connection);
     }
 
-    public abstract List<PublicationType> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException;
+    public abstract List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException;
 }

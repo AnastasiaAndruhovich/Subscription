@@ -16,11 +16,13 @@ public abstract class UserManagerDAO extends MediatorManagerDAO<User> {
 
     public abstract User findUserByAccountNumber(int id) throws DAOTechnicalException;
     public abstract List<User> findUsersByRoleId(int id) throws DAOTechnicalException;
+    public abstract User findUserByLogin(String login) throws DAOTechnicalException;
     public abstract Role findRoleByUserId(int id) throws DAOTechnicalException;
     public abstract Account findAccountByUserId(int id) throws DAOTechnicalException;
     public abstract List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException;
     public abstract User findBlockedAdminByUserId(int id) throws DAOTechnicalException;
     public abstract List<User> findBlockedUsersByAdminId(int id) throws DAOTechnicalException;
+    public abstract User findUserBySubscriptionId(int id) throws DAOTechnicalException;
 
     public abstract String findPasswordByLogin(String login) throws DAOTechnicalException;
     public abstract boolean isLoginExist(String login) throws DAOTechnicalException;

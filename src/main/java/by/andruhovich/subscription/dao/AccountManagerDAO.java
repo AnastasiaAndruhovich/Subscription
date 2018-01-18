@@ -13,7 +13,7 @@ public abstract class AccountManagerDAO  extends MediatorManagerDAO <Account>{
         super(connection);
     }
 
-    public abstract int createEmptyAccount() throws DAOTechnicalException;
+    public abstract Account createEmptyAccount() throws DAOTechnicalException;
 
     public abstract User findUserByAccountNumber(int id) throws DAOTechnicalException;
 

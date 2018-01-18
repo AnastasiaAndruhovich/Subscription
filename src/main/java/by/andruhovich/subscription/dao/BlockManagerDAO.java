@@ -11,6 +11,8 @@ public abstract class BlockManagerDAO extends ManagerDAO<Block> {
     public BlockManagerDAO(Connection connection) {
         super(connection);
     }
+
+    public abstract boolean deleteBlockByUserId(int id) throws DAOTechnicalException;
     
     public abstract List<User> findUsersByAdminId(int id) throws DAOTechnicalException;
     public abstract User findAdminByUserId(int id) throws DAOTechnicalException;
