@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.pool;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,9 +16,10 @@ public class ConnectionPool {
     private static AtomicBoolean instanceCreated = new AtomicBoolean();
     private static Lock instanceLock = new ReentrantLock();
     private static Lock getConnectionLock = new ReentrantLock();
-    private Queue<Connection> connections;
+    private Queue<Connection> connections = new LinkedList<>();;
+    private static int waitingTime;
 
-    //private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
+    //private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
 
     private ConnectionPool() {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
@@ -26,13 +28,13 @@ public class ConnectionPool {
         final String DRIVER_NAME = databaseManager.getProperty("driver");
         final String USER = databaseManager.getProperty("user");
         final String PASSWORD = databaseManager.getProperty("password");
+        waitingTime = Integer.valueOf(databaseManager.getProperty("waiting_time"));
 
-        connections = new LinkedList<>();
         try {
             Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
             // TODO LOGGER.log(Level.FATAL, "Driver" + DRIVER_NAME +  "not found.");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Driver" + DRIVER_NAME +  "not found.", e);
         }
 
         for (int i = 0; i < POOL_SIZE; i++) {
@@ -46,7 +48,7 @@ public class ConnectionPool {
 
         if (connections.isEmpty()) {
             //TODO log
-            throw new RuntimeException("");
+            throw new RuntimeException("It was not succeeded to create database connections. Connection pool is empty. ");
         }
     }
 
@@ -65,10 +67,10 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection(long maxSeconds) {
+    public Connection getConnection() {
         Connection connection;
         try {
-            if (getConnectionLock.tryLock(maxSeconds, TimeUnit.SECONDS)) {
+            if (getConnectionLock.tryLock(waitingTime, TimeUnit.SECONDS)) {
                 connection = connections.poll();
                 return connection;
             }
@@ -85,9 +87,9 @@ public class ConnectionPool {
     }
 
     public void closeConnectionPool() {
-        for (Connection connection : connections) {
+        for (int i = 0; i < connections.size(); i++) {
             try {
-                connection.close();
+                connections.poll().close();
             } catch (SQLException e) {
                 //TODO log
             }
