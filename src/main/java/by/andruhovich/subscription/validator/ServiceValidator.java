@@ -1,4 +1,4 @@
-package by.andruhovich.subscription.service.validator;
+package by.andruhovich.subscription.validator;
 
 import java.util.regex.Pattern;
 

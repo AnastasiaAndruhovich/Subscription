@@ -11,23 +11,18 @@ import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
-import by.andruhovich.subscription.exception.NullTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.service.coder.PasswordCoder;
+import by.andruhovich.subscription.coder.PasswordCoder;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class UserService {
-    private static final int ADMIN_ROLE_ID = 1;
-    private static final int USER_ROLE_ID = 2;
+    private static final String USER = "User";
+    private static final String ADMIN = "Admin";
 
-    public boolean checkLoginByPassword(String login, String password) throws ServiceTechnicalException, NullTechnicalException {
-        if (login == null || password == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public boolean checkLoginByPassword(String login, String password) throws ServiceTechnicalException {
         try {
             DAOFactory daoFactory = DAOFactory.getInstance();
             UserDAO userDAO = daoFactory.createUserDAO();
@@ -39,11 +34,7 @@ public class UserService {
         }
     }
 
-    public boolean isLoginExist(String login) throws ServiceTechnicalException, NullTechnicalException {
-        if (login == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public boolean isLoginExist(String login) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {
             UserDAO userDAO = daoFactory.createUserDAO();
@@ -54,14 +45,7 @@ public class UserService {
     }
 
     public boolean signUp(String lastname, String firstname, Date birthdate, String address, String city,
-                          String postalIndex, String login, String password) throws ServiceTechnicalException,
-            NullTechnicalException {
-
-        if (lastname == null || firstname == null || birthdate == null || address == null || postalIndex == null ||
-                login == null || password == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+                          String postalIndex, String login, String password) throws ServiceTechnicalException {
         try {
             if (!isLoginExist(login)) {
                 DAOFactory daoFactory = DAOFactory.getInstance();
@@ -80,11 +64,7 @@ public class UserService {
         }
     }
 
-    public boolean blockUser(String userLogin, String adminLogin) throws NullTechnicalException, ServiceTechnicalException {
-        if (userLogin == null || adminLogin == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public boolean blockUser(String userLogin, String adminLogin) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {
             if (isLoginExist(userLogin)) {
@@ -103,10 +83,7 @@ public class UserService {
         }
     }
 
-    public boolean unblockUser(String login) throws NullTechnicalException, ServiceTechnicalException {
-        if (login == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
+    public boolean unblockUser(String login) throws ServiceTechnicalException {
         try {
             DAOFactory daoFactory = DAOFactory.getInstance();
             if (isLoginExist(login)) {
@@ -122,14 +99,7 @@ public class UserService {
     }
 
     public boolean updateUser(String lastname, String firstname, Date birthdate, String address, String city,
-                              String postalIndex, String login, String password) throws NullTechnicalException,
-            ServiceTechnicalException {
-
-        if (lastname == null || firstname == null || birthdate == null || address == null || postalIndex == null ||
-                login == null || password == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+                              String postalIndex, String login, String password) throws ServiceTechnicalException {
         try {
             if (isLoginExist(login)) {
                 DAOFactory daoFactory = DAOFactory.getInstance();
@@ -157,11 +127,7 @@ public class UserService {
         }
     }
 
-    public User findUserByLogin(String login) throws NullTechnicalException, ServiceTechnicalException {
-        if (login == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public User findUserByLogin(String login) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {
             UserDAO userDAO = daoFactory.createUserDAO();
@@ -171,11 +137,7 @@ public class UserService {
         }
     }
 
-    public User findUserByAccountNumber(String accountNumber) throws NullTechnicalException, ServiceTechnicalException {
-        if (accountNumber == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public User findUserByAccountNumber(String accountNumber) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         int intAccountNumber = Integer.parseInt(accountNumber);
         try {
@@ -186,11 +148,7 @@ public class UserService {
         }
     }
 
-    public User findUserBySubscriptionId(String id) throws NullTechnicalException, ServiceTechnicalException {
-        if (id == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public User findUserBySubscriptionId(String id) throws ServiceTechnicalException {
         int intId = Integer.parseInt(id);
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {
@@ -201,11 +159,7 @@ public class UserService {
         }
     }
 
-    public User findUserByPaymentNumber(String paymentNumber) throws NullTechnicalException, ServiceTechnicalException {
-        if (paymentNumber == null) {
-            throw new NullTechnicalException("Arguments can't be null. ");
-        }
-
+    public User findUserByPaymentNumber(String paymentNumber) throws ServiceTechnicalException {
         int intPaymentNumber = Integer.parseInt(paymentNumber);
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {
