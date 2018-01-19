@@ -19,13 +19,13 @@ public class ShowPublicationCommand implements BaseCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page;
+        String page = null;
         String pageNumber = request.getParameter(PAGE_NUMBER);
         int currentPageNumber = Integer.parseInt(pageNumber);
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
         MessageManager messageManager = MessageManager.getInstance();
 
-        try {
+        /*try {
             List<Publication> publications = publicationService.findPublications(currentPageNumber);
             if (!publications.isEmpty()) {
                 request.setAttribute(PUBLICATION_LIST_NAME, publications);
@@ -37,7 +37,7 @@ public class ShowPublicationCommand implements BaseCommand {
         } catch (ServiceTechnicalException e) {
             //log
             page = configurationManager.getProperty("path.page.error");
-        }
+        }*/
         return page;
     }
 }

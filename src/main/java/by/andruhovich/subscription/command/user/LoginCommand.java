@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
-import by.andruhovich.subscription.exception.NullTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.ConfigurationManager;
 import by.andruhovich.subscription.manager.MessageManager;
@@ -33,8 +32,6 @@ public class LoginCommand implements BaseCommand {
         } catch (ServiceTechnicalException e) {
             //log
             page = configurationManager.getProperty("path.page.error");
-        } catch (NullTechnicalException e) {
-            e.printStackTrace();
         }
         return page;
     }

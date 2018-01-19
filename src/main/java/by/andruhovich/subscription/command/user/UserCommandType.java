@@ -1,6 +1,0 @@
-package by.andruhovich.subscription.command.user;
-
-public enum UserCommandType {
-    LOGIN, SIGN_IN, BLOCK_USER, UNBLOCK_USER, UPDATE_USER, SHOW_USERS, FIND_USER_BY_LOGIN, FIND_USER_BY_ACCOUNT_NUMBER,
-    FIND_USER_BY_SUBSCRIPTION_ID, FIND_USER_BY_PAYMENT_NUMBER
-}

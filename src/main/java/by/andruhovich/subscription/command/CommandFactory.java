@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.command;
 
-import by.andruhovich.subscription.command.user.UserCommandMap;
 import by.andruhovich.subscription.manager.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +16,8 @@ public class CommandFactory {
         }
 
         try {
-            UserCommandMap userCommandMap = UserCommandMap.getInstance();
-            command = userCommandMap.get(action.toUpperCase());
+            CommandMap commandMap = CommandMap.getInstance();
+            command = commandMap.get(action.toUpperCase());
             return command;
         } catch (IllegalArgumentException e) {
             //TODO log
