@@ -13,6 +13,6 @@ public abstract class ManagerDAO <T extends Entity> extends BaseDAO {
 
     public abstract int create(T entity) throws DAOTechnicalException;
     public abstract boolean delete(T entity) throws DAOTechnicalException;
-    public abstract List<T> findAll() throws DAOTechnicalException;
+    public abstract List<T> findAll(int startIndex, int endIndex) throws DAOTechnicalException;
     public abstract boolean update(T entity) throws DAOTechnicalException;
 }

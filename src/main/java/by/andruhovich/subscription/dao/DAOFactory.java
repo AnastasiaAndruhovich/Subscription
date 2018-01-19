@@ -68,6 +68,8 @@ public class DAOFactory {
     }
 
     public void closeDAO(BaseDAO baseDAO) {
-        connectionPool.returnConnection(baseDAO.getConnection());
+        if (baseDAO != null) {
+            connectionPool.returnConnection(baseDAO.getConnection());
+        }
     }
 }
