@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 class DatabaseManager {
     private static DatabaseManager instance;
     private static ResourceBundle resourceBundle;
-    private static final String DATABASE_CONFIG = "config/database";
+    private static final String DATABASE_CONFIG = "database/database";
 
     private DatabaseManager() {}
 
