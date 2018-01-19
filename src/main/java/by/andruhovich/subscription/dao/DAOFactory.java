@@ -9,7 +9,6 @@ import java.sql.Connection;
 public class DAOFactory {
     private static DAOFactory instance;
     private ConnectionPool connectionPool;
-    private static final int WAITING_TIME = 10;
 
     private DAOFactory() {
         connectionPool = ConnectionPool.getInstance();
@@ -23,7 +22,7 @@ public class DAOFactory {
     }
 
     private Connection getConnection() throws ConnectionTechnicalException {
-        Connection connection = connectionPool.getConnection(WAITING_TIME);
+        Connection connection = connectionPool.getConnection();
         if (connection != null) {
             return connection;
         }
@@ -66,5 +65,9 @@ public class DAOFactory {
 
     public PaymentDAO createPaymentDAO() throws ConnectionTechnicalException {
         return new PaymentDAO(getConnection());
+    }
+
+    public void closeDAO(BaseDAO baseDAO) {
+        connectionPool.returnConnection(baseDAO.getConnection());
     }
 }
