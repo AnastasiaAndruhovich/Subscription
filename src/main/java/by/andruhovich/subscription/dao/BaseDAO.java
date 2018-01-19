@@ -1,17 +1,18 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.exception.DAOTechnicalException;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 public abstract class BaseDAO {
     protected Connection connection;
 
     public BaseDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    Connection getConnection() {
+        return connection;
     }
 
     public void setConnection(Connection connection) {
