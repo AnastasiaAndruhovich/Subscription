@@ -23,6 +23,19 @@ public class User extends Entity{
     private List<User> users;
 
     public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+                String login, String password, Account account) {
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.city = city;
+        this.postalIndex = postalIndex;
+        this.login = login;
+        this.password = password;
+        this.account = account;
+    }
+
+    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
                 String login, String password, Role role, Account account) {
         this.lastname = lastname;
         this.firstname = firstname;
