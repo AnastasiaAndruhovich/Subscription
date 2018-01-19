@@ -1,4 +1,4 @@
-package by.andruhovich.subscription.service.coder;
+package by.andruhovich.subscription.coder;
 
 import org.mindrot.jbcrypt.BCrypt;
 
