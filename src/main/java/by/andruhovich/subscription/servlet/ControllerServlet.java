@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "Controller")
+@WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
+    //Logger logger = LogManager.getLogger();
 
     @Override
     public void init() {
+        //logger.log(Level.ERROR, "message -------------------");
     }
 
     @Override
@@ -50,7 +52,7 @@ public class ControllerServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + page);
             }
         } else {
-            //???
+            //logger.log(Level.ERROR, "message");
         }
     }
 
