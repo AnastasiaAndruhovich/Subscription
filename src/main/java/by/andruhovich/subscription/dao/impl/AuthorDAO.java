@@ -17,7 +17,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             "VALUES (?, ?, ?)";
     private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM authors WHERE author_id = ?";
     private static final String SELECT_AUTHOR_BY_ID = "SELECT * FROM authors WHERE author_id = ?";
-    private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors";
+    private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors LIMIT ?, ?";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
             "author_firstname = ? WHERE author_id = ?";
 
@@ -87,12 +87,14 @@ public class AuthorDAO extends AuthorManagerDAO {
     }
 
     @Override
-    public List<Author> findAll() throws DAOTechnicalException {
+    public List<Author> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Author> authors;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_AUTHORS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             AuthorMapper mapper = new AuthorMapper();
             authors = mapper.mapResultSetToEntity(resultSet);

@@ -25,7 +25,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE publication_id = ?";
     private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price, " +
-            "picture_name, picture FROM publications";
+            "picture_name, picture FROM publications LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
 
@@ -104,12 +104,14 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public List<Publication> findAll() throws DAOTechnicalException {
+    public List<Publication> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Publication> publications;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_PUBLICATIONS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);

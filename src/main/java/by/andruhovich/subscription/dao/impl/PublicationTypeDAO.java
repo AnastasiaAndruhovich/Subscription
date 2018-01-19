@@ -18,7 +18,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_TYPE_BY_ID = "SELECT publication_type_id, name FROM publication_types " +
             "WHERE publication_type_id = ?";
-    private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications";
+    private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";
 
     public PublicationTypeDAO(Connection connection) {
@@ -87,12 +87,14 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     }
 
     @Override
-    public List<PublicationType> findAll() throws DAOTechnicalException {
+    public List<PublicationType> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<PublicationType> publicationTypes;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_PUBLICATION_TYPES);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationTypeMapper publicationTypeMapper = new PublicationTypeMapper();
             publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);

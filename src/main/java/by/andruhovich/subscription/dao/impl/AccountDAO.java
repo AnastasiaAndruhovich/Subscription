@@ -18,7 +18,7 @@ public class AccountDAO extends AccountManagerDAO {
     private static final String INSERT_EMPTY_ACCOUNT= "INSERT INTO accounts() VALUES ()";
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
-    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts";
+    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts LIMIT ?, ?";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, loan = ? WHERE account_number = ?";
 
     private static final String SELECT_BALANCE_BY_ID = "SELECT balance FROM accounts WHERE account_number = ?";
@@ -93,13 +93,15 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public List<Account> findAll() throws DAOTechnicalException {
+    public List<Account> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Account> accounts;
         PreparedStatement preparedStatement = null;
         AccountMapper mapper = new AccountMapper();
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_ACCOUNTS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             accounts = mapper.mapResultSetToEntity(resultSet);
             return accounts;

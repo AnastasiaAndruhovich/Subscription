@@ -21,7 +21,8 @@ public class PaymentDAO extends PaymentManagerDAO {
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
             "WHERE payment_number = ?";
-    private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments";
+    private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments " +
+            "LIMIT ?, ?";
     private static final String UPDATE_PAYMENT = "UPDATE payments SET user_id = ?, subscription_id = ?, sum = ?, " +
             "date = ?, statement = ? WHERE payment_number = ?";
 
@@ -97,12 +98,14 @@ public class PaymentDAO extends PaymentManagerDAO {
     }
 
     @Override
-    public List<Payment> findAll() throws DAOTechnicalException {
+    public List<Payment> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Payment> payments;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_PAYMENTS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             PaymentMapper mapper = new PaymentMapper();
             payments = mapper.mapResultSetToEntity(resultSet);

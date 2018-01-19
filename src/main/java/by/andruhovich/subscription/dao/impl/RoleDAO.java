@@ -17,7 +17,7 @@ public class RoleDAO extends RoleManagerDAO {
     private static final String INSERT_ROLE= "INSERT INTO roles(name) VALUE (?)";
     private static final String DELETE_ROLE_BY_ID = "DELETE FROM roles WHERE role_id = ?";
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM roles WHERE role_id = ?";
-    private static final String SELECT_ALL_ROLES = "SELECT * FROM roles";
+    private static final String SELECT_ALL_ROLES = "SELECT * FROM roles LIMIT ?, ?";
     private static final String UPDATE_ROLE = "UPDATE roles SET name = ? WHERE role_id = ?";
 
     public RoleDAO(Connection connection) {
@@ -103,12 +103,14 @@ public class RoleDAO extends RoleManagerDAO {
     }
 
     @Override
-    public List<Role> findAll() throws DAOTechnicalException {
+    public List<Role> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Role> roles;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_ROLES);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             RoleMapper mapper = new RoleMapper();
             roles = mapper.mapResultSetToEntity(resultSet);

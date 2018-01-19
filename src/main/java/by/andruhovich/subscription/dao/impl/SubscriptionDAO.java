@@ -23,7 +23,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String SELECT_SUBSCRIPTION_BY_ID = "SELECT subscription_id, start_date, end_date, " +
             "subscription_is_active FROM subscriptions WHERE subscription_id = ?";
     private static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT subscription_id, start_date, end_date, " +
-            "subscription_is_active FROM subscriptions";
+            "subscription_is_active FROM subscriptions LIMIT ?, ?";
     private static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET user_id = ?, publication_id = ?, " +
             "start_date = ?, end_date = ?, subscription_is_active = ? WHERE subscription_id = ?";
 
@@ -102,12 +102,14 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     }
 
     @Override
-    public List<Subscription> findAll() throws DAOTechnicalException {
+    public List<Subscription> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Subscription> subscriptions;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_SUBSCRIPTIONS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             SubscriptionMapper mapper = new SubscriptionMapper();
             subscriptions = mapper.mapResultSetToEntity(resultSet);

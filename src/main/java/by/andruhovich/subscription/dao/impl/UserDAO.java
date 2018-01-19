@@ -27,7 +27,7 @@ public class UserDAO extends UserManagerDAO {
     private static final String SELECT_USER_BY_ID = "SELECT user_id, lastname, firstname, birthdate, address, city, " +
             "postal_index, login, password FROM users WHERE user_id = ?";
     private static final String SELECT_ALL_USERS = "SELECT user_id, lastname, firstname, birthdate, address, " +
-            "city, postal_index, login, password FROM users";
+            "city, postal_index, login, password FROM users LIMIT ?, ?";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
     private static final String SELECT_USERS_BY_ROLE_ID = "";
@@ -107,12 +107,14 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public List findAll() throws DAOTechnicalException {
+    public List findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<User> users;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             UserMapper mapper = new UserMapper();
             users = mapper.mapResultSetToEntity(resultSet);

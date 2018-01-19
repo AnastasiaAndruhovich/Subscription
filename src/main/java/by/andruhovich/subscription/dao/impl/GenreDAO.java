@@ -17,7 +17,7 @@ public class GenreDAO extends GenreManagerDAO {
     private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
-    private static final String SELECT_ALL_GENRES = "SELECT * FROM genres";
+    private static final String SELECT_ALL_GENRES = "SELECT * FROM genres LIMIT ?, ?";
     private static final String UPDATE_GENRE = "UPDATE genres SET name = ?, description = ? WHERE genre_id = ?";
 
     public GenreDAO(Connection connection) {
@@ -86,12 +86,14 @@ public class GenreDAO extends GenreManagerDAO {
     }
 
     @Override
-    public List<Genre> findAll() throws DAOTechnicalException {
+    public List<Genre> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Genre> genres;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_GENRES);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             GenreMapper mapper = new GenreMapper();
             genres = mapper.mapResultSetToEntity(resultSet);

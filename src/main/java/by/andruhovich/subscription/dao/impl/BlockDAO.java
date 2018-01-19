@@ -20,14 +20,14 @@ public class BlockDAO extends BlockManagerDAO {
     private static final String DELETE_BLOCK_BY_USER_ID = "DELETE FROM block WHERE user_id = ?";
     private static final String SELECT_ALL_BLOCKS = "SELECT user_id, lastname, firstname, birthdate ,address, city, " +
             "postal_index, login, admin_id, admin_lastname, admin_firstname, admin_birthdate, admin_address, " +
-            "admin_city, admin_postal_index, admin_login, date FROM block " +
+            "admin_city, admin_postal_index, admin_login, date FROM block LIMIT ?, ?" +
             "JOIN " +
             "(SELECT u.user_id, u.lastname, u.firstname, u.birthdate, u.address, u.city, u.postal_index, " +
             "u.login, u.password FROM users u) u USING (user_id) " +
             "JOIN " +
             "(SELECT a.user_id admin_id, a.lastname admin_lastname, a.firstname admin_firstname, a.birthdate " +
             "admin_birthdate, a.address admin_address, a.city admin_city, a.postal_index admin_postal_index, " +
-            "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id)";
+            "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id) LIMIT ?, ?";
     private static final String UPDATE_BLOCK = "UPDATE users SET user_id = ?, admin_id = ?, date = ?";
 
     private static final String SELECT_USERS_BY_ADMIN_ID = "SELECT  u.user_id, u.lastname, u.firstname, u.birthdate, " +
@@ -79,12 +79,14 @@ public class BlockDAO extends BlockManagerDAO {
     }
 
     @Override
-    public List<Block> findAll() throws DAOTechnicalException {
+    public List<Block> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         List<Block> blocks;
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_ALL_BLOCKS);
+            preparedStatement.setInt(1, startIndex);
+            preparedStatement.setInt(2, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             BlockMapper mapper = new BlockMapper();
             blocks = mapper.mapResultSetToEntity(resultSet);
