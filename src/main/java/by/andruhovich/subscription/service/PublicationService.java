@@ -11,13 +11,8 @@ import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 
-import java.io.DataInput;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PublicationService {
@@ -25,7 +20,6 @@ public class PublicationService {
 
     public List<Publication> showPublications(String pageNumber) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Publication> publications;
         PublicationDAO publicationDAO = null;
 
         int number = Integer.parseInt(pageNumber);
@@ -34,12 +28,8 @@ public class PublicationService {
 
         try {
             publicationDAO = daoFactory.createPublicationDAO();
-            publications =  publicationDAO.findAll(startIndex, endIndex);
-            for (Publication publication : publications) {
-                publication.setGenre(publicationDAO.findGenreByPublicationId(publication.getPublicationId()));
-                publication.setAuthors(publicationDAO.findAuthorsByPublicationId(publication.getPublicationId()));
-            }
-            return publications;
+            List<Publication> publications =  publicationDAO.findAll(startIndex, endIndex);
+            return fillOutPublicationList(publications);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -61,10 +51,10 @@ public class PublicationService {
         int genreId = genreService.findIdByGenreName(genreName);
         int publicationTypeId = publicationTypeService.findIdByPublicationTypeName(publicationTypeName);
         if (genreId == -1) {
-            genreId = genreService.addGenre(genreName);
+            genreId = genreService.addGenre(genreName, null);
         }
         if (publicationTypeId == -1) {
-            publicationTypeId = publicationTypeService.AddPublicationType(publicationTypeName);
+            publicationTypeId = publicationTypeService.addPublicationType(publicationTypeName);
         }
         genre = new Genre(genreId, genreName);
         publicationType = new PublicationType(publicationTypeId, publicationTypeName);
@@ -125,10 +115,10 @@ public class PublicationService {
         int genreId = genreService.findIdByGenreName(genreName);
         int publicationTypeId = publicationTypeService.findIdByPublicationTypeName(publicationTypeName);
         if (genreId == -1) {
-            genreId = genreService.addGenre(genreName);
+            genreId = genreService.addGenre(genreName, null);
         }
         if (publicationTypeId == -1) {
-            publicationTypeId = publicationTypeService.AddPublicationType(publicationTypeName);
+            publicationTypeId = publicationTypeService.addPublicationType(publicationTypeName);
         }
 
         genre = new Genre(genreId, genreName);
@@ -157,7 +147,8 @@ public class PublicationService {
 
         try {
             publicationDAO = daoFactory.createPublicationDAO();
-            return publicationDAO.findPublicationByName(name);
+            List<Publication> publications = publicationDAO.findPublicationByName(name);
+            return fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -172,11 +163,45 @@ public class PublicationService {
 
         try {
             authorDAO = daoFactory.createAuthorDAO();
-            return authorDAO.findPublicationsByAuthorId(intAuthorId);
+            List<Publication> publications = authorDAO.findPublicationsByAuthorId(intAuthorId);
+            return fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(authorDAO);
+        }
+    }
+
+    public List<Publication> findPublicationByGenreId(String genreId) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+        int intGenreId = Integer.parseInt(genreId);
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            List<Publication> publications = publicationDAO.findPublicationsByGenreId(intGenreId);
+            return fillOutPublicationList(publications);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
+    }
+
+    public List<Publication> findPublicationByPublicationTypeId(String publicationTypeId)
+            throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+        int intPublicationTypeId = Integer.parseInt(publicationTypeId);
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            List<Publication> publications = publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId);
+            return fillOutPublicationList(publications);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
         }
     }
 
@@ -189,6 +214,24 @@ public class PublicationService {
             publicationDAO = daoFactory.createPublicationDAO();
             return publicationDAO.findIdByEntity(publication);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
+    }
+
+    private List<Publication> fillOutPublicationList(List<Publication> publications) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            for (Publication publication : publications) {
+                publication.setGenre(publicationDAO.findGenreByPublicationId(publication.getPublicationId()));
+                publication.setPublicationType(publicationDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
+                publication.setAuthors(publicationDAO.findAuthorsByPublicationId(publication.getPublicationId()));
+            }
+            return publications;
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(publicationDAO);
