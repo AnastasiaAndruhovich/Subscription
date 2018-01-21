@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.BaseDAO;
+import by.andruhovich.subscription.dao.DAOFactory;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -52,7 +53,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             AuthorMapper authorMapper = new AuthorMapper();
             authors = authorMapper.mapResultSetToEntity(resultSet);
             return authors;
-        } catch (SQLException | DAOTechnicalException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
@@ -70,11 +71,23 @@ public class AuthorPublicationDAO extends BaseDAO {
             PublicationMapper publicationMapper = new PublicationMapper();
             publications = publicationMapper.mapResultSetToEntity(resultSet);
             return publications;
-        } catch (SQLException | DAOTechnicalException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public boolean deletePublicationsByAuthorId(int authorId) throws DAOTechnicalException {
+        List<Publication> publications = findPublicationsByAuthorId(authorId);
+        if (!publications.isEmpty()) {
+            PublicationDAO publicationDAO = new PublicationDAO(connection);
+            for (Publication publication : publications) {
+                publicationDAO.delete(publication.getPublicationId());
+            }
+            return true;
+        }
+        return false;
     }
 
 }

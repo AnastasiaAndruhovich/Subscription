@@ -20,7 +20,7 @@ public class BlockDAO extends BlockManagerDAO {
     private static final String DELETE_BLOCK_BY_USER_ID = "DELETE FROM block WHERE user_id = ?";
     private static final String SELECT_ALL_BLOCKS = "SELECT user_id, lastname, firstname, birthdate ,address, city, " +
             "postal_index, login, admin_id, admin_lastname, admin_firstname, admin_birthdate, admin_address, " +
-            "admin_city, admin_postal_index, admin_login, date FROM block LIMIT ?, ?" +
+            "admin_city, admin_postal_index, admin_login, date FROM block " +
             "JOIN " +
             "(SELECT u.user_id, u.lastname, u.firstname, u.birthdate, u.address, u.city, u.postal_index, " +
             "u.login, u.password FROM users u) u USING (user_id) " +
@@ -62,20 +62,8 @@ public class BlockDAO extends BlockManagerDAO {
     }
 
     @Override
-    public boolean delete(Block entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_BLOCK_BY_USER_ID);
-            int userId = entity.getUser().getUserId();
-            preparedStatement.setInt(1, userId);
-            preparedStatement.execute();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int userId) throws DAOTechnicalException {
+        return delete(userId, DELETE_BLOCK_BY_USER_ID);
     }
 
     @Override

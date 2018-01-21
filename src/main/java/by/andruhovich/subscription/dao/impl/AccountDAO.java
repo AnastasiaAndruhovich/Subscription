@@ -55,19 +55,8 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public boolean delete(Account entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
-            preparedStatement.setInt(1, entity.getAccountNumber());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int accountNumber) throws DAOTechnicalException {
+        return delete(accountNumber, DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
     }
 
     @Override

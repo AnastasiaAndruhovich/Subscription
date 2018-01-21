@@ -67,6 +67,10 @@ public class DAOFactory {
         return new PaymentDAO(getConnection());
     }
 
+    public AuthorDAO createAuthorDAO() throws ConnectionTechnicalException {
+        return new AuthorDAO(getConnection());
+    }
+
     public void closeDAO(BaseDAO baseDAO) {
         if (baseDAO != null) {
             connectionPool.returnConnection(baseDAO.getConnection());

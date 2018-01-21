@@ -60,19 +60,8 @@ public class PaymentDAO extends PaymentManagerDAO {
     }
 
     @Override
-    public boolean delete(Payment entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_PAYMENT_BY_ID);
-            preparedStatement.setInt(1, entity.getPaymentNumber());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_PAYMENT_BY_ID);
     }
 
     @Override

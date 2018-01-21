@@ -68,19 +68,8 @@ public class RoleDAO extends RoleManagerDAO {
     }
 
     @Override
-    public boolean delete(Role entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_ROLE_BY_ID);
-            preparedStatement.setInt(1, entity.getRoleId());
-            preparedStatement.execute();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_ROLE_BY_ID);
     }
 
     @Override

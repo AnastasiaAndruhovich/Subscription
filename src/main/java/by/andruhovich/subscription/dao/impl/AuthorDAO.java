@@ -21,6 +21,9 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
             "author_firstname = ? WHERE author_id = ?";
 
+    private static final String SELECT_AUTHOR_ID_BY_AUTHOR_FIELDS = "SELECT author_id FROM authors " +
+            "WHERE publisher_name = ? && author_firstname = ? && author_lastname = ?";
+
     public AuthorDAO(Connection connection) {
         super(connection);
     }
@@ -49,19 +52,8 @@ public class AuthorDAO extends AuthorManagerDAO {
     }
 
     @Override
-    public boolean delete(Author entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_AUTHOR_BY_ID);
-            preparedStatement.setInt(1, entity.getAuthorId());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int authorId) throws DAOTechnicalException {
+        return delete(authorId, DELETE_AUTHOR_BY_ID);
     }
 
     @Override
@@ -127,5 +119,33 @@ public class AuthorDAO extends AuthorManagerDAO {
     public List<Publication> findPublicationsByAuthorId(int id) throws DAOTechnicalException {
         AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
         return authorPublicationDAO.findPublicationsByAuthorId(id);
+    }
+
+    @Override
+    public int findIdByEntity(Author author) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_AUTHOR_ID_BY_AUTHOR_FIELDS);
+            preparedStatement.setString(1, author.getPublisherName());
+            preparedStatement.setString(2, author.getAuthorFirstName());
+            preparedStatement.setString(3, author.getAuthorLastName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id = -1;
+            while (resultSet.next()) {
+                id = resultSet.getInt("author_id");
+            }
+            return id;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
+        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+        return authorPublicationDAO.createRecord(author, publication);
     }
 }

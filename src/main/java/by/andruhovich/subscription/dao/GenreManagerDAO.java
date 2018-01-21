@@ -13,4 +13,5 @@ public abstract class GenreManagerDAO extends MediatorManagerDAO <Genre> {
     }
 
     public abstract List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException;
+    public abstract int findIdByEntity(Genre genre) throws DAOTechnicalException;
 }

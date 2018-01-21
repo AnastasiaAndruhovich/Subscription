@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.dao.impl;
 
-import by.andruhovich.subscription.dao.MediatorManagerDAO;
 import by.andruhovich.subscription.dao.PublicationTypeManagerDAO;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
@@ -20,6 +19,9 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             "WHERE publication_type_id = ?";
     private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";
+
+    private static final String SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_FIELDS = "SELECT publication_type_id " +
+            "FROM publication_types WHERE name = ?";
 
     public PublicationTypeDAO(Connection connection) {
         super(connection);
@@ -49,19 +51,8 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     }
 
     @Override
-    public boolean delete(PublicationType entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_PUBLICATION_TYPE_BY_ID);
-            preparedStatement.setInt(1, entity.getPublicationTypeId());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_PUBLICATION_TYPE_BY_ID);
     }
 
     @Override
@@ -127,5 +118,25 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
         PublicationDAO publicationDAO = new PublicationDAO(connection);
         return publicationDAO.findPublicationsByPublicationTypeId(id);
+    }
+
+    @Override
+    public int findIdByEntity(PublicationType publicationType) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_FIELDS);
+            preparedStatement.setString(1, publicationType.getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id = -1;
+            while (resultSet.next()) {
+                id = resultSet.getInt("publication_type_id");
+            }
+            return id;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
     }
 }

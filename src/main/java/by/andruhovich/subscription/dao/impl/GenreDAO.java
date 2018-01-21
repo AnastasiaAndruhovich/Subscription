@@ -20,6 +20,8 @@ public class GenreDAO extends GenreManagerDAO {
     private static final String SELECT_ALL_GENRES = "SELECT * FROM genres LIMIT ?, ?";
     private static final String UPDATE_GENRE = "UPDATE genres SET name = ?, description = ? WHERE genre_id = ?";
 
+    private static final String SELECT_GENRE_ID_BY_GENRE_FIELDS = "SELECT genre_id FROM genres WHERE name = ?";
+
     public GenreDAO(Connection connection) {
         super(connection);
     }
@@ -48,19 +50,8 @@ public class GenreDAO extends GenreManagerDAO {
     }
 
     @Override
-    public boolean delete(Genre entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_GENRE_BY_ID);
-            preparedStatement.setInt(1, entity.getGenreId());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_GENRE_BY_ID);
     }
 
     @Override
@@ -126,5 +117,25 @@ public class GenreDAO extends GenreManagerDAO {
     public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
         PublicationDAO publicationDAO = new PublicationDAO(connection);
         return publicationDAO.findPublicationsByGenreId(id);
+    }
+
+    @Override
+    public int findIdByEntity(Genre genre) throws DAOTechnicalException {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_GENRE_ID_BY_GENRE_FIELDS);
+            preparedStatement.setString(1, genre.getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id = -1;
+            while (resultSet.next()) {
+                id = resultSet.getInt("genre_id");
+            }
+            return id;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
     }
 }

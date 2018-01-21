@@ -69,19 +69,8 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public boolean delete(User entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID);
-            preparedStatement.setInt(1, entity.getUserId());
-            preparedStatement.execute();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_USER_BY_ID);
     }
 
     @Override

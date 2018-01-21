@@ -64,19 +64,8 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     }
 
     @Override
-    public boolean delete(Subscription entity) throws DAOTechnicalException {
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(DELETE_SUBSCRIPTION_BY_ID);
-            preparedStatement.setInt(1, entity.getSubscriptionId());
-            preparedStatement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
+    public boolean delete(int id) throws DAOTechnicalException {
+        return delete(id, DELETE_SUBSCRIPTION_BY_ID);
     }
 
     @Override
