@@ -11,6 +11,15 @@ public class Genre extends Entity{
 
     private List<Publication> publications = new LinkedList<>();
 
+    public Genre(String name) {
+        this.name = name;
+    }
+
+    public Genre(int genreId, String name) {
+        this.genreId = genreId;
+        this.name = name;
+    }
+
     public Genre(String name, String description) {
         this.name = name;
         this.description = description;

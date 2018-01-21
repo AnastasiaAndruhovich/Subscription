@@ -18,7 +18,20 @@ public class Publication extends Entity{
     private Genre genre;
     private PublicationType publicationType;
 
-    public Publication(String name, String description, BigDecimal price, Author author, Genre genre, PublicationType publicationType) {
+    public Publication(String name, String description, BigDecimal price, String pictureName,
+                       byte[] picture, List<Author> authors, Genre genre, PublicationType publicationType) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.pictureName = pictureName;
+        this.picture = picture;
+        this.authors = authors;
+        this.genre = genre;
+        this.publicationType = publicationType;
+    }
+
+    public Publication(String name, String description, BigDecimal price, Author author, Genre genre,
+                       PublicationType publicationType) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -36,7 +49,8 @@ public class Publication extends Entity{
         this.picture = picture;
     }
 
-    public Publication(String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
+    public Publication(String name, String description, BigDecimal price, List<Author> authors, Genre genre,
+                       PublicationType publicationType) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -54,11 +68,25 @@ public class Publication extends Entity{
         this.picture = picture;
     }
 
-    public Publication(int publicationId, String name, String description, BigDecimal price, List<Author> authors, Genre genre, PublicationType publicationType) {
+    public Publication(int publicationId, String name, String description, BigDecimal price, List<Author> authors,
+                       Genre genre, PublicationType publicationType) {
         this.publicationId = publicationId;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.authors = authors;
+        this.genre = genre;
+        this.publicationType = publicationType;
+    }
+
+    public Publication(int publicationId, String name, String description, BigDecimal price, String pictureName,
+                       byte[] picture, List<Author> authors, Genre genre, PublicationType publicationType) {
+        this.publicationId = publicationId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.pictureName = pictureName;
+        this.picture = picture;
         this.authors = authors;
         this.genre = genre;
         this.publicationType = publicationType;
