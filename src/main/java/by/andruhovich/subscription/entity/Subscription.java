@@ -40,6 +40,14 @@ public class Subscription extends Entity{
         this.subscriptionIsActive = subscriptionIsActive;
     }
 
+    public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.subscriptionIsActive = subscriptionIsActive;
+        this.user = user;
+        this.publication = publication;
+    }
+
     public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
         this.subscriptionId = subscriptionId;
         this.startDate = startDate;
