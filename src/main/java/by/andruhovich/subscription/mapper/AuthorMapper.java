@@ -18,7 +18,7 @@ public class AuthorMapper implements EntityMapper<Author> {
             while (resultSet.next()) {
                 int authorId = resultSet.getInt("author_id");
                 String publisherName = resultSet.getString("publisher_name");
-                String auhtorLastname = resultSet.getString("auhtor_lastname");
+                String auhtorLastname = resultSet.getString("author_lastname");
                 String authorFirstname = resultSet.getString("author_firstname");
                 author = new Author(authorId, publisherName, auhtorLastname, authorFirstname);
                 authors.add(author);
