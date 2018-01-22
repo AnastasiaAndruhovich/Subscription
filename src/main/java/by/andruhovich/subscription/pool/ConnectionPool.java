@@ -89,7 +89,7 @@ public class ConnectionPool {
     public void closeConnectionPool() {
         for (int i = 0; i < connections.size(); i++) {
             try {
-                connections.poll().close();
+                getConnection().close();
             } catch (SQLException e) {
                 //TODO log
             }
