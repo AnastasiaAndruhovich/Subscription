@@ -17,7 +17,7 @@ import java.util.List;
 public class PublicationMapper implements EntityMapper<Publication> {
     @Override
     public List<Publication> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
-        List<Publication> subscriptions = new LinkedList<>();
+        List<Publication> publications = new LinkedList<>();
         Publication publication;
 
         try {
@@ -32,11 +32,11 @@ public class PublicationMapper implements EntityMapper<Publication> {
                 byte[] picture = blob.getBytes(1, blobLength);
                 blob.free();
                 publication = new Publication(publicationId, name, description, price, pictureName, picture);
-                subscriptions.add(publication);
+                publications.add(publication);
             }
-            return subscriptions;
+            return publications;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getMessage());
+            throw new DAOTechnicalException(e);
         }
     }
 
