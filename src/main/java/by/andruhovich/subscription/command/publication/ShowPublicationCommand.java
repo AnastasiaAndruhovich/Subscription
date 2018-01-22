@@ -13,31 +13,33 @@ import java.util.List;
 
 public class ShowPublicationCommand implements BaseCommand {
     private PublicationService publicationService = new PublicationService();
-    private static final String PAGE_NUMBER = "page_number";
-    private static final String PUBLICATION_LIST_NAME = "publication_list";
-    private static final String MAIN_PAGE = "path.main.page";
+
+    private static final String PAGE_NUMBER = "pageNumber";
+    private static final String PUBLICATION_PAGE = "path.publication.page";
+    private static final String PUBLICATION_LIST_ATTRIBUTE = "publications";
+    private static final String PUBLICATION_MESSAGE_ATTRIBUTE = "publicationIsAbsent";
+    private static final String PUBLICATION_MESSAGE = "message.absent";
+    private static final String ERROR_PAGE = "path.page.error";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page = null;
+        String page;
         String pageNumber = request.getParameter(PAGE_NUMBER);
-        int currentPageNumber = Integer.parseInt(pageNumber);
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
         MessageManager messageManager = MessageManager.getInstance();
 
-        /*try {
-            List<Publication> publications = publicationService.findPublications(currentPageNumber);
+        try {
+            List<Publication> publications = publicationService.showPublications(pageNumber);
             if (!publications.isEmpty()) {
-                request.setAttribute(PUBLICATION_LIST_NAME, publications);
-                page = configurationManager.getProperty(MAIN_PAGE);
+                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
             } else {
-                request.setAttribute("errorLoginPassMessage", messageManager.getProperty("message.error"));
-                page = configurationManager.getProperty("path.page.login");
+                request.setAttribute(PUBLICATION_MESSAGE_ATTRIBUTE, "Publications" + messageManager.getProperty(PUBLICATION_MESSAGE));
             }
+            page = configurationManager.getProperty(PUBLICATION_PAGE);
         } catch (ServiceTechnicalException e) {
             //log
-            page = configurationManager.getProperty("path.page.error");
-        }*/
+            page = configurationManager.getProperty(ERROR_PAGE);
+        }
         return page;
     }
 }

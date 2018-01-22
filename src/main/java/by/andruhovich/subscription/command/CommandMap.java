@@ -1,5 +1,7 @@
 package by.andruhovich.subscription.command;
 
+import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
+import by.andruhovich.subscription.command.user.BlockUserCommand;
 import by.andruhovich.subscription.command.user.LoginCommand;
 
 import java.util.EnumMap;
@@ -11,6 +13,8 @@ public class CommandMap {
     static {
         commandMap = new EnumMap<>(CommandType.class);
         commandMap.put(CommandType.LOGIN, new LoginCommand());
+        commandMap.put(CommandType.BLOCK_USER, new BlockUserCommand());
+        commandMap.put(CommandType.SHOW_PUBLICATIONS, new ShowPublicationCommand());
     }
 
     private CommandMap() {}

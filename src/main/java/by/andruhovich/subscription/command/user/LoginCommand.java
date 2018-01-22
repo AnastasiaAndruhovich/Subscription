@@ -5,6 +5,9 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.ConfigurationManager;
 import by.andruhovich.subscription.manager.MessageManager;
 import by.andruhovich.subscription.service.UserService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +16,12 @@ public class LoginCommand implements BaseCommand {
     private UserService userService = new UserService();
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    Logger logger = LogManager.getLogger(LoginCommand.class);
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String page = null;
+        logger.log(Level.ERROR, "message -------------------");
+
+        String page;
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
