@@ -1,7 +1,9 @@
 package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.dao.DAOFactory;
+import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.dao.impl.PublicationTypeDAO;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -89,6 +91,21 @@ public class PublicationTypeService {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(publicationTypeDAO);
+        }
+    }
+
+    public List<Publication> findPublicationByPublicationType(String publicationTypeId) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+        int intPublicationTypeId = Integer.parseInt(publicationTypeId);
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            return publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
         }
     }
 }
