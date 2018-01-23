@@ -20,7 +20,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../part/user/header.html" %>
+<%@include file="../../static/user/header.html" %>
 
 <div class="container-fluid">
     <div class="container">
@@ -34,23 +34,35 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6">
-                                            <img src="http://bookashka.name/fb2imgs/e1/e13744dcc4b253fbc4f826e9fb27157d.jpg" alt=""
-                                                 class="w-100">
+                                            <img src="http://bookashka.name/fb2imgs/e1/e13744dcc4b253fbc4f826e9fb27157d.jpg"
+                                                 alt="" class="w-100">
                                         </div>
                                         <div class="col-6">
                                             <p class="title">Name: ${publication.name}</p>
-                                            <p class="title">Type: ${publication.publicationType.name}</p>
-                                            <p class="title">Genre: ${publication.genre.name}</p>
-                                            <c:when test="${publication.authors!=null}">
-                                                <p class="title">Authors:
-                                                    <c:forEach var="author" items="${publication.authors}">
-                                                        ${author.authorLastName} ${author.authorFirstName}
-                                                    </c:forEach>
-                                                </p>
-                                                <p class="title">Publisher: ${publication.authors[0].publisherName}</p>
-                                            </c:when>
+                                            <p class="title">
+                                                Type:<a href="controller?command=find_publication_by_publication_type_id&publicationTypeId=${publication.publicationType.publicationTypeId}" class="nav-link"> ${publication.publicationType.name}</a>
+                                            </p>
+                                            <p class="title">
+                                                Genre:<a href="controller?command=find_genre_by_genre_id&genreId=${publication.genre.genreId}" class="nav-link"> ${publication.genre.name}</a>
+                                            </p>
+                                            <c:choose>
+                                                <c:when test="${publication.authors!=null}">
+                                                    <p class="title">Authors:
+                                                        <c:forEach var="author" items="${publication.authors}">
+                                                            <a href="controller?command=find_publication_by_author&authorFirstName=${author.authorFirstName}&authorLastName=${author.authorLastName}" class="nav-link"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                        </c:forEach>
+                                                    </p>
+                                                    <p class="title">
+                                                        Publisher:<a href="controller?command=find_publication_by_publisher&publisherName=${publication.authors[0].publisherName}" class="nav-link">${publication.authors[0].publisherName}</a>
+                                                    </p>
+                                                </c:when>
+                                            </c:choose>
                                             <p class="title">Description: ${publication.description}</p>
-                                            <p class="title">Price: ${publication.price} BY</p>
+                                            <p class="title">Price: ${publication.price} BY/month</p>
+                                            <form method="GET" action="controller">
+                                                <input type="hidden" name="command" value="add_subscription" />
+                                                <button class="btn btn-outline-success my-2 my-sm-0">Subscribe</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -67,8 +79,7 @@
     </div>
 </div>
 
-<%@include file="../../part/common/numeration.html" %>
-<%@include file="../../part/common/footer.html" %>
+<%@include file="../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
