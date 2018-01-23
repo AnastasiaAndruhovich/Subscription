@@ -22,7 +22,7 @@ public class ServletSecurityFilter implements Filter {
             type = ClientType.GUEST;
             session.setAttribute("userType", type);
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/jsp/guest/publication.jsp");
+                    .getRequestDispatcher("/jsp/user/publication.jsp");
             dispatcher.forward(req, resp);
             return;
         }
