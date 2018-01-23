@@ -15,7 +15,7 @@ public class ShowPublicationCommand implements BaseCommand {
     private PublicationService publicationService = new PublicationService();
 
     private static final String PAGE_NUMBER = "pageNumber";
-    private static final String PUBLICATION_PAGE = "path.publication.page";
+    private static final String PUBLICATION_PAGE = "path.page.publication";
     private static final String PUBLICATION_LIST_ATTRIBUTE = "publications";
     private static final String PUBLICATION_MESSAGE_ATTRIBUTE = "publicationIsAbsent";
     private static final String PUBLICATION_MESSAGE = "message.absent";
