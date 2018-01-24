@@ -53,7 +53,7 @@
                                                         </c:forEach>
                                                     </p>
                                                     <p class="title">
-                                                        Publisher:<a href="controller?command=find_publication_by_publisher&publisherName=${publication.authors[0].publisherName}" class="nav-link">${publication.authors[0].publisherName}</a>
+                                                        Publisher: ${publication.authors[0].publisherName}
                                                     </p>
                                                 </c:when>
                                             </c:choose>
