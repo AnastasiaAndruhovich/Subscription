@@ -33,7 +33,7 @@
                             <p class="title">Authors:</p>
                             <c:forEach var="author" items="${authors}">
                                 <p>
-                                    <a href="controller?command=find_publication_by_author&authorFirstName=${author.authorFirstName}&authorLastName=${author.authorLastName}" class="nav-link"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                    <a href="controller?command=find_publication_by_author&authorFirstName=${author.authorFirstName}&authorLastName=${author.authorLastName}&publisherName=${author.publisherName}" class="nav-link"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                             </c:forEach>
                         </c:when>
