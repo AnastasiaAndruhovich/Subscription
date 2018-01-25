@@ -41,22 +41,17 @@
                                         <div class="col-6">
                                             <p>Name: ${publication.name}</p>
                                             <p>
-                                                Type:<a
-                                                    href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"
-                                                    class="nav-link"> ${publication.publicationType.name}</a>
+                                                Type:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                Genre:<a
-                                                    href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"
-                                                    class="nav-link"> ${publication.genre.name}</a>
+                                                Genre:<a href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     Authors:
                                                     <div class="row">
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"
-                                                               class="nav-link"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
                                                     <p>Publisher: ${publication.authors[0].publisherName}</p>
