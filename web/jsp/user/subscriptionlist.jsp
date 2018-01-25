@@ -47,14 +47,20 @@
                             <tbody>
                             <tr>
                                 <c:forEach var="subscription" items="${subscriptions}">
-                                    <td>${subscription.publication.name}</td>
-                                    <td>${subscription.publication.publicationType.name}</td>
-                                    <td>${subscription.publication.genre.name}</td>
+                                    <td>
+                                        <a href="controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
+                                    </td>
+                                    <td>
+                                        <a href="controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
+                                    </td>
+                                    <td>
+                                        <a href="controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
+                                    </td>
                                     <td>
                                         <c:choose>
                                             <c:when test="subscription.publication.authors!=null">
                                                 <c:forEach var="author" items="subsctription.publication.authors">
-                                                    ${author.authorFirstName} ${author.authorLastName}
+                                                    <a href="controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
                                                 </c:forEach>
                                             </c:when>
                                         </c:choose>
