@@ -11,6 +11,7 @@
 
 <html lang="en">
 <head>
+    <title>Publications</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,29 +39,33 @@
                                                  alt="" class="w-100">
                                         </div>
                                         <div class="col-6">
-                                            <p class="title">Name: ${publication.name}</p>
-                                            <p class="title">
-                                                Type:<a href="controller?command=find_publication_by_publication_type_id&publicationTypeId=${publication.publicationType.publicationTypeId}" class="nav-link"> ${publication.publicationType.name}</a>
+                                            <p>Name: ${publication.name}</p>
+                                            <p>
+                                                Type:<a
+                                                    href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"
+                                                    class="nav-link"> ${publication.publicationType.name}</a>
                                             </p>
-                                            <p class="title">
-                                                Genre:<a href="controller?command=find_genre_by_genre_id&genreId=${publication.genre.genreId}" class="nav-link"> ${publication.genre.name}</a>
+                                            <p>
+                                                Genre:<a
+                                                    href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"
+                                                    class="nav-link"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
-                                                    <p class="title">Authors:
+                                                    Authors:
+                                                    <div class="row">
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="controller?command=find_publication_by_author&authorFirstName=${author.authorFirstName}&authorLastName=${author.authorLastName}" class="nav-link"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"
+                                                               class="nav-link"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
-                                                    </p>
-                                                    <p class="title">
-                                                        Publisher: ${publication.authors[0].publisherName}
-                                                    </p>
+                                                    </div>
+                                                    <p>Publisher: ${publication.authors[0].publisherName}</p>
                                                 </c:when>
                                             </c:choose>
-                                            <p class="title">Description: ${publication.description}</p>
-                                            <p class="title">Price: ${publication.price} BY/month</p>
+                                            <p>Description: ${publication.description}</p>
+                                            <p>Price: ${publication.price} BY/month</p>
                                             <form method="GET" action="controller">
-                                                <input type="hidden" name="command" value="add_subscription" />
+                                                <input type="hidden" name="command" value="redirect_add_subscription"/>
                                                 <button class="btn btn-outline-success my-2 my-sm-0">Subscribe</button>
                                             </form>
                                         </div>

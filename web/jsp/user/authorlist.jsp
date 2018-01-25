@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: nastya
   Date: 23.01.2018
-  Time: 13:14
+  Time: 15:58
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,6 +11,7 @@
 
 <html lang="en">
 <head>
+    <title>Authors</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,22 +28,14 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <div class="genre card">
+                <div class="author card">
                     <c:choose>
-                        <c:when test="${genres!=null}">
-                            <c:forEach var="genre" items="${genres}">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <p class="title">
-                                                Name:<a href="controller?command=find_publication_by_genre=${genre.genreId}" class="nav-link"> ${genre.name}</a>
-                                            </p>
-                                        </div>
-                                        <div class="col-9">
-                                            <p class="title">Description: ${publication.description}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <c:when test="${authors!=null}">
+                            <c:forEach var="author" items="${authors}">
+                                <p>
+                                    <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"
+                                       class="nav-link"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
+                                </p>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
@@ -71,4 +64,3 @@
 </script>
 </body>
 </html>
-﻿

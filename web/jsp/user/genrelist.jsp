@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: nastya
   Date: 23.01.2018
-  Time: 16:06
+  Time: 13:14
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,6 +11,7 @@
 
 <html lang="en">
 <head>
+    <title>Genres</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,13 +28,16 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <div class="publisher card">
+                <div class="genre card">
                     <c:choose>
-                        <c:when test="${publishers!=null}">
-                            <p class="title">Publishers:</p>
-                            <c:forEach var="author" items="${authors}">
+                        <c:when test="${genres!=null}">
+                            <c:forEach var="genre" items="${genres}">
                                 <p>
-                                    <a href="controller?command=find_publication_by_publisher&publisherName=${author.publisherName}" class="nav-link"> ${author.publisherName}</a>
+                                    <a href="controller?command=find_publications_by_genre&genreId=${genre.genreId}"
+                                       class="nav-link"> ${genre.name}</a>
+                                </p>
+                                <p>
+                                    Description: ${genre.description}
                                 </p>
                             </c:forEach>
                         </c:when>
@@ -63,3 +67,4 @@
 </script>
 </body>
 </html>
+﻿

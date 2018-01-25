@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: nastya
   Date: 23.01.2018
-  Time: 15:58
+  Time: 13:14
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,6 +11,7 @@
 
 <html lang="en">
 <head>
+    <title>Publication Types</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,14 +28,14 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <div class="author card">
+                <div class="genre card">
                     <c:choose>
-                        <c:when test="${authors!=null}">
-                            <p class="title">Authors:</p>
-                            <c:forEach var="author" items="${authors}">
-                                <p>
-                                    <a href="controller?command=find_publication_by_author&authorFirstName=${author.authorFirstName}&authorLastName=${author.authorLastName}&publisherName=${author.publisherName}" class="nav-link"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
-                                </p>
+                        <c:when test="${publicationTypes!=null}">
+                            <c:forEach var="publicationType" items="${publicationTypes}">
+                                <div class="container">
+                                    <a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"
+                                       class="nav-link"> ${publicationType.name}</a>
+                                </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
