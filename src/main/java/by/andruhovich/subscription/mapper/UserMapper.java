@@ -37,12 +37,12 @@ public class UserMapper implements EntityMapper<User> {
 
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, User entity) throws DAOTechnicalException {
-        Date birthdate = new Date(entity.getBirthdate().getTime());
+        Date birthdate = new Date(entity.getBirthDate().getTime());
 
         try {
             preparedStatement.setInt(1, entity.getRole().getRoleId());
-            preparedStatement.setString(2, entity.getFirstname());
-            preparedStatement.setString(3, entity.getLastname());
+            preparedStatement.setString(2, entity.getFirstName());
+            preparedStatement.setString(3, entity.getLastName());
             preparedStatement.setDate(4, birthdate);
             preparedStatement.setString(5, entity.getAddress());
             preparedStatement.setString(6, entity.getCity());

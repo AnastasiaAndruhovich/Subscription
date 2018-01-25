@@ -5,6 +5,9 @@ import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,12 +27,15 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String SELECT_AUTHOR_ID_BY_AUTHOR_FIELDS = "SELECT author_id FROM authors " +
             "WHERE publisher_name = ? && author_firstname = ? && author_lastname = ?";
 
+    private static final Logger LOGGER = LogManager.getLogger(AuthorDAO.class);
+
     public AuthorDAO(Connection connection) {
         super(connection);
     }
 
     @Override
     public int create(Author entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for author create");
         PreparedStatement preparedStatement = null;
         AuthorMapper mapper = new AuthorMapper();
         int id = -1;
@@ -43,6 +49,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("author_id");
             }
+            LOGGER.log(Level.INFO, "Request for create author- succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -53,11 +60,13 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     @Override
     public boolean delete(int authorId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for author delete");
         return delete(authorId, DELETE_AUTHOR_BY_ID);
     }
 
     @Override
     public Author findEntityById(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find entity by id");
         PreparedStatement preparedStatement = null;
         List<Author> authors;
 
@@ -70,6 +79,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             if (authors.isEmpty()) {
                 return null;
             }
+            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             return authors.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -80,6 +90,7 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     @Override
     public List<Author> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find all");
         List<Author> authors;
         PreparedStatement preparedStatement = null;
 
@@ -90,6 +101,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             AuthorMapper mapper = new AuthorMapper();
             authors = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find all - succeed");
             return authors;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -100,6 +112,7 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     @Override
     public boolean update(Author entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for update author");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -107,6 +120,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             AuthorMapper mapper = new AuthorMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for update author - succeed");
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -117,12 +131,14 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     @Override
     public List<Publication> findPublicationsByAuthorId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publications by author id");
         AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
         return authorPublicationDAO.findPublicationsByAuthorId(id);
     }
 
     @Override
     public int findIdByEntity(Author author) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find id by entity");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -135,6 +151,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("author_id");
             }
+            LOGGER.log(Level.INFO, "Request for find id by entity - succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -145,6 +162,7 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     @Override
     public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for create record");
         AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
         return authorPublicationDAO.createRecord(author, publication);
     }

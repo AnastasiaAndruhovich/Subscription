@@ -1,5 +1,9 @@
 package by.andruhovich.subscription.pool;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -7,6 +11,8 @@ class DatabaseManager {
     private static DatabaseManager instance;
     private static ResourceBundle resourceBundle;
     private static final String DATABASE_CONFIG = "database/database";
+
+    private static final Logger LOGGER = LogManager.getLogger(DatabaseManager.class);
 
     private DatabaseManager() {}
 
@@ -16,8 +22,8 @@ class DatabaseManager {
             try {
                 resourceBundle = ResourceBundle.getBundle(DATABASE_CONFIG);
             } catch (MissingResourceException e) {
-                //TODO log
-                throw new RuntimeException("There is no database configuration file", e);
+                LOGGER.log(Level.FATAL, "Database configuration file " + DATABASE_CONFIG + "is not found");
+                throw new RuntimeException("Database configuration file " + DATABASE_CONFIG + "is not found", e);
             }
         }
         return instance;

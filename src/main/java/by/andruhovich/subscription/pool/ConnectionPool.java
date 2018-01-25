@@ -1,6 +1,10 @@
 package by.andruhovich.subscription.pool;
 
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,7 +23,7 @@ public class ConnectionPool {
     private Queue<Connection> connections = new LinkedList<>();;
     private static int waitingTime;
 
-    //private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private ConnectionPool() {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
@@ -33,7 +37,7 @@ public class ConnectionPool {
         try {
             Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
-            // TODO LOGGER.log(Level.FATAL, "Driver" + DRIVER_NAME +  "not found.");
+            LOGGER.log(Level.FATAL, "Driver" + DRIVER_NAME +  "not found.");
             throw new RuntimeException("Driver" + DRIVER_NAME +  "not found.", e);
         }
 
@@ -42,13 +46,13 @@ public class ConnectionPool {
                  Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
                  connections.add(connection);
             } catch (SQLException e) {
-                // TODO LOGGER.log(Level.ERROR, "");
+                LOGGER.log(Level.ERROR, "Getting connection error");
             }
         }
 
         if (connections.isEmpty()) {
-            //TODO log
-            throw new RuntimeException("It was not succeeded to create database connections. Connection pool is empty. ");
+            LOGGER.log(Level.FATAL, "It was not succeeded to create database connections. Connection pool is empty");
+            throw new RuntimeException("It was not succeeded to create database connections. Connection pool is empty");
         }
     }
 
@@ -75,7 +79,7 @@ public class ConnectionPool {
                 return connection;
             }
         } catch (InterruptedException e) {
-           //TODO LOGGER.log(Level.ERROR, e.getMessage());
+           LOGGER.log(Level.ERROR, "Getting connection error");
         } finally {
             getConnectionLock.unlock();
         }
@@ -91,7 +95,7 @@ public class ConnectionPool {
             try {
                 getConnection().close();
             } catch (SQLException e) {
-                //TODO log
+                LOGGER.log(Level.ERROR, "Closing connection pool error");
             }
         }
     }

@@ -1,10 +1,15 @@
 package by.andruhovich.subscription.command;
 
 import by.andruhovich.subscription.manager.MessageManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class CommandFactory {
+    private static final Logger LOGGER = LogManager.getLogger(CommandFactory.class);
+
     public BaseCommand defineCommand(HttpServletRequest request) {
         BaseCommand command;
         final String WRONG_ACTION = "wrongAction";
@@ -20,7 +25,7 @@ public class CommandFactory {
             command = commandMap.get(action.toUpperCase());
             return command;
         } catch (IllegalArgumentException e) {
-            //TODO log
+            LOGGER.log(Level.ERROR, "Command is undefined");
             MessageManager messageManager = MessageManager.getInstance();
             request.setAttribute(WRONG_ACTION, action + messageManager.getProperty(WRONG_ACTION_MESSAGE));
         }

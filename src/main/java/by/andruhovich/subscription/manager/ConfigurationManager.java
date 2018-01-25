@@ -16,7 +16,6 @@ public class ConfigurationManager {
             try {
                 resourceBundle = ResourceBundle.getBundle(DATABASE_CONFIG);
             } catch (MissingResourceException e) {
-                //TODO log
                 throw new RuntimeException("There is no pages paths file.", e);
             }
         }

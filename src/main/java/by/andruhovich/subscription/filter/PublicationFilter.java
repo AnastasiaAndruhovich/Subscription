@@ -17,7 +17,7 @@ import java.util.List;
         DispatcherType.REQUEST,
         DispatcherType.FORWARD,
         DispatcherType.INCLUDE},
-        urlPatterns = { "/jsp/user/publication.jsp" })
+        urlPatterns = { "/jsp/user/publicationlist.jsp" })
 public class PublicationFilter implements Filter {
     private PublicationService publicationService = new PublicationService();
 

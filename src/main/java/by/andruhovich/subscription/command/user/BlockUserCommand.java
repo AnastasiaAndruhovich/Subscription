@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 public class BlockUserCommand implements BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return "/jsp/user/publication.jsp";
+        return "/jsp/user/publicationlist.jsp";
     }
 }

@@ -16,7 +16,6 @@ public class MessageManager {
             try {
                 resourceBundle = ResourceBundle.getBundle(MESSAGES);
             } catch (MissingResourceException e) {
-                //TODO log
                 throw new RuntimeException("There is no message file", e);
             }
         }

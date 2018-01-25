@@ -21,7 +21,7 @@ public abstract class AccountManagerDAO  extends MediatorManagerDAO <Account>{
     public abstract BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException;
 
     public abstract BigDecimal recharge(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
-    public abstract BigDecimal takeTheLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
-    public abstract BigDecimal repayTheLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
+    public abstract BigDecimal takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
+    public abstract BigDecimal repayLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
     public abstract BigDecimal withdraw(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
 }

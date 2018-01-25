@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class User extends Entity{
     private int userId;
-    private String lastname;
-    private String firstname;
-    private Date birthdate;
+    private String lastName;
+    private String firstName;
+    private Date birthDate;
     private String address;
     private String city;
     private int postalIndex;
@@ -22,11 +22,11 @@ public class User extends Entity{
     private User admin;
     private List<User> users;
 
-    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+    public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
                 String login, String password, Account account) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -35,11 +35,11 @@ public class User extends Entity{
         this.account = account;
     }
 
-    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+    public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
                 String login, String password, Role role, Account account) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -49,12 +49,12 @@ public class User extends Entity{
         this.account = account;
     }
 
-    public User(String lastname, String firstname, Date birthdate, String address, String city, int postalIndex,
+    public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
                 String login, String password, Role role, Account account, List<Subscription> subscriptions,
                 User admin, List<User> users) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -67,11 +67,11 @@ public class User extends Entity{
         this.users = users;
     }
 
-    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password) {
+    public User(int userId, String lastName, String firstName, Date birthDate, String address, String city, int postalIndex, String login, String password) {
         this.userId = userId;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -79,11 +79,11 @@ public class User extends Entity{
         this.password = password;
     }
 
-    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city, int postalIndex, String login, String password, Role role, Account account) {
+    public User(int userId, String lastName, String firstName, Date birthDate, String address, String city, int postalIndex, String login, String password, Role role, Account account) {
         this.userId = userId;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -93,13 +93,13 @@ public class User extends Entity{
         this.account = account;
     }
 
-    public User(int userId, String lastname, String firstname, Date birthdate, String address, String city,
+    public User(int userId, String lastName, String firstName, Date birthDate, String address, String city,
                 int postalIndex, String login, String password, Role role, Account account,
                 List<Subscription> subscriptions, User admin, List<User> users) {
         this.userId = userId;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.birthdate = birthdate;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
         this.address = address;
         this.city = city;
         this.postalIndex = postalIndex;
@@ -120,28 +120,28 @@ public class User extends Entity{
         this.userId = userId;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getAddress() {
@@ -231,9 +231,9 @@ public class User extends Entity{
         User user = (User) o;
         return userId == user.userId &&
                 postalIndex == user.postalIndex &&
-                Objects.equals(lastname, user.lastname) &&
-                Objects.equals(firstname, user.firstname) &&
-                Objects.equals(birthdate, user.birthdate) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(birthDate, user.birthDate) &&
                 Objects.equals(address, user.address) &&
                 Objects.equals(city, user.city) &&
                 Objects.equals(login, user.login) &&
@@ -247,7 +247,7 @@ public class User extends Entity{
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, lastname, firstname, birthdate, address, city, postalIndex, login, password, role,
+        return Objects.hash(userId, lastName, firstName, birthDate, address, city, postalIndex, login, password, role,
                 account, subscriptions, admin, users);
     }
 }

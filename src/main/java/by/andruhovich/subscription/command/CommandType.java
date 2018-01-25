@@ -21,4 +21,7 @@ public enum CommandType {
 
     //subscription
     SHOW_SUBSCRIPTIONS, ADD_SUBSCRIPTION, ACTIVATE_SUBSCRIPTION, DEACTIVATE_SUBSCRIPTION,
+
+    //redirect
+    redirect_author_update, redirect_publication_update, redirect_genre_update, redirect_publication_type_update,
 }
