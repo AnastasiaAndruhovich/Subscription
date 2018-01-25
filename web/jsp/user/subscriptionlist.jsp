@@ -33,6 +33,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
+                                <th scope="col">Subscription Id</th>
                                 <th scope="col">Publication Name</th>
                                 <th scope="col">Publication Type</th>
                                 <th scope="col">Genre</th>
@@ -45,46 +46,47 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
                                 <c:forEach var="subscription" items="${subscriptions}">
-                                    <td>
-                                        <a href="controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
-                                    </td>
-                                    <td>
-                                        <a href="controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
-                                    </td>
-                                    <td>
-                                        <a href="controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
-                                    </td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="subscription.publication.authors!=null">
-                                                <c:forEach var="author" items="subsctription.publication.authors">
-                                                    <a href="controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
-                                                </c:forEach>
-                                            </c:when>
-                                        </c:choose>
-                                    </td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="subscription.publication.authors!=null">
-                                                ${subscription.publication.authors[0].publisherName}
-                                            </c:when>
-                                        </c:choose>
-                                    </td>
-                                    <td>${startDate}</td>
-                                    <td>${endDate}</td>
-                                    <td>${subsctription.isActive}</td>
-                                    <td>
-                                        <form method="POST" action="controller">
-                                            <input type="hidden" name="command" value="pay_subscription"/>
-                                            <input type="hidden" name="subscriptionId"
-                                                   value="${subscription.subscriptionId}">
-                                            <button class="btn btn-outline-success my-2 my-sm-0">Pay</button>
-                                        </form>
-                                    </td>
+                                    <tr>
+                                        <td>${subscription.subscriptionId}</td>
+                                        <td>
+                                            <a href="controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
+                                        </td>
+                                        <td>
+                                            <a href="controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
+                                        </td>
+                                        <td>
+                                            <a href="controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="subscription.publication.authors!=null">
+                                                    <c:forEach var="author" items="subsctription.publication.authors">
+                                                        <a href="controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
+                                                    </c:forEach>
+                                                </c:when>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="subscription.publication.authors!=null">
+                                                    ${subscription.publication.authors[0].publisherName}
+                                                </c:when>
+                                            </c:choose>
+                                        </td>
+                                        <td>${startDate}</td>
+                                        <td>${endDate}</td>
+                                        <td>${subsctription.isActive}</td>
+                                        <td>
+                                            <form method="POST" action="controller">
+                                                <input type="hidden" name="command" value="pay_subscription"/>
+                                                <input type="hidden" name="subscriptionId"
+                                                       value="${subscription.subscriptionId}">
+                                                <button class="btn btn-outline-success my-2 my-sm-0">Pay</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
-                            </tr>
                             </tbody>
                         </table>
                     </c:when>
