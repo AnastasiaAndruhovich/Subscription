@@ -19,6 +19,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style><%@include file="../../css/padding.css"%></style>
 </head>
 <body>
 <%@include file="../../static/user/header.html" %>
@@ -26,8 +28,8 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <div class="publication card">
                     <c:choose>
                         <c:when test="${publications!=null}">
@@ -48,8 +50,8 @@
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
-                                                    Authors:
                                                     <div class="row">
+                                                        Authors:
                                                         <c:forEach var="author" items="${publication.authors}">
                                                             <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
@@ -74,7 +76,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>
