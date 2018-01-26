@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/padding.css"%></style>
+    <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
 <%@include file="../../static/user/header.html" %>
@@ -80,6 +80,67 @@
         </div>
     </div>
 </div>
+
+<%--Declare variable for current page and count of contacts --%>
+<c:set var="currentPage" value="${(pageNumber==null) ? 1 : pageNumber}"/>
+<c:set var="lastPage" value="${(pageCount==null) ? 1 : pageCount}"/>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <c:choose>
+            <c:when test="${currentPage==1}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="controller?command=show_publications&pageNumber=${currentPage-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+        <%--For displaying all available pages--%>
+        <c:forEach begin="${currentPage}" end="${(currentPage+3>pageCount) ? pageCount : currentPage+3}" var="i">
+            <c:choose>
+                <c:when test="${currentPage eq i}">
+                    <li class="page-item active">
+                        <a class="page-link" href="controller?command=show_publications&pageNumber=${i}">${i}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="controller?command=show_publications&pageNumber=${i}">${i}</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:choose>
+            <c:when test="${currentPage eq lastPage}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="controller?command=show_publications&pageNumber=${currentPage+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+
+    </ul>
+</nav>
 
 <%@include file="../../static/common/footer.html" %>
 
