@@ -26,15 +26,14 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <div class="author card">
                     <c:choose>
                         <c:when test="${authors!=null}">
                             <c:forEach var="author" items="${authors}">
                                 <p>
-                                    <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"
-                                       class="nav-link"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
+                                    <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                             </c:forEach>
                         </c:when>
@@ -44,7 +43,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>
