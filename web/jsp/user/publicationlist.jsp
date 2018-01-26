@@ -36,11 +36,11 @@
                             <c:forEach var="publication" items="${publications}">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <img src="http://bookashka.name/fb2imgs/e1/e13744dcc4b253fbc4f826e9fb27157d.jpg"
                                                  alt="" class="w-100">
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-8">
                                             <p>Name: ${publication.name}</p>
                                             <p>
                                                 Type:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
