@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nastya
-  Date: 25.01.2018
-  Time: 10:46
+  Date: 26.01.2018
+  Time: 14:41
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,7 +11,7 @@
 
 <html lang="en">
 <head>
-    <title>Genres</title>
+    <title>Edit Publication Type</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,6 +19,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style><%@include file="../../css/padding.css"%></style>
 </head>
 <body>
 <%@include file="../../static/admin/header.html" %>
@@ -26,26 +28,22 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <div class="genre card">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="publication type card">
                     <c:choose>
-                        <c:when test="${genres!=null}">
-                            <p class="title">Genres:</p>
-                            <c:forEach var="genre" items="${genres}">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <p class="title">
-                                                Name:<a href="controller?command=find_publication_by_genre&genreId=${genre.genreId}" class="nav-link"> ${genre.name}</a>
-                                            </p>
-                                        </div>
-                                        <div class="col-9">
-                                            <p class="title">Description: ${publication.description}</p>
-                                        </div>
+                        <c:when test="${publicationType!=null}">
+                            <form name="editForm" method="POST" action="controller">
+                                <input type="hidden" name="command" value="update_publication_type"/>
+                                <div class="form-group row">
+                                    <label for="update" class="col-sm-2 col-form-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" id="update"
+                                               value="${publicationType.name}"/>
                                     </div>
                                 </div>
-                            </c:forEach>
+                                <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
+                            </form>
                         </c:when>
                         <c:otherwise>
                             <p>${infromationIsAbsent}</p>
@@ -53,7 +51,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>

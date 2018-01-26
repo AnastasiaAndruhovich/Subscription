@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nastya
-  Date: 23.01.2018
-  Time: 13:14
+  Date: 26.01.2018
+  Time: 17:05
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,7 +11,7 @@
 
 <html lang="en">
 <head>
-    <title>Publication Types</title>
+    <title>Add Publication Type</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,32 +19,31 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style><%@include file="../../css/padding.css"%></style>
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+<%@include file="../../static/admin/header.html" %>
 
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <div class="genre card">
-                    <c:choose>
-                        <c:when test="${publicationTypes!=null}">
-                            <c:forEach var="publicationType" items="${publicationTypes}">
-                                <div class="container">
-                                    <a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"
-                                       class="nav-link"> ${publicationType.name}</a>
-                                </div>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
-                        </c:otherwise>
-                    </c:choose>
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="publication type card">
+                    <form name="addForm" method="POST" action="controller">
+                        <input type="hidden" name="command" value="add_publication_type"/>
+                        <div class="form-group row">
+                            <label for="update" class="col-sm-2 col-form-label">Publication type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" id="update" placeholder="Name"/>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-success my-2 my-sm-0">Add</button>
+                    </form>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>

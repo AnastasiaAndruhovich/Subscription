@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nastya
-  Date: 23.01.2018
-  Time: 13:14
+  Date: 26.01.2018
+  Time: 17:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,7 +11,7 @@
 
 <html lang="en">
 <head>
-    <title>Genres</title>
+    <title>Edit Genre</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +23,7 @@
     <style><%@include file="../../css/padding.css"%></style>
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+<%@include file="../../static/admin/header.html" %>
 
 <div class="container-fluid">
     <div class="container">
@@ -32,18 +32,18 @@
             <div class="col-10">
                 <div class="genre card">
                     <c:choose>
-                        <c:when test="${genres!=null}">
-                            <c:forEach var="genre" items="${genres}">
-                                <div class="container">
-                                    <p>
-                                        <a href="controller?command=find_publications_by_genre&genreId=${genre.genreId}"
-                                           class="nav-link"> ${genre.name}</a>
-                                    </p>
-                                    <p>
-                                        Description: ${genre.description}
-                                    </p>
+                        <c:when test="${genre!=null}">
+                            <form name="editForm" method="POST" action="controller">
+                                <input type="hidden" name="command" value="update_genre"/>
+                                <div class="form-group row">
+                                    <label for="update" class="col-sm-2 col-form-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" id="update"
+                                               value="${genre.name}"/>
+                                    </div>
                                 </div>
-                            </c:forEach>
+                                <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
+                            </form>
                         </c:when>
                         <c:otherwise>
                             <p>${infromationIsAbsent}</p>
@@ -71,4 +71,3 @@
 </script>
 </body>
 </html>
-﻿
