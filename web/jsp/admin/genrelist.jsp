@@ -36,8 +36,7 @@
                             <c:forEach var="genre" items="${genres}">
                                 <div class="container">
                                     <p>
-                                        <a href="controller?command=find_publications_by_genre&genreId=${genre.genreId}"
-                                           class="nav-link"> ${genre.name}</a>
+                                        <a href="controller?command=find_publications_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
                                     </p>
                                     <p>
                                         Description: ${genre.description}
