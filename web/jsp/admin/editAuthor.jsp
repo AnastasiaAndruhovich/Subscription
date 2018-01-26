@@ -53,7 +53,7 @@
                                         <input type="text" class="form-control" name="publisherName" id="publisherName" value="${author.publisherName}"/>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline-success my-2 my-sm-0">Add</button>
+                                <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
                             </form>
                         </c:when>
                         <c:otherwise>
