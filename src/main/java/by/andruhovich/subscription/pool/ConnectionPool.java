@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.pool;
 
 
+import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -20,39 +23,44 @@ public class ConnectionPool {
     private static AtomicBoolean instanceCreated = new AtomicBoolean();
     private static Lock instanceLock = new ReentrantLock();
     private static Lock getConnectionLock = new ReentrantLock();
-    private Queue<Connection> connections = new LinkedList<>();;
+    private BlockingQueue<Connection> connections;
     private static int waitingTime;
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private ConnectionPool() {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
-        final int POOL_SIZE = Integer.valueOf(databaseManager.getProperty("pool_size"));
-        final String URL = databaseManager.getProperty("url");
-        final String DRIVER_NAME = databaseManager.getProperty("driver");
-        final String USER = databaseManager.getProperty("user");
-        final String PASSWORD = databaseManager.getProperty("password");
-        waitingTime = Integer.valueOf(databaseManager.getProperty("waiting_time"));
-
         try {
+            final int POOL_SIZE = Integer.valueOf(databaseManager.getProperty("pool_size"));
+            final String URL = databaseManager.getProperty("url");
+            final String DRIVER_NAME = databaseManager.getProperty("driver");
+            final String USER = databaseManager.getProperty("user");
+            final String PASSWORD = databaseManager.getProperty("password");
+            waitingTime = Integer.valueOf(databaseManager.getProperty("waiting_time"));
+
             Class.forName(DRIVER_NAME);
-        } catch (ClassNotFoundException e) {
-            LOGGER.log(Level.FATAL, "Driver" + DRIVER_NAME +  "not found.");
-            throw new RuntimeException("Driver" + DRIVER_NAME +  "not found.", e);
-        }
 
-        for (int i = 0; i < POOL_SIZE; i++) {
-            try {
-                 Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 connections.add(connection);
-            } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, "Getting connection error");
+            connections = new ArrayBlockingQueue<>(POOL_SIZE);
+            for (int i = 0; i < POOL_SIZE; i++) {
+                try {
+                    Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                    connections.add(connection);
+                } catch (SQLException e) {
+                    LOGGER.log(Level.ERROR, "Getting connection error");
+                }
             }
-        }
 
-        if (connections.isEmpty()) {
-            LOGGER.log(Level.FATAL, "It was not succeeded to create database connections. Connection pool is empty");
-            throw new RuntimeException("It was not succeeded to create database connections. Connection pool is empty");
+            if (connections.isEmpty()) {
+                LOGGER.log(Level.FATAL, "It was not succeeded to create database connections. Connection pool is empty");
+                throw new RuntimeException("It was not succeeded to create database connections. Connection pool is empty");
+            }
+
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.FATAL, "It was not succeeded to create database connections. " + e.getMessage());
+            throw new RuntimeException("It was not succeeded to create database connections. " + e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            LOGGER.log(Level.FATAL, "Driver is not found");
+            throw new RuntimeException("Driver is not found", e);
         }
     }
 
@@ -93,9 +101,9 @@ public class ConnectionPool {
     public void closeConnectionPool() {
         for (int i = 0; i < connections.size(); i++) {
             try {
-                getConnection().close();
-            } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, "Closing connection pool error");
+                connections.take().close();
+            } catch (SQLException | InterruptedException e) {
+                LOGGER.log(Level.ERROR, "Error closing connection");
             }
         }
     }

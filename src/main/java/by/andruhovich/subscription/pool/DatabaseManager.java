@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.pool;
 
+import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +30,12 @@ class DatabaseManager {
         return instance;
     }
 
-    String getProperty(String key) {
-        return resourceBundle.getString(key);
+    String getProperty(String key) throws MissingResourceTechnicalException {
+        try {
+            return resourceBundle.getString(key);
+        } catch (MissingResourceException e) {
+            throw new MissingResourceTechnicalException("Resource " + key + " is not fount in source" + DATABASE_CONFIG, e);
+        }
+
     }
 }
