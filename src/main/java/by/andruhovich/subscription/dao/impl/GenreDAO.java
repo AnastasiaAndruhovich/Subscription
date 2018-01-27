@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.GenreManagerDAO;
-import by.andruhovich.subscription.dao.MediatorManagerDAO;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -157,8 +156,8 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
-    public int getEntityCount() throws DAOTechnicalException {
+    public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
-        return getEntityCount(SELECT_COUNT);
+        return findEntityCount(SELECT_COUNT);
     }
 }

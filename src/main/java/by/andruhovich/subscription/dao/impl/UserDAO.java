@@ -7,7 +7,6 @@ import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
-import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.RoleMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
 import org.apache.logging.log4j.Level;
@@ -18,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO extends UserManagerDAO {
@@ -330,8 +328,8 @@ public class UserDAO extends UserManagerDAO {
         return subscriptionDAO.findUserBySubscriptionId(id);
     }
 
-    public int getEntityCount() throws DAOTechnicalException {
+    public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
-        return getEntityCount(SELECT_COUNT);
+        return findEntityCount(SELECT_COUNT);
     }
 }

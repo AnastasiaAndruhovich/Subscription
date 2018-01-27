@@ -3,11 +3,9 @@ package by.andruhovich.subscription.dao.impl;
 import by.andruhovich.subscription.dao.PaymentManagerDAO;
 import by.andruhovich.subscription.entity.Payment;
 import by.andruhovich.subscription.entity.Subscription;
-import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PaymentMapper;
 import by.andruhovich.subscription.mapper.SubscriptionMapper;
-import by.andruhovich.subscription.mapper.UserMapper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -181,8 +179,8 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
-    public int getEntityCount() throws DAOTechnicalException {
+    public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
-        return getEntityCount(SELECT_COUNT);
+        return findEntityCount(SELECT_COUNT);
     }
 }

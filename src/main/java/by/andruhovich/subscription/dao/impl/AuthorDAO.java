@@ -65,9 +65,9 @@ public class AuthorDAO extends AuthorManagerDAO {
         return delete(authorId, DELETE_AUTHOR_BY_ID);
     }
 
-    public int getEntityCount() throws DAOTechnicalException {
+    public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
-        return getEntityCount(SELECT_COUNT);
+        return findEntityCount(SELECT_COUNT);
     }
 
     @Override
