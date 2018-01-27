@@ -1,4 +1,4 @@
-package by.andruhovich.subscription.filter;
+package by.andruhovich.subscription.type;
 
 public enum ClientType {
     GUEST, USER, ADMIN
