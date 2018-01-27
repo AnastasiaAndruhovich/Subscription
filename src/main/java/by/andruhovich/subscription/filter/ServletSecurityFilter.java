@@ -22,7 +22,7 @@ public class ServletSecurityFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        final String CLIENT_TYPE = "userType";
+        final String CLIENT_TYPE = "clientType";
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
