@@ -18,9 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class UserService {
-    private static final int ENTITY_QUANTITY_FOR_ONE_PAGE = 10;
-
+public class UserService extends BaseService{
     public boolean checkLoginByPassword(String login, String password) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
@@ -150,8 +148,8 @@ public class UserService {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
         int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_QUANTITY_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_QUANTITY_FOR_ONE_PAGE ;
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             userDAO = daoFactory.createUserDAO();
@@ -229,13 +227,14 @@ public class UserService {
         }
     }
 
-    public int findUserCount() throws ServiceTechnicalException {
+    public int findUserPageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
 
         try {
             userDAO = daoFactory.createUserDAO();
-            return userDAO.findEntityCount();
+            int count = userDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

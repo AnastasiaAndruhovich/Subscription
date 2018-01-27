@@ -11,8 +11,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AuthorService {
-
+public class AuthorService extends BaseService{
     private int findIdByAuthorName(String authorFirstName, String authorLastName, String publisherName)
             throws ServiceTechnicalException {
         Author author = new Author(publisherName, authorLastName, authorFirstName);
@@ -92,13 +91,14 @@ public class AuthorService {
         }
     }
 
-    public int findAuthorCount() throws ServiceTechnicalException {
+    public int findAuthorPageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         AuthorDAO authorDAO = null;
 
         try {
             authorDAO = daoFactory.createAuthorDAO();
-            return authorDAO.findEntityCount();
+            int count = authorDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

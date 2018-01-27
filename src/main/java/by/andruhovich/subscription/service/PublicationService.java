@@ -15,16 +15,15 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class PublicationService {
-    private static final int ENTITY_QUANTITY_FOR_ONE_PAGE = 10;
+public class PublicationService extends BaseService{
 
     public List<Publication> showPublications(String pageNumber) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
 
         int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_QUANTITY_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_QUANTITY_FOR_ONE_PAGE ;
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             publicationDAO = daoFactory.createPublicationDAO();
@@ -205,13 +204,14 @@ public class PublicationService {
         }
     }
 
-    public int findPublicationCount() throws ServiceTechnicalException {
+    public int findPublicationPageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
 
         try {
             publicationDAO = daoFactory.createPublicationDAO();
-            return publicationDAO.findEntityCount();
+            int count = publicationDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

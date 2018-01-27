@@ -11,9 +11,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 
 import java.util.List;
 
-public class PublicationTypeService {
-    private static final int ENTITY_QUANTITY_FOR_ONE_PAGE = 10;
-
+public class PublicationTypeService extends BaseService{
     int findIdByPublicationTypeName(String publicationTypeName) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationTypeDAO publicationTypeDAO = null;
@@ -81,8 +79,8 @@ public class PublicationTypeService {
         PublicationTypeDAO publicationTypeDAO = null;
 
         int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_QUANTITY_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_QUANTITY_FOR_ONE_PAGE ;
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             publicationTypeDAO = daoFactory.createPublicationTypeDAO();
@@ -109,13 +107,14 @@ public class PublicationTypeService {
         }
     }
 
-    public int findPublicationTypeCount() throws ServiceTechnicalException {
+    public int findPublicationTypePageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationTypeDAO publicationTypeDAO = null;
 
         try {
             publicationTypeDAO = daoFactory.createPublicationTypeDAO();
-            return publicationTypeDAO.findEntityCount();
+            int count = publicationTypeDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

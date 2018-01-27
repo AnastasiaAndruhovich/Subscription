@@ -1,4 +1,4 @@
 package by.andruhovich.subscription.service;
 
-public class PaymentService {
+public class PaymentService extends BaseService{
 }

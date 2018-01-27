@@ -14,7 +14,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import java.util.Date;
 import java.util.List;
 
-public class SubscriptionService {
+public class SubscriptionService extends BaseService{
     private static final int ENTITY_QUANTITY_FOR_ONE_PAGE = 10;
 
     public List<Subscription> showSubscriptions(String pageNumber) throws ServiceTechnicalException {
@@ -97,13 +97,14 @@ public class SubscriptionService {
         }
     }
 
-    public int findSubscriptionCount() throws ServiceTechnicalException {
+    public int findSubscriptionPageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         SubscriptionDAO subscriptionDAO = null;
 
         try {
             subscriptionDAO = daoFactory.createSubscriptionDAO();
-            return subscriptionDAO.findEntityCount();
+            int count = subscriptionDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

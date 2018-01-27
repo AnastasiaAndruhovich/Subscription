@@ -3,16 +3,13 @@ package by.andruhovich.subscription.service;
 import by.andruhovich.subscription.dao.DAOFactory;
 import by.andruhovich.subscription.dao.impl.GenreDAO;
 import by.andruhovich.subscription.entity.Genre;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 
 import java.util.List;
 
-public class GenreService {
-    private static final int ENTITY_QUANTITY_FOR_ONE_PAGE = 10;
-
+public class GenreService extends BaseService{
     int findIdByGenreName(String genreName) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         GenreDAO genreDAO = null;
@@ -47,8 +44,8 @@ public class GenreService {
         DAOFactory daoFactory = DAOFactory.getInstance();
         GenreDAO genreDAO = null;
         int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_QUANTITY_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_QUANTITY_FOR_ONE_PAGE ;
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             genreDAO = daoFactory.createGenreDAO();
@@ -91,13 +88,14 @@ public class GenreService {
         }
     }
 
-    public int findGenreCount() throws ServiceTechnicalException {
+    public int findGenrePageCount() throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         GenreDAO genreDAO = null;
 
         try {
             genreDAO = daoFactory.createGenreDAO();
-            return genreDAO.findEntityCount();
+            int count = genreDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
