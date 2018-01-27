@@ -10,6 +10,9 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
 import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +25,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String INSERT_PUBLICATION = "INSERT INTO publications(name, publication_type_id, genre_id, " +
             "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(publication_id) AS count FROM publications";
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE publication_id = ?";
     private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price, " +
@@ -42,12 +46,15 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE name = ?";
 
+    private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
+
     public PublicationDAO(Connection connection) {
         super(connection);
     }
 
     @Override
     public int create(Publication entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for create publication");
         PreparedStatement preparedStatement = null;
         PublicationMapper mapper = new PublicationMapper();
         int id = -1;
@@ -61,6 +68,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("publication_id");
             }
+            LOGGER.log(Level.INFO, "Request for create publication - succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -71,11 +79,13 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for delete publication");
         return delete(id,DELETE_PUBLICATION_BY_ID);
     }
 
     @Override
     public Publication findEntityById(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find entity by id");
         PreparedStatement preparedStatement = null;
         List<Publication> publications;
 
@@ -85,6 +95,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             if (publications.isEmpty()) {
                 return null;
             }
@@ -98,6 +109,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public List<Publication> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find all");
         List<Publication> publications;
         PreparedStatement preparedStatement = null;
 
@@ -108,6 +120,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find all - succeed");
             return publications;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -118,6 +131,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public boolean update(Publication entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for update publication");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -125,6 +139,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             PublicationMapper mapper = new PublicationMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for update publication - succeed");
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -135,6 +150,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public Genre findGenreByPublicationId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find genre by publication id");
         PreparedStatement preparedStatement = null;
         List<Genre> genres;
 
@@ -144,6 +160,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             GenreMapper genreMapper = new GenreMapper();
             genres = genreMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find genre by publication id - succeed");
             if (!genres.isEmpty()) {
                 return genres.get(0);
             }
@@ -157,6 +174,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publication type bby publication id");
         PreparedStatement preparedStatement = null;
         List<PublicationType> publicationTypes;
 
@@ -166,6 +184,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationTypeMapper publicationTypeMapper = new PublicationTypeMapper();
             publicationTypes = publicationTypeMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find publication type bby publication id - succeed");
             if (!publicationTypes.isEmpty()) {
                 return publicationTypes.get(0);
             }
@@ -178,8 +197,8 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public int findIdByEntity(Publication publication)
-            throws DAOTechnicalException {
+    public int findIdByEntity(Publication publication) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find id by entity");
         PreparedStatement preparedStatement = null;
         int publicationId = -1;
 
@@ -194,6 +213,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             while (resultSet.next()) {
                 publicationId = resultSet.getInt("publication_id");
             }
+            LOGGER.log(Level.INFO, "Request for find id by entity - succeed");
             return publicationId;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -204,18 +224,21 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find authors by publication id");
         AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
         return authorPublicationDAO.findAuthorByPublicationId(id);
     }
 
     @Override
     public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publication by genre id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATIONS_BY_GENRE_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for find publication by genre id - succeed");
             PublicationMapper publicationMapper = new PublicationMapper();
             return publicationMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {
@@ -227,6 +250,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publications by publication type id");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -235,6 +259,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper publicationMapper = new PublicationMapper();
             List<Publication> publications = publicationMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find publications by publication type id - succeed");
             return publications;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -245,12 +270,14 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     @Override
     public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for create record");
         AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
         return authorPublicationDAO.createRecord(author, publication);
     }
 
     @Override
     public List<Publication> findPublicationByName(String name) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publication by name");
         PreparedStatement preparedStatement = null;
         List<Publication> publications;
 
@@ -260,11 +287,17 @@ public class PublicationDAO extends PublicationManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find publication by name - succeed");
             return publications;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int getEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return getEntityCount(SELECT_COUNT);
     }
 }

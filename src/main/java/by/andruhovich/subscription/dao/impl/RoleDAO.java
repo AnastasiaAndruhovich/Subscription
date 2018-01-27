@@ -5,6 +5,9 @@ import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.RoleMapper;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,12 +23,15 @@ public class RoleDAO extends RoleManagerDAO {
     private static final String SELECT_ALL_ROLES = "SELECT * FROM roles LIMIT ?, ?";
     private static final String UPDATE_ROLE = "UPDATE roles SET name = ? WHERE role_id = ?";
 
+    private static final Logger LOGGER = LogManager.getLogger(RoleDAO.class);
+
     public RoleDAO(Connection connection) {
         super(connection);
     }
 
     @Override
     public int findIdByName(String name) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find id by name");
         PreparedStatement preparedStatement = null;
         int id = -1;
 
@@ -36,6 +42,7 @@ public class RoleDAO extends RoleManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("role_id");
             }
+            LOGGER.log(Level.INFO, "Request for find id by name - succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -46,6 +53,7 @@ public class RoleDAO extends RoleManagerDAO {
 
     @Override
     public int create(Role entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for create role");
         PreparedStatement preparedStatement = null;
         RoleMapper mapper = new RoleMapper();
         int id = 0;
@@ -59,6 +67,7 @@ public class RoleDAO extends RoleManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("role_id");
             }
+            LOGGER.log(Level.INFO, "Request for create role - succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -69,11 +78,13 @@ public class RoleDAO extends RoleManagerDAO {
 
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for delete role");
         return delete(id, DELETE_ROLE_BY_ID);
     }
 
     @Override
     public Role findEntityById(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find entity by id");
         PreparedStatement preparedStatement = null;
         List<Role> roles;
 
@@ -83,6 +94,7 @@ public class RoleDAO extends RoleManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             RoleMapper mapper = new RoleMapper();
             roles = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             return roles.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -93,6 +105,7 @@ public class RoleDAO extends RoleManagerDAO {
 
     @Override
     public List<Role> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find all");
         List<Role> roles;
         PreparedStatement preparedStatement = null;
 
@@ -103,6 +116,7 @@ public class RoleDAO extends RoleManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             RoleMapper mapper = new RoleMapper();
             roles = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find all - succeed");
             return roles;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -113,6 +127,7 @@ public class RoleDAO extends RoleManagerDAO {
 
     @Override
     public boolean update(Role entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for update role");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -120,6 +135,7 @@ public class RoleDAO extends RoleManagerDAO {
             RoleMapper mapper = new RoleMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for update role - succeed");
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -130,6 +146,7 @@ public class RoleDAO extends RoleManagerDAO {
 
     @Override
     public List<User> findUsersByRoleId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find users by role id");
         UserDAO userDAO = new UserDAO(connection);
         return userDAO.findUsersByRoleId(id);
     }

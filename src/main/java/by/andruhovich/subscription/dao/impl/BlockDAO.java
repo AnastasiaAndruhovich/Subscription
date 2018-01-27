@@ -7,6 +7,9 @@ import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.BlockMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,6 +42,9 @@ public class BlockDAO extends BlockManagerDAO {
             "(SELECT u.user_id, u.lastname, u.firstname, u.birthdate, u.address, u.city, u.postal_index, u.login, " +
             "u.password FROM users u) u ON (block.admin_id = u.user_id) " +
             "WHERE block.user_id = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(user_id) AS count FROM block";
+
+    private static final Logger LOGGER = LogManager.getLogger(BlockDAO.class);
 
     public BlockDAO(Connection connection) {
         super(connection);
@@ -46,6 +52,7 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public int create(Block entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for create block");
         PreparedStatement preparedStatement = null;
         BlockMapper mapper = new BlockMapper();
 
@@ -53,6 +60,7 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement = connection.prepareStatement(INSERT_BLOCK);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for create block - succeed");
             return 0;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -63,11 +71,13 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public boolean delete(int userId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for delete block");
         return delete(userId, DELETE_BLOCK_BY_USER_ID);
     }
 
     @Override
     public List<Block> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find all");
         List<Block> blocks;
         PreparedStatement preparedStatement = null;
 
@@ -78,6 +88,7 @@ public class BlockDAO extends BlockManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             BlockMapper mapper = new BlockMapper();
             blocks = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find all - succeed");
             return blocks;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -88,6 +99,7 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public boolean update(Block entity) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for update block");
         PreparedStatement preparedStatement = null;
         BlockMapper mapper = new BlockMapper();
 
@@ -95,6 +107,7 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_BLOCK);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for update block - succeed");
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -105,6 +118,7 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public List<User> findUsersByAdminId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find user by admin id");
         PreparedStatement preparedStatement = null;
         List<User> users;
 
@@ -114,6 +128,7 @@ public class BlockDAO extends BlockManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             UserMapper userMapper = new UserMapper();
             users = userMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find user by admin id - succeed");
             return users;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -124,6 +139,7 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public User findAdminByUserId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find admin by user id");
         PreparedStatement preparedStatement = null;
 
         try {
@@ -132,6 +148,7 @@ public class BlockDAO extends BlockManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             UserMapper userMapper = new UserMapper();
             List<User> users = userMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find admin by user id - succeed");
             if (!users.isEmpty()) {
                 return users.get(0);
             }
@@ -145,17 +162,24 @@ public class BlockDAO extends BlockManagerDAO {
 
     @Override
     public boolean deleteBlockByUserId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for delete block by user id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(DELETE_BLOCK_BY_USER_ID);
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
+            LOGGER.log(Level.INFO, "Request for delete block by user id - succeed");
             return true;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int getEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return getEntityCount(SELECT_COUNT);
     }
 }

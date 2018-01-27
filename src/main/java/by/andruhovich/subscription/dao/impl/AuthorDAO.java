@@ -19,6 +19,7 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String INSERT_AUTHOR = "INSERT INTO authors(publisher_name, author_lastname, author_firstname) " +
             "VALUES (?, ?, ?)";
     private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM authors WHERE author_id = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(author_id) AS count FROM authors";
     private static final String SELECT_AUTHOR_BY_ID = "SELECT * FROM authors WHERE author_id = ?";
     private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors LIMIT ?, ?";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
@@ -49,7 +50,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             while (resultSet.next()) {
                 id = resultSet.getInt("author_id");
             }
-            LOGGER.log(Level.INFO, "Request for create author- succeed");
+            LOGGER.log(Level.INFO, "Request for create author - succeed");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -64,6 +65,11 @@ public class AuthorDAO extends AuthorManagerDAO {
         return delete(authorId, DELETE_AUTHOR_BY_ID);
     }
 
+    public int getEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return getEntityCount(SELECT_COUNT);
+    }
+
     @Override
     public Author findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -76,10 +82,10 @@ public class AuthorDAO extends AuthorManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             AuthorMapper mapper = new AuthorMapper();
             authors = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             if (authors.isEmpty()) {
                 return null;
             }
-            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             return authors.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

@@ -20,6 +20,7 @@ public class AccountDAO extends AccountManagerDAO {
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, loan) VALUES (?, ?)";
     private static final String INSERT_EMPTY_ACCOUNT= "INSERT INTO accounts() VALUES ()";
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(account_number) AS count FROM accounts";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts LIMIT ?, ?";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, loan = ? WHERE account_number = ?";
@@ -68,6 +69,11 @@ public class AccountDAO extends AccountManagerDAO {
         return delete(accountNumber, DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
     }
 
+    public int getEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return getEntityCount(SELECT_COUNT);
+    }
+
     @Override
     public Account findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -81,10 +87,10 @@ public class AccountDAO extends AccountManagerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             AccountMapper mapper = new AccountMapper();
             accounts = mapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             if (accounts.isEmpty()) {
                 return null;
             }
-            LOGGER.log(Level.INFO, "Request for find entity by id - succeed");
             return accounts.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -258,6 +264,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.setBigDecimal(1, sum);
             preparedStatement.setInt(2, accountNumber);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for take loan - succeed");
             return findLoanById(accountNumber);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -276,6 +283,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement.setBigDecimal(1, sum.negate());
             preparedStatement.setInt(2, accountNumber);
             preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for repay loan - succeed");
             return findLoanById(accountNumber);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
