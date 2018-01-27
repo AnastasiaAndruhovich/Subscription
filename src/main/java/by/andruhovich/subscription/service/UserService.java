@@ -37,7 +37,7 @@ public class UserService {
         }
     }
 
-    public boolean isLoginExist(String login) throws ServiceTechnicalException {
+    private boolean isLoginExist(String login) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
 
