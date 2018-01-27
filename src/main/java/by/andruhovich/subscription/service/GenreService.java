@@ -90,4 +90,18 @@ public class GenreService {
             daoFactory.closeDAO(genreDAO);
         }
     }
+
+    public int findGenreCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        GenreDAO genreDAO = null;
+
+        try {
+            genreDAO = daoFactory.createGenreDAO();
+            return genreDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(genreDAO);
+        }
+    }
 }

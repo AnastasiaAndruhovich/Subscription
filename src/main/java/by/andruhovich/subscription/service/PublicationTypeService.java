@@ -108,4 +108,18 @@ public class PublicationTypeService {
             daoFactory.closeDAO(publicationDAO);
         }
     }
+
+    public int findPublicationTypeCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationTypeDAO publicationTypeDAO = null;
+
+        try {
+            publicationTypeDAO = daoFactory.createPublicationTypeDAO();
+            return publicationTypeDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationTypeDAO);
+        }
+    }
 }

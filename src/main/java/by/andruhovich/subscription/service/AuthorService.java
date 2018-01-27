@@ -91,4 +91,18 @@ public class AuthorService {
             daoFactory.closeDAO(authorPublicationDAO);
         }
     }
+
+    public int findAuthorCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        AuthorDAO authorDAO = null;
+
+        try {
+            authorDAO = daoFactory.createAuthorDAO();
+            return authorDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(authorDAO);
+        }
+    }
 }

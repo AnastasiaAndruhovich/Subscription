@@ -205,6 +205,20 @@ public class PublicationService {
         }
     }
 
+    public int findPublicationCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            return publicationDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
+    }
+
     private int findIdByPublication(Publication publication)
             throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();

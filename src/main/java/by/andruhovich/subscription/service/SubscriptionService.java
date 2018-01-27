@@ -97,6 +97,20 @@ public class SubscriptionService {
         }
     }
 
+    public int findSubscriptionCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        SubscriptionDAO subscriptionDAO = null;
+
+        try {
+            subscriptionDAO = daoFactory.createSubscriptionDAO();
+            return subscriptionDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(subscriptionDAO);
+        }
+    }
+
     private List<Subscription> fillOutSubscriptionList(List<Subscription> subscriptions) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         SubscriptionDAO subscriptionDAO = null;

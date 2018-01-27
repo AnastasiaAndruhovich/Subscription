@@ -228,4 +228,18 @@ public class UserService {
             daoFactory.closeDAO(userDAO);
         }
     }
+
+    public int findUserCount() throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        UserDAO userDAO = null;
+
+        try {
+            userDAO = daoFactory.createUserDAO();
+            return userDAO.findEntityCount();
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(userDAO);
+        }
+    }
 }
