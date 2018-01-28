@@ -21,7 +21,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+<%@include file="../../static/user/header.jsp" %>
 
 <div class="container-fluid">
     <div class="container">

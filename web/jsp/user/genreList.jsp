@@ -23,7 +23,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+<%@include file="../../static/user/header.jsp" %>
 
 <div class="container-fluid">
     <div class="container">

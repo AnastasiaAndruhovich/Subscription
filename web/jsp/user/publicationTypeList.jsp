@@ -21,20 +21,19 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+<%@include file="../../static/user/header.jsp" %>
 
 <div class="container-fluid">
     <div class="container">
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <div class="genre card">
+                <div class="publication type card">
                     <c:choose>
                         <c:when test="${publicationTypes!=null}">
                             <c:forEach var="publicationType" items="${publicationTypes}">
                                 <div class="container">
-                                    <a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"
-                                       class="nav-link"> ${publicationType.name}</a>
+                                    <a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                 </div>
                             </c:forEach>
                         </c:when>

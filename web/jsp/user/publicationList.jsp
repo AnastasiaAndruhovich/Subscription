@@ -8,10 +8,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.publication" var="Publication"></fmt:message>
 
 <html lang="en">
 <head>
-    <title>Publications</title>
+    <title>${Publication}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +31,19 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/user/header.html" %>
+
+<c:set var="clientType" scope="session" value="${clientType}"/>
+<c:choose>
+    <c:when test="${clientType eq 'USER'}">
+        <%@include file="../../static/user/header.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@include file="../../static/guest/header.jsp" %>
+    </c:otherwise>
+</c:choose>
+<%--<ctg:role clientType="${clientType}">${header}</ctg:role>--%>
+
+
 
 <div class="container-fluid">
     <div class="container">
