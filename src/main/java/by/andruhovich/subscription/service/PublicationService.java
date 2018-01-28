@@ -155,7 +155,7 @@ public class PublicationService extends BaseService{
         }
     }
 
-    public List<Publication> findPublicationByAuthor(String authorId) throws ServiceTechnicalException {
+    public List<Publication> findPublicationByAuthorId(String authorId) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         AuthorDAO authorDAO = null;
         int intAuthorId = Integer.parseInt(authorId);

@@ -105,4 +105,22 @@ public class AuthorService extends BaseService{
             daoFactory.closeDAO(authorDAO);
         }
     }
+
+    public List<Author> showAuthors(String pageNumber) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        AuthorDAO authorDAO = null;
+
+        int number = Integer.parseInt(pageNumber);
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+
+        try {
+            authorDAO = daoFactory.createAuthorDAO();
+            return authorDAO.findAll(startIndex, endIndex);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(authorDAO);
+        }
+    }
 }
