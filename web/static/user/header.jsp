@@ -6,6 +6,15 @@ Time: 0:02
 To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language"
+value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+
 
 <html lang="en">
 <head>
@@ -16,6 +25,8 @@ To change this template use File | Settings | File Templates.
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -58,6 +69,13 @@ To change this template use File | Settings | File Templates.
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Personal account</button>
         </form>
     </div>
+</nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <ul class="navbar-nav ml-auto">
+        <a href="${pageContext.request.requestURI}?language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
+        <a href="${pageContext.request.requestURI}?language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
+        <a href="${pageContext.request.requestURI}?language=be_BY"> <img class="lang" src="../../images/bel_flag.jpg"></a>
+    </ul>
 </nav>
 
 <!-- Optional JavaScript -->
