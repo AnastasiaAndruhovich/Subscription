@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.ConfigurationManager;
 import by.andruhovich.subscription.manager.MessageManager;
@@ -36,7 +37,13 @@ public class LoginCommand implements BaseCommand {
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
-            page = configurationManager.getProperty("path.page.error");
+            try {
+                page = configurationManager.getProperty("path.page.error");
+            } catch (MissingResourceTechnicalException e1) {
+                page = null;
+            }
+        } catch (MissingResourceTechnicalException e) {
+            page = null;
         }
         return page;
     }

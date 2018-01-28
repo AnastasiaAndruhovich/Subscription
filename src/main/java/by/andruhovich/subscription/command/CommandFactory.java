@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.command;
 
+import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +28,11 @@ public class CommandFactory {
         } catch (IllegalArgumentException e) {
             LOGGER.log(Level.ERROR, "Command is undefined");
             MessageManager messageManager = MessageManager.getInstance();
-            request.setAttribute(WRONG_ACTION, action + messageManager.getProperty(WRONG_ACTION_MESSAGE));
+            try {
+                request.setAttribute(WRONG_ACTION, action + messageManager.getProperty(WRONG_ACTION_MESSAGE));
+            } catch (MissingResourceTechnicalException e1) {
+                e1.printStackTrace();
+            }
         }
         return null;
     }
