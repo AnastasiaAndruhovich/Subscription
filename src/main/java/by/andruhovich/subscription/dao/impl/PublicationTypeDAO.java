@@ -21,7 +21,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     private static final String SELECT_COUNT = "SELECT COUNT(publication_type_id) AS count FROM publication_types";
     private static final String SELECT_PUBLICATION_TYPE_BY_ID = "SELECT publication_type_id, name FROM publication_types " +
             "WHERE publication_type_id = ?";
-    private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publications LIMIT ?, ?";
+    private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publication_types LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";
 
     private static final String SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_FIELDS = "SELECT publication_type_id " +
