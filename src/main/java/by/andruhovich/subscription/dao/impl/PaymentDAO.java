@@ -19,6 +19,8 @@ import java.util.List;
 public class PaymentDAO extends PaymentManagerDAO {
     private static final String INSERT_PAYMENT= "INSERT INTO payments(subscription_id, sum, date, statement) " +
             "VALUES (?, ?, ?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT payment_number FROM payments ORDER BY payment_number " +
+            "DESC LIMIT 1";
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(payment_id) AS count FROM payments";
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
@@ -44,15 +46,16 @@ public class PaymentDAO extends PaymentManagerDAO {
     public int create(Payment entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create payment");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         PaymentMapper mapper = new PaymentMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PAYMENT);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("payment_id");
             }
@@ -62,6 +65,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -126,7 +130,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PAYMENT);
             PaymentMapper mapper = new PaymentMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update payment - succeed");
             return true;
         } catch (SQLException e) {

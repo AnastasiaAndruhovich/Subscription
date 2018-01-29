@@ -21,6 +21,7 @@ import java.util.List;
 
 public class UserDAO extends UserManagerDAO {
     private static final String SELECT_PASSWORD_BY_LOGIN = "SELECT password FROM users WHERE login = ?";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
     private static final String SELECT_LOGIN = "SELECT COUNT(user_id) FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -53,15 +54,16 @@ public class UserDAO extends UserManagerDAO {
     public int create(User user) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create user");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         UserMapper mapper = new UserMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_USER);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, user);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("user_id");
             }
@@ -71,6 +73,7 @@ public class UserDAO extends UserManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -135,7 +138,7 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_USER);
             UserMapper mapper = new UserMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update user - succeed");
             return true;
         } catch (SQLException e) {

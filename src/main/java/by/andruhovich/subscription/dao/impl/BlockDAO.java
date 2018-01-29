@@ -57,7 +57,7 @@ public class BlockDAO extends BlockManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(INSERT_BLOCK);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for create block - succeed");
             return 0;
         } catch (SQLException e) {
@@ -104,7 +104,7 @@ public class BlockDAO extends BlockManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(UPDATE_BLOCK);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update block - succeed");
             return true;
         } catch (SQLException e) {
@@ -166,7 +166,7 @@ public class BlockDAO extends BlockManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(DELETE_BLOCK_BY_USER_ID);
             preparedStatement.setInt(1, id);
-            preparedStatement.execute();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for delete block by user id - succeed");
             return true;
         } catch (SQLException e) {

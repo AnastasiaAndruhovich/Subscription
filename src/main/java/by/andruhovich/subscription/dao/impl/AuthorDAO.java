@@ -18,6 +18,7 @@ import java.util.List;
 public class AuthorDAO extends AuthorManagerDAO {
     private static final String INSERT_AUTHOR = "INSERT INTO authors(publisher_name, author_lastname, author_firstname) " +
             "VALUES (?, ?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT author_id FROM authors ORDER BY author_id DESC LIMIT 1";
     private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM authors WHERE author_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(author_id) AS count FROM authors";
     private static final String SELECT_AUTHOR_BY_ID = "SELECT * FROM authors WHERE author_id = ?";
@@ -38,14 +39,15 @@ public class AuthorDAO extends AuthorManagerDAO {
     public int create(Author entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for author create");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         AuthorMapper mapper = new AuthorMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_AUTHOR);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("author_id");
@@ -56,6 +58,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -125,7 +128,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_AUTHOR);
             AuthorMapper mapper = new AuthorMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update author - succeed");
             return true;
         } catch (SQLException e) {

@@ -39,7 +39,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             preparedStatement = connection.prepareStatement(INSERT_RECORD);
             preparedStatement.setInt(1, author.getAuthorId());
             preparedStatement.setInt(2, publication.getPublicationId());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for create record - succeed");
             return true;
         } catch (SQLException e) {

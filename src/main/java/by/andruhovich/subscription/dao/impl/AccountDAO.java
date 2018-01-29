@@ -18,7 +18,8 @@ import java.util.List;
 
 public class AccountDAO extends AccountManagerDAO {
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, loan) VALUES (?, ?)";
-    private static final String INSERT_EMPTY_ACCOUNT= "INSERT INTO accounts() VALUES ()";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT account_number FROM accounts ORDER BY account_number " +
+            "DESC LIMIT 1";
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(account_number) AS count FROM accounts";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
@@ -42,15 +43,16 @@ public class AccountDAO extends AccountManagerDAO {
         LOGGER.log(Level.INFO, "Request for create account");
 
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         AccountMapper mapper = new AccountMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ACCOUNT);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("account_number");
             }
@@ -60,6 +62,7 @@ public class AccountDAO extends AccountManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -132,7 +135,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT);
             AccountMapper mapper = new AccountMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update account - succeed");
             return true;
         } catch (SQLException e) {
@@ -148,12 +151,16 @@ public class AccountDAO extends AccountManagerDAO {
 
         PreparedStatement preparedStatement = null;
         int id = -1;
+        PreparedStatement statement = null;
 
         try {
-            preparedStatement = connection.prepareStatement(INSERT_EMPTY_ACCOUNT);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(INSERT_ACCOUNT);
+            BigDecimal sum = new BigDecimal("0.00");
+            preparedStatement.setBigDecimal(1, sum);
+            preparedStatement.setBigDecimal(2, sum);
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("account_number");
             }
@@ -163,6 +170,7 @@ public class AccountDAO extends AccountManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -225,7 +233,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_BALANCE);
             preparedStatement.setBigDecimal(1, sum);
             preparedStatement.setInt(2, accountNumber);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for recharge - succeed");
             return findBalanceById(accountNumber);
         } catch (SQLException e) {
@@ -244,7 +252,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_BALANCE);
             preparedStatement.setBigDecimal(1, sum.negate());
             preparedStatement.setInt(2, accountNumber);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for withdraw - succeed");
             return findBalanceById(accountNumber);
         } catch (SQLException e) {
@@ -263,7 +271,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_LOAN);
             preparedStatement.setBigDecimal(1, sum);
             preparedStatement.setInt(2, accountNumber);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for take loan - succeed");
             return findLoanById(accountNumber);
         } catch (SQLException e) {
@@ -282,7 +290,7 @@ public class AccountDAO extends AccountManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_LOAN);
             preparedStatement.setBigDecimal(1, sum.negate());
             preparedStatement.setInt(2, accountNumber);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for repay loan - succeed");
             return findLoanById(accountNumber);
         } catch (SQLException e) {

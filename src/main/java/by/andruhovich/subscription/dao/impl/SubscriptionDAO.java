@@ -22,6 +22,8 @@ import java.util.List;
 public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String INSERT_SUBSCRIPTION= "INSERT INTO subscriptions(user_id, publication_id, start_date, " +
             "end_date, subscription_is_active) VALUES (?, ?, ?, ?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT subscription_id FROM subscriptions ORDER BY " +
+            "subscription_id DESC LIMIT 1";
     private static final String DELETE_SUBSCRIPTION_BY_ID = "DELETE FROM subscriptions WHERE subscription_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(subscription_id) AS count FROM subscriptions";
     private static final String SELECT_SUBSCRIPTION_BY_ID = "SELECT subscription_id, start_date, end_date, " +
@@ -50,15 +52,16 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     public int create(Subscription entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create subscription");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         SubscriptionMapper mapper = new SubscriptionMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_SUBSCRIPTION);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("subscription_id");
             }
@@ -68,6 +71,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -132,7 +136,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_SUBSCRIPTION);
             SubscriptionMapper mapper = new SubscriptionMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update subscription - succeed");
             return true;
         } catch (SQLException e) {

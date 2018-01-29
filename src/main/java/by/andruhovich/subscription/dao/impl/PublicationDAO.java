@@ -22,6 +22,8 @@ import java.util.List;
 public class PublicationDAO extends PublicationManagerDAO {
     private static final String INSERT_PUBLICATION = "INSERT INTO publications(name, publication_type_id, genre_id, " +
             "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT publication_id FROM publications ORDER BY publication_id " +
+            "DESC LIMIT 1";
     private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(publication_id) AS count FROM publications";
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
@@ -54,15 +56,16 @@ public class PublicationDAO extends PublicationManagerDAO {
     public int create(Publication entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create publication");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         PublicationMapper mapper = new PublicationMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_PUBLICATION);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("publication_id");
             }
@@ -72,6 +75,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -136,7 +140,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PUBLICATION);
             PublicationMapper mapper = new PublicationMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update publication - succeed");
             return true;
         } catch (SQLException e) {

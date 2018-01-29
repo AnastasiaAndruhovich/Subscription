@@ -17,6 +17,7 @@ import java.util.List;
 
 public class RoleDAO extends RoleManagerDAO {
     private static final String SELECT_ID_BY_NAME = "SELECT role_id FROM roles WHERE name = ?";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT role_id FROM roles ORDER BY role_id DESC LIMIT 1";
     private static final String INSERT_ROLE= "INSERT INTO roles(name) VALUE (?)";
     private static final String DELETE_ROLE_BY_ID = "DELETE FROM roles WHERE role_id = ?";
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM roles WHERE role_id = ?";
@@ -55,15 +56,16 @@ public class RoleDAO extends RoleManagerDAO {
     public int create(Role entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create role");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         RoleMapper mapper = new RoleMapper();
         int id = 0;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_ROLE);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("role_id");
             }
@@ -73,6 +75,7 @@ public class RoleDAO extends RoleManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -134,7 +137,7 @@ public class RoleDAO extends RoleManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_ROLE);
             RoleMapper mapper = new RoleMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update role - succeed");
             return true;
         } catch (SQLException e) {

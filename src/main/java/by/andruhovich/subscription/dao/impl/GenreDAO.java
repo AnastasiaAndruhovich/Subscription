@@ -17,6 +17,7 @@ import java.util.List;
 
 public class GenreDAO extends GenreManagerDAO {
     private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
+    private static final String SELECT_LAST_INSERT_ID = "SELECT genre_id FROM genres ORDER BY genre_id DESC LIMIT 1";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(genre_id) AS count FROM genres";
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
@@ -35,15 +36,16 @@ public class GenreDAO extends GenreManagerDAO {
     public int create(Genre entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create genre");
         PreparedStatement preparedStatement = null;
+        PreparedStatement statement = null;
         GenreMapper mapper = new GenreMapper();
         int id = -1;
 
         try {
             preparedStatement = connection.prepareStatement(INSERT_GENRE);
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
-            preparedStatement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 id = resultSet.getInt("genre_id");
             }
@@ -53,6 +55,7 @@ public class GenreDAO extends GenreManagerDAO {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
+            close(statement);
         }
     }
 
@@ -117,7 +120,7 @@ public class GenreDAO extends GenreManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_GENRE);
             GenreMapper mapper = new GenreMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update genre - succeed");
             return true;
         } catch (SQLException e) {
