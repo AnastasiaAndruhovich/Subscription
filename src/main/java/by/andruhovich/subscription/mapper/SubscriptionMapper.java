@@ -34,8 +34,6 @@ public class SubscriptionMapper implements EntityMapper<Subscription> {
 
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Subscription entity) throws DAOTechnicalException {
-        TypeConverter typeConverter = new TypeConverter();
-
         Date startDate = new Date(entity.getStartDate().getTime());
         Date endDate = new Date(entity.getEndDate().getTime());
         String subscriptionIsActive = TypeConverter.convertBooleanToString(entity.isSubscriptionIsActive());

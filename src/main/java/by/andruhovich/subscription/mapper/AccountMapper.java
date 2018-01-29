@@ -20,7 +20,7 @@ public class AccountMapper implements EntityMapper<Account> {
             while (resultSet.next()) {
                 int accountNumber = resultSet.getInt("account_number");
                 BigDecimal balance = resultSet.getBigDecimal("balance");
-                BigDecimal loan = resultSet.getBigDecimal("credit");
+                BigDecimal loan = resultSet.getBigDecimal("loan");
                 account = new Account(accountNumber, balance, loan);
                 accounts.add(account);
             }
@@ -35,7 +35,6 @@ public class AccountMapper implements EntityMapper<Account> {
         try {
             preparedStatement.setBigDecimal(1, entity.getBalance());
             preparedStatement.setBigDecimal(2, entity.getLoan());
-            preparedStatement.setInt(3, entity.getAccountNumber());
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

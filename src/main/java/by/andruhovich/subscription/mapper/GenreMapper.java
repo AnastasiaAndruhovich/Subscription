@@ -34,7 +34,6 @@ public class GenreMapper implements EntityMapper<Genre> {
         try {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
-            preparedStatement.setInt(3, entity.getGenreId());
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

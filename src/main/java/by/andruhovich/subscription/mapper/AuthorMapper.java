@@ -35,7 +35,6 @@ public class AuthorMapper implements EntityMapper<Author> {
             preparedStatement.setString(1, entity.getPublisherName());
             preparedStatement.setString(2, entity.getAuthorLastName());
             preparedStatement.setString(3, entity.getAuthorFirstName());
-            preparedStatement.setInt(4, entity.getAuthorId());
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());

@@ -50,7 +50,6 @@ public class UserMapper implements EntityMapper<User> {
             preparedStatement.setInt(8, entity.getAccount().getAccountNumber());
             preparedStatement.setString(9, entity.getLogin());
             preparedStatement.setString(10, entity.getPassword());
-            preparedStatement.setInt(11, entity.getUserId());
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
