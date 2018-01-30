@@ -25,8 +25,9 @@ public class ServletSecurityFilter implements Filter {
             throws IOException, ServletException {
         final String CLIENT_TYPE = "clientType";
         final String LOCALE = "locale";
-        final String country = "US";
-        final String language = "EN";
+        final String COUNTRY = "US";
+        final String LANGUAGE = "EN";
+        final String CLIENT_ID = "clientId";
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
@@ -34,9 +35,11 @@ public class ServletSecurityFilter implements Filter {
 
         if (type == null) {
             type = ClientType.GUEST;
-            Locale locale = new Locale(language, country);
+            Locale locale = new Locale(LANGUAGE, COUNTRY);
             session.setAttribute(CLIENT_TYPE, type);
             session.setAttribute(LOCALE, locale);
+            int clientId = -1;
+            session.setAttribute(CLIENT_ID, clientId);
             ShowPublicationCommand showPublicationCommand = new ShowPublicationCommand();
             String page = showPublicationCommand.execute(req, resp);
             RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(page);
