@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.command;
 
-import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
-import by.andruhovich.subscription.manager.MessageManager;
+import by.andruhovich.subscription.exception.UndefinedCommandTechnicalException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,10 +12,9 @@ public class CommandFactory {
 
     public BaseCommand defineCommand(HttpServletRequest request) {
         BaseCommand command;
-        final String WRONG_ACTION = "wrongAction";
-        final String WRONG_ACTION_MESSAGE = "message.wrongaction";
+        final String COMMAND_ATTRIBUTE = "command";
 
-        String action = request.getParameter("command");
+        String action = request.getParameter(COMMAND_ATTRIBUTE);
         if (action == null || action.isEmpty()) {
             return null;
         }
@@ -25,14 +23,8 @@ public class CommandFactory {
             CommandMap commandMap = CommandMap.getInstance();
             command = commandMap.get(action.toUpperCase());
             return command;
-        } catch (IllegalArgumentException e) {
-            LOGGER.log(Level.ERROR, "Command is undefined");
-            MessageManager messageManager = MessageManager.getInstance();
-            try {
-                request.setAttribute(WRONG_ACTION, action + messageManager.getProperty(WRONG_ACTION_MESSAGE));
-            } catch (MissingResourceTechnicalException e1) {
-                e1.printStackTrace();
-            }
+        } catch (UndefinedCommandTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
         }
         return null;
     }
