@@ -1,22 +1,35 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
+import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.manager.ConfigurationManager;
-import by.andruhovich.subscription.manager.MessageManager;
+import by.andruhovich.subscription.manager.PageManager;
+import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.service.UserService;
+import by.andruhovich.subscription.type.ClientType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
-public class LoginCommand implements BaseCommand {
+public class LoginCommand extends BaseCommand {
     private UserService userService = new UserService();
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+
+    private static final String LOCALE = "locale";
+    private static final String CLIENT_ID = "clientId";
+    private static final String CLIENT_TYPE = "clientType";
+
+    private static final String ERROR_LOGIN_MESSAGE = "message.errorLogin";
+    private static final String ERROR_LOGIN_ATTRIBUTE = "errorLogin";
+
+    private static final String LOGIN_PAGE = "path.page.user.login";
 
     private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class);
 
@@ -24,26 +37,27 @@ public class LoginCommand implements BaseCommand {
         String page;
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        MessageManager messageManager = MessageManager.getInstance();
+        PageManager pageManager = PageManager.getInstance();
+        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
+        LocaleManager localeManager = new LocaleManager(locale);
 
         try {
-            if (userService.checkLoginByPassword(login, password)) {
-                request.setAttribute("user", login);
-                page = configurationManager.getProperty("path.page.main");
+            if (userService.confirmPassword(login, password)) {
+                int clientId = userService.findUserIdByLogin(login);
+                request.setAttribute(CLIENT_ID, clientId);
+                Role role = userService.findRoleByUserId(clientId);
+                request.getSession().setAttribute(CLIENT_TYPE, ClientType.valueOf(role.getName().toUpperCase()));
+                page = showPublicationList(request, response);
             } else {
-                request.setAttribute("errorLoginPassMessage", messageManager.getProperty("message.error"));
-                page = configurationManager.getProperty("path.page.login");
+                String errorLoginMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
+                request.setAttribute(ERROR_LOGIN_ATTRIBUTE, errorLoginMessage);
+                page = pageManager.getProperty(LOGIN_PAGE);
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
-            try {
-                page = configurationManager.getProperty("path.page.error");
-            } catch (MissingResourceTechnicalException e1) {
-                page = null;
-            }
+            page = ERROR_PAGE;
         } catch (MissingResourceTechnicalException e) {
-            page = null;
+            page = ERROR_PAGE;
         }
         return page;
     }
