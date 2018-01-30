@@ -7,10 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -104,6 +104,20 @@ public class ConnectionPool {
                 connections.take().close();
             } catch (SQLException | InterruptedException e) {
                 LOGGER.log(Level.ERROR, "Error closing connection");
+            }
+        }
+        deregisterDriver();
+    }
+
+    private void deregisterDriver() {
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            try {
+                DriverManager.deregisterDriver(driver);
+                LOGGER.log(Level.INFO, String.format("Deregistering jdbc driver: %s", driver));
+            } catch (SQLException e) {
+                LOGGER.log(Level.ERROR, String.format("Error deregistering driver %s", driver), e);
             }
         }
     }
