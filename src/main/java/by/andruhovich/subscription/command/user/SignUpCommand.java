@@ -45,10 +45,6 @@ public class SignUpCommand extends BaseCommand {
 
     private static final String SIGN_UP_PAGE = "path.page.user.signUp";
 
-    private static final String LOCALE = "locale";
-    private static final String CLIENT_TYPE = "clientType";
-    private static final String CLIENT_ID = "clientId";
-
     private static final Logger LOGGER = LogManager.getLogger(SignUpCommand.class);
 
     @Override
