@@ -5,7 +5,7 @@ import by.andruhovich.subscription.command.BaseCommand;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UnblockUserCommand implements BaseCommand {
+public class UnblockUserCommand extends BaseCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         return null;
