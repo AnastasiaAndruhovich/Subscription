@@ -19,12 +19,9 @@ import java.util.Locale;
 
 public class LoginCommand extends BaseCommand {
     private UserService userService = new UserService();
+
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-
-    private static final String LOCALE = "locale";
-    private static final String CLIENT_ID = "clientId";
-    private static final String CLIENT_TYPE = "clientType";
 
     private static final String ERROR_LOGIN_MESSAGE = "message.errorLogin";
     private static final String ERROR_LOGIN_ATTRIBUTE = "errorLogin";
