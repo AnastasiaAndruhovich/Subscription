@@ -92,33 +92,11 @@
 
                                 <!-- Select Date Of Birth-->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="month">Month</label>
-
-                                    <div class="col-sm-3">
-                                        <select id="month" name="month" class="form-control">
-                                            <c:forEach begin="1" end="12" varStatus="loop">
-                                                <option value="${loop.index}">${loop.index}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-
-                                    <label class="col-sm-2 control-label" for="day">Day</label>
-                                    <div class="col-sm-3">
-                                        <select id="day" name="day" class="form-control">
-                                            <c:forEach begin="1" end="31" varStatus="loop">
-                                                <option value="${loop.index}">${loop.index}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <label class="col-sm-3 control-label" for="year">Year</label>
-                                    <div class="col-sm-3">
-                                        <select id="year" name="year" class="form-control">
-                                            <c:forEach begin="1930" end="2010" varStatus="loop">
-                                                <option value="${loop.index}">${loop.index}</option>
-                                            </c:forEach>
-                                        </select>
+                                    <label class="col-sm-3 control-label" for="birthDate">Birth date</label>
+                                    <div class="col-sm-9">
+                                        <input id="birthDate" name="birthDate" type="text" placeholder="yyyy-mm-dd"
+                                               class="form-control input-md" required=""
+                                               pattern="((19|20)\d\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])">
                                     </div>
                                 </div>
 
