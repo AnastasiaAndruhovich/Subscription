@@ -2,24 +2,24 @@ package by.andruhovich.subscription.manager;
 
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class ConfigurationManager {
-    private static ConfigurationManager instance;
+public class LocaleManager {
+    private static LocaleManager instance;
     private static ResourceBundle resourceBundle;
-    private static final String PAGES = "page/pages";
+    private static final String MESSAGES = "locale/locale";
 
-    private ConfigurationManager() {
-    }
+    private LocaleManager() {}
 
-    public static ConfigurationManager getInstance() {
+    public static LocaleManager getInstance(Locale locale) {
         if (instance == null) {
-            instance = new ConfigurationManager();
+            instance = new LocaleManager();
             try {
-                resourceBundle = ResourceBundle.getBundle(PAGES);
+                resourceBundle = ResourceBundle.getBundle(MESSAGES, locale);
             } catch (MissingResourceException e) {
-                throw new RuntimeException("There is no pages paths file", e);
+                throw new RuntimeException("There is no locale file", e);
             }
         }
         return instance;
@@ -29,7 +29,8 @@ public class ConfigurationManager {
         try {
             return resourceBundle.getString(key);
         } catch (MissingResourceException e) {
-            throw new MissingResourceTechnicalException("Resource " + key + " is not fount in resource " + PAGES, e);
+            throw new MissingResourceTechnicalException("Resource " + key + " is not found in source" + MESSAGES, e);
         }
+
     }
 }
