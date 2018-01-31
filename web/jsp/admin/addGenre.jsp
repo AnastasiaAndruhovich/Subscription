@@ -8,10 +8,21 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.addGenre" var="Title"></fmt:message>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
+<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
+<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
 
 <html lang="en">
 <head>
-    <title>Add Genre</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +34,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/admin/header.jsp" %>
+<ctg:role></ctg:role>
 
 <div class="container-fluid">
     <div class="container">
@@ -34,12 +45,20 @@
                     <form name="addForm" method="POST" action="controller">
                         <input type="hidden" name="command" value="add_genre"/>
                         <div class="form-group row">
-                            <label for="update" class="col-sm-2 col-form-label">Genre</label>
+                            <label for="update" class="col-sm-2 col-form-label">${Genre}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" id="update" placeholder="Name"/>
+                                <input type="text" class="form-control" name="name" id="update" placeholder="Name"
+                                       required=""/>
                             </div>
                         </div>
-                        <button class="btn btn-outline-success my-2 my-sm-0">Add</button>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">${Description}</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="description" id="description" required=""
+                                       placeholder="Description"/>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>
                     </form>
                 </div>
             </div>
