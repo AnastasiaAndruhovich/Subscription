@@ -14,6 +14,14 @@ value="${not empty param.language ? param.language : not empty language ? langua
 scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.publications" var="Publications"></fmt:message>
+<fmt:message bundle="${loc}" key="label.genres" var="Genres"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authors" var="Authors"></fmt:message>
+<fmt:message bundle="${loc}" key="label.logout" var="Logout"></fmt:message>
+<fmt:message bundle="${loc}" key="label.personalAccount" var="PersonalAccount"></fmt:message>
+<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"></fmt:message>
+<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"></fmt:message>
 
 
 <html lang="en">
@@ -40,41 +48,37 @@ scope="session"/>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link">Home</a>
-            </li>
             <li class="nav-item active">
-                <a href="controller?command=show_publications&pageNumber=1" class="nav-link">Publications</a>
+                <a href="controller?command=show_publications&pageNumber=1" class="nav-link">${Publications}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_authors&pageNumber=1" class="nav-link">Authors</a>
+                <a href="controller?command=show_authors&pageNumber=1" class="nav-link">${Authors}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_genres&pageNumber=1" class="nav-link">Genres</a>
+                <a href="controller?command=show_genres&pageNumber=1" class="nav-link">${Genres}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_publication_types&pageNumber=1" class="nav-link">Publication Types</a>
+                <a href="controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Subscription</a>
+                <a href="#" class="nav-link">${Subscription}</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Feedback</a>
+                <a href="#" class="nav-link">${Feedback}</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Personal account</button>
+            <button type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</button>
+            <button type="button" class="btn btn-outline-success my-2 my-sm-0">${PersonalAccount}</button>
         </form>
     </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav ml-auto">
-        <a href="${pageContext.request.requestURI}?language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
-        <a href="${pageContext.request.requestURI}?language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
-        <a href="${pageContext.request.requestURI}?language=be_BY"> <img class="lang" src="../../images/bel_flag.jpg"></a>
+        <a href="controller?command=show_publications&language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
+        <a href="controller?command=show_publications&language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
     </ul>
 </nav>
 
