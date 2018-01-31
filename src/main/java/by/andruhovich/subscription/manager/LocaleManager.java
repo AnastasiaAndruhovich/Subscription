@@ -7,22 +7,15 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class LocaleManager {
-    private static LocaleManager instance;
     private static ResourceBundle resourceBundle;
     private static final String MESSAGES = "locale/locale";
 
-    private LocaleManager() {}
-
-    public static LocaleManager getInstance(Locale locale) {
-        if (instance == null) {
-            instance = new LocaleManager();
-            try {
-                resourceBundle = ResourceBundle.getBundle(MESSAGES, locale);
-            } catch (MissingResourceException e) {
-                throw new RuntimeException("There is no locale file", e);
-            }
+    public LocaleManager(Locale locale) {
+        try {
+            resourceBundle = ResourceBundle.getBundle(MESSAGES, locale);
+        } catch (MissingResourceException e) {
+            throw new RuntimeException("There is no locale file", e);
         }
-        return instance;
     }
 
     public String getProperty(String key) throws MissingResourceTechnicalException {
