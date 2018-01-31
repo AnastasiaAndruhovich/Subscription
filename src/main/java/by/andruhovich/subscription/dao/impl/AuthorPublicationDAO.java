@@ -23,7 +23,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             "a.author_firstname FROM authors_publications RIGHT JOIN authors a USING (author_id) WHERE publication_id = ?";
     private final static String SELECT_PUBLICATION_BY_AUTHOR_ID = "SELECT p.publication_id, p.name, p.description, " +
             "p.price, p.picture_name, p.picture FROM authors_publications RIGHT JOIN publications p " +
-            "USING (publication_id) WHERE author_id = ?";
+            "USING (publication_id) WHERE author_id = ? LIMIT ?, ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorPublicationDAO.class);
 
@@ -69,7 +69,7 @@ public class AuthorPublicationDAO extends BaseDAO {
         }
     }
 
-    public List<Publication> findPublicationsByAuthorId(int id) throws DAOTechnicalException {
+    public List<Publication> findPublicationsByAuthorId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publications by author id");
         PreparedStatement preparedStatement = null;
         List<Publication> publications;
@@ -77,6 +77,8 @@ public class AuthorPublicationDAO extends BaseDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_AUTHOR_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper publicationMapper = new PublicationMapper();
             publications = publicationMapper.mapResultSetToEntity(resultSet);
@@ -91,7 +93,7 @@ public class AuthorPublicationDAO extends BaseDAO {
 
     public boolean deletePublicationsByAuthorId(int authorId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete publications by author id");
-        List<Publication> publications = findPublicationsByAuthorId(authorId);
+        /*List<Publication> publications = findPublicationsByAuthorId(authorId);
         if (!publications.isEmpty()) {
             PublicationDAO publicationDAO = new PublicationDAO(connection);
             for (Publication publication : publications) {
@@ -100,7 +102,7 @@ public class AuthorPublicationDAO extends BaseDAO {
             LOGGER.log(Level.INFO, "Request for delete publications by author id - succeed");
             return true;
         }
-        LOGGER.log(Level.INFO, "Request for delete publications by author id - not succeed");
+        LOGGER.log(Level.INFO, "Request for delete publications by author id - not succeed");*/
         return false;
     }
 

@@ -22,7 +22,7 @@ import java.util.List;
 public class UserDAO extends UserManagerDAO {
     private static final String SELECT_PASSWORD_BY_LOGIN = "SELECT password FROM users WHERE login = ?";
     private static final String SELECT_LAST_INSERT_ID = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
-    private static final String SELECT_LOGIN = "SELECT COUNT(user_id) FROM users WHERE login = ?";
+    private static final String SELECT_LOGIN = "SELECT user_id FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
             " postal_index, account_number, login, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE user_id = ?";
@@ -211,20 +211,20 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public boolean isLoginExist(String login) throws DAOTechnicalException {
+    public int findUserIdByLogin(String login) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for is login exist");
         PreparedStatement preparedStatement = null;
-        int quantity = -1;
+        int userId = -1;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_LOGIN);
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                quantity = resultSet.getInt("COUNT(user_id)");
+                userId = resultSet.getInt("user_id");
             }
             LOGGER.log(Level.INFO, "Request for is login exist - succeed");
-            return quantity == 1;
+            return userId;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {

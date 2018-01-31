@@ -139,13 +139,6 @@ public class AuthorDAO extends AuthorManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationsByAuthorId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publications by author id");
-        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-        return authorPublicationDAO.findPublicationsByAuthorId(id);
-    }
-
-    @Override
     public int findIdByEntity(Author author) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
         PreparedStatement preparedStatement = null;

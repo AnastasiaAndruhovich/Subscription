@@ -25,5 +25,5 @@ public abstract class UserManagerDAO extends MediatorManagerDAO<User> {
     public abstract User findUserBySubscriptionId(int id) throws DAOTechnicalException;
 
     public abstract String findPasswordByLogin(String login) throws DAOTechnicalException;
-    public abstract boolean isLoginExist(String login) throws DAOTechnicalException;
+    public abstract int findUserIdByLogin(String login) throws DAOTechnicalException;
 }

@@ -134,13 +134,6 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publications by publication type id");
-        PublicationDAO publicationDAO = new PublicationDAO(connection);
-        return publicationDAO.findPublicationsByPublicationTypeId(id);
-    }
-
-    @Override
     public int findIdByEntity(PublicationType publicationType) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
         PreparedStatement preparedStatement = null;

@@ -34,13 +34,13 @@ public class PublicationDAO extends PublicationManagerDAO {
             "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
 
     private static final String SELECT_PUBLICATIONS_BY_GENRE_ID = "SELECT publication_id, name, description, price, " +
-            "picture_name, picture FROM publications WHERE genre_id = ?";
+            "picture_name, picture FROM publications WHERE genre_id = ? LIMIT ?, ?";
     private static final String SELECT_GENRE_BY_PUBLICATION_ID = "SELECT g.genre_id, g.name, g.description " +
             "FROM publications JOIN genres g USING (genre_id) WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_TYPE_BY_PUBLICATION_ID = "SELECT  p.publication_type_id, p.name " +
             "FROM publications JOIN publication_types p USING (publication_type_id) WHERE publication_id = ?";
     private static final String SELECT_PUBLICATIONS_BY_PUBLICATION_TYPE_ID = "SELECT publication_id, name, " +
-            "description, price, picture_name, picture FROM publications WHERE publication_type_id = ?";
+            "description, price, picture_name, picture FROM publications WHERE publication_type_id = ? LIMIT ?, ?";
     private static final String SELECT_PUBLICATION_ID_BY_PUBLICATION_FIELDS = "SELECT publication_id FROM publications " +
             "WHERE name = ? && publication_type_id = ? && genre_id = ? && description = ? && price = ?";
     private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +
@@ -232,13 +232,15 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
+    public List<Publication> findPublicationsByGenreId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication by genre id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATIONS_BY_GENRE_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.log(Level.INFO, "Request for find publication by genre id - succeed");
             PublicationMapper publicationMapper = new PublicationMapper();
@@ -251,13 +253,15 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationsByPublicationTypeId(int id) throws DAOTechnicalException {
+    public List<Publication> findPublicationsByPublicationTypeId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publications by publication type id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATIONS_BY_PUBLICATION_TYPE_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper publicationMapper = new PublicationMapper();
             List<Publication> publications = publicationMapper.mapResultSetToEntity(resultSet);

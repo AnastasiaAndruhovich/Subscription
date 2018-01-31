@@ -131,13 +131,6 @@ public class GenreDAO extends GenreManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationsByGenreId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publications by genre id");
-        PublicationDAO publicationDAO = new PublicationDAO(connection);
-        return publicationDAO.findPublicationsByGenreId(id);
-    }
-
-    @Override
     public int findIdByEntity(Genre genre) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
         PreparedStatement preparedStatement = null;
