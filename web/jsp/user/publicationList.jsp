@@ -15,11 +15,21 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publication" var="Publication"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publicationListTitle" var="Title"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authors" var="Authors"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
+<fmt:message bundle="${loc}" key="label.price" var="Price"></fmt:message>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"></fmt:message>
+<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
+<fmt:message bundle="${loc}" key="label.name" var="Name"></fmt:message>
+<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"></fmt:message>
+
 
 <html lang="en">
 <head>
-    <title>${Publication}</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,22 +38,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
 
-<c:set var="clientType" scope="session" value="${clientType}"/>
-<c:choose>
-    <c:when test="${clientType eq 'USER'}">
-        <%@include file="../../static/user/header.jsp" %>
-    </c:when>
-    <c:otherwise>
-        <%@include file="../../static/guest/header.jsp" %>
-    </c:otherwise>
-</c:choose>
-<%--<ctg:role clientType="${clientType}">${header}</ctg:role>--%>
-
-
+<ctg:role></ctg:role>
 
 <div class="container-fluid">
     <div class="container">
@@ -61,29 +59,29 @@
                                                  alt="" class="w-100">
                                         </div>
                                         <div class="col-8">
-                                            <p>Name: ${publication.name}</p>
+                                            <p>${Name}: ${publication.name}</p>
                                             <p>
-                                                Type:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
+                                                ${Type}:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}&pageNumber=1"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                Genre:<a href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
+                                                ${Genre}:<a href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}&pageNumber=1"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
-                                                        Authors:
+                                                        ${Authors}:
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
-                                                    <p>Publisher: ${publication.authors[0].publisherName}</p>
+                                                    <p>${Publisher}: ${publication.authors[0].publisherName}</p>
                                                 </c:when>
                                             </c:choose>
-                                            <p>Description: ${publication.description}</p>
-                                            <p>Price: ${publication.price} BY/month</p>
+                                            <p>${Description}: ${publication.description}</p>
+                                            <p>${Price}: ${publication.price} ${MoneyUnit}</p>
                                             <form method="GET" action="controller">
                                                 <input type="hidden" name="command" value="redirect_add_subscription"/>
-                                                <button class="btn btn-outline-success my-2 my-sm-0">Subscribe</button>
+                                                <button class="btn btn-outline-success my-2 my-sm-0">${Subscribe}</button>
                                             </form>
                                         </div>
                                     </div>
