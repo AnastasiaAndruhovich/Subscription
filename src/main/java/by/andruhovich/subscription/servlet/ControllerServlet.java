@@ -3,8 +3,8 @@ package by.andruhovich.subscription.servlet;
 import by.andruhovich.subscription.command.BaseCommand;
 import by.andruhovich.subscription.command.CommandFactory;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
-import by.andruhovich.subscription.manager.ConfigurationManager;
-import by.andruhovich.subscription.manager.MessageManager;
+import by.andruhovich.subscription.manager.PageManager;
+import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,11 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Locale;
 
 @WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
@@ -37,16 +39,20 @@ public class ControllerServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page;
-        final String ERROR_PAGE = "path.page.error";
-        final String NULL_PAGE_MESSAGE = "message.nullPage";
-        final String NULL_PAGE_NAME = "nullPage";
+        final String ERROR_PAGE = "/jsp/error/error.jsp";
+
+        final String UNDEFINED_COMMAND_ATTRIBUTE = "undefinedCommand";
+        final String NULL_PAGE_ATTRIBUTE = "nullPage";
+
         final String UNDEFINED_COMMAND_MESSAGE = "message.undefinedCommand";
-        final String UNDEFINED_COMMAND_PAGE_NAME = "undefinedCommand";
+        final String NULL_PAGE_MESSAGE = "message.nullPage";
+
+        final String LOCALE = "locale";
 
         CommandFactory commandFactory = new CommandFactory();
         BaseCommand command = commandFactory.defineCommand(request);
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        MessageManager messageManager = MessageManager.getInstance();
+        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
+        LocaleManager localeManager = new LocaleManager(locale);
 
         try {
             if (command != null) {
@@ -55,17 +61,17 @@ public class ControllerServlet extends HttpServlet {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
                     dispatcher.forward(request, response);
                 } else {
-                    page = configurationManager.getProperty(ERROR_PAGE);
-                    request.getSession().setAttribute(NULL_PAGE_NAME, messageManager.getProperty(NULL_PAGE_MESSAGE));
+                    page = ERROR_PAGE;
+                    request.getSession().setAttribute(NULL_PAGE_ATTRIBUTE, localeManager.getProperty(NULL_PAGE_MESSAGE));
                     response.sendRedirect(request.getContextPath() + page);
                 }
             } else {
-                page = configurationManager.getProperty(ERROR_PAGE);
-                request.getSession().setAttribute(UNDEFINED_COMMAND_PAGE_NAME, messageManager.getProperty(UNDEFINED_COMMAND_MESSAGE));
+                page = ERROR_PAGE;
+                request.getSession().setAttribute(UNDEFINED_COMMAND_ATTRIBUTE, localeManager.getProperty(UNDEFINED_COMMAND_MESSAGE));
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (MissingResourceTechnicalException e) {
-            //???
+            LOGGER.log(Level.ERROR, e.getMessage());
         }
     }
 
