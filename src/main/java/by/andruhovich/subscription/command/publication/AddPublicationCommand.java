@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.command.publication;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.converter.ClientDataConverter;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
@@ -41,6 +42,9 @@ public class AddPublicationCommand extends BaseCommand {
     private static final String ERROR_ADDED_PUBLICATION_MESSAGE = "message.errorAddedPublication";
     private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectPrice";
 
+    private static final String PICTURE_NAME = "no_pic.jpg";
+    private static final String PICTURE_PATH_NAME = "image/no_pic.jpg";
+
     private static final Logger LOGGER = LogManager.getLogger(AddPublicationCommand.class);
 
     @Override
@@ -58,25 +62,13 @@ public class AddPublicationCommand extends BaseCommand {
         String publisherName = request.getParameter(PUBLISHER_NAME_ATTRIBUTE);
         String description = request.getParameter(DESCRIPTION_ATTRIBUTE);
         String price = request.getParameter(PRICE_ATTRIBUTE);
-        String pictureName = null;
-        byte[] picture = null;
 
         List<String> lastNames = new LinkedList<>();
         lastNames.add(lastName);
         List<String> firstNames = new LinkedList<>();
         firstNames.add(firstName);
 
-        /*FileItemFactory factory = new DiskFileItemFactory();
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        try {
-            List<FileItem> fields = upload.parseRequest(request);
-            for (FileItem item : fields) {
-                picture = item.get();
-                pictureName = item.getName();
-            }
-        } catch (FileUploadException e) {
-            LOGGER.log(Level.ERROR, "Error upload image");
-        }*/
+        byte[] picture = ClientDataConverter.convertImageToByteArray(PICTURE_PATH_NAME);
 
         try {
             if (!ServiceValidator.verifyPrice(price)) {
@@ -87,7 +79,7 @@ public class AddPublicationCommand extends BaseCommand {
             }
 
             int result = publicationService.addPublication(name, firstNames, lastNames, publisherName, publicationType,
-                    genre, description, price, pictureName, picture);
+                    genre, description, price, PICTURE_NAME, picture);
             if (result != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADDED_PUBLICATION_MESSAGE);
                 request.setAttribute(RESULT_ATTRIBUTE, successfulAddedPublicationMessage);
