@@ -48,19 +48,22 @@
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name"/>
+                                <input type="text" class="form-control" name="lastName" id="lastName" required=""
+                                       placeholder="Last name"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name"/>
+                                <input type="text" class="form-control" name="firstName" id="firstName" required=""
+                                       placeholder="First name"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="publisherName" class="col-sm-2 col-form-label">${Publisher}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="publisherName" id="publisherName" placeholder="Publisher name"/>
+                                <input type="text" class="form-control" name="publisherName" id="publisherName"
+                                       placeholder="Publisher name" required=""/>
                             </div>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>
