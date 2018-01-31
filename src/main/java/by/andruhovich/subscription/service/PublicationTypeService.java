@@ -92,14 +92,18 @@ public class PublicationTypeService extends BaseService{
         }
     }
 
-    public List<Publication> findPublicationByPublicationType(String publicationTypeId) throws ServiceTechnicalException {
+    public List<Publication> findPublicationByPublicationType(String publicationTypeId, String pageNumber) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
         int intPublicationTypeId = Integer.parseInt(publicationTypeId);
 
+        int number = Integer.parseInt(pageNumber);
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+
         try {
             publicationDAO = daoFactory.createPublicationDAO();
-            return publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId);
+            return publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

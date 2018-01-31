@@ -5,10 +5,7 @@ import by.andruhovich.subscription.dao.impl.AccountDAO;
 import by.andruhovich.subscription.dao.impl.BlockDAO;
 import by.andruhovich.subscription.dao.impl.PaymentDAO;
 import by.andruhovich.subscription.dao.impl.UserDAO;
-import by.andruhovich.subscription.entity.Account;
-import by.andruhovich.subscription.entity.Block;
-import by.andruhovich.subscription.entity.Subscription;
-import by.andruhovich.subscription.entity.User;
+import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -19,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 public class UserService extends BaseService{
-    public boolean checkLoginByPassword(String login, String password) throws ServiceTechnicalException {
+    public boolean confirmPassword(String login, String password) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
 
@@ -35,13 +32,13 @@ public class UserService extends BaseService{
         }
     }
 
-    private boolean isLoginExist(String login) throws ServiceTechnicalException {
+    public int findUserIdByLogin(String login) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
 
         try {
             userDAO = daoFactory.createUserDAO();
-            return userDAO.isLoginExist(login);
+            return userDAO.findUserIdByLogin(login);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -49,24 +46,38 @@ public class UserService extends BaseService{
         }
     }
 
-    public boolean signUp(String lastname, String firstname, Date birthdate, String address, String city,
+    public Role findRoleByUserId(int userId) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        UserDAO userDAO = null;
+
+        try {
+            userDAO = daoFactory.createUserDAO();
+            return userDAO.findRoleByUserId(userId);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage());
+        } finally {
+            daoFactory.closeDAO(userDAO);
+        }
+    }
+
+    public int signUp(String lastname, String firstname, Date birthdate, String address, String city,
                           String postalIndex, String login, String password) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = null;
         AccountDAO accountDAO = null;
 
         try {
-            if (!isLoginExist(login)) {
+            if (findUserIdByLogin(login) == -1) {
                 userDAO = daoFactory.createUserDAO();
                 accountDAO = daoFactory.createAccountDAO();
                 int intPostalIndex = Integer.parseInt(postalIndex);
                 password = PasswordCoder.hashPassword(password);
                 Account account = accountDAO.createEmptyAccount();
-                User user = new User(lastname, firstname, birthdate, address, city, intPostalIndex, login, password, account);
-                userDAO.create(user);
-                return true;
+                Role role = new Role(2, "user");
+                User user = new User(lastname, firstname, birthdate, address, city, intPostalIndex, login, password, role, account);
+                return userDAO.create(user);
             }
-            return false;
+            return -1;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -81,7 +92,7 @@ public class UserService extends BaseService{
         BlockDAO blockDAO = null;
 
         try {
-            if (isLoginExist(userLogin)) {
+            if (findUserIdByLogin(userLogin) != -1) {
                 userDAO = daoFactory.createUserDAO();
                 User user = userDAO.findUserByLogin(userLogin);
                 User admin = userDAO.findUserByLogin(adminLogin);
@@ -106,7 +117,7 @@ public class UserService extends BaseService{
         BlockDAO blockDAO = null;
 
         try {
-            if (isLoginExist(login)) {
+            if (findUserIdByLogin(login) != -1) {
                 userDAO = daoFactory.createUserDAO();
                 User user = userDAO.findUserByLogin(login);
                 blockDAO = daoFactory.createBlockDAO();
@@ -127,7 +138,7 @@ public class UserService extends BaseService{
         UserDAO userDAO = null;
 
         try {
-            if (isLoginExist(login)) {
+            if (findUserIdByLogin(login) != -1) {
                 userDAO = daoFactory.createUserDAO();
                 int userId = userDAO.findUserByLogin(login).getUserId();
                 Account account = userDAO.findAccountByUserId(userId);
