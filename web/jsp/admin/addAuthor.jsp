@@ -8,10 +8,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.addAuthor" var="Title"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
+<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"></fmt:message>
 
 <html lang="en">
 <head>
-    <title>Add Genre</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +35,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/admin/header.jsp" %>
+<ctg:role></ctg:role>
 
 <div class="container-fluid">
     <div class="container">
@@ -34,24 +46,24 @@
                     <form name="addForm" method="POST" action="controller">
                         <input type="hidden" name="command" value="add_author"/>
                         <div class="form-group row">
-                            <label for="lastName" class="col-sm-2 col-form-label">Author last name</label>
+                            <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="firstName" class="col-sm-2 col-form-label">Author first name</label>
+                            <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="publisherName" class="col-sm-2 col-form-label">Publisher name</label>
+                            <label for="publisherName" class="col-sm-2 col-form-label">${Publisher}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="publisherName" id="publisherName" placeholder="Publisher name"/>
                             </div>
                         </div>
-                        <button class="btn btn-outline-success my-2 my-sm-0">Add</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>
                     </form>
                 </div>
             </div>
