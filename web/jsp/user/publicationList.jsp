@@ -15,10 +15,10 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publicationListTitle" var="Title"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publications" var="Title"></fmt:message>
 <fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
 <fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authors" var="Authors"></fmt:message>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"></fmt:message>
 <fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
 <fmt:message bundle="${loc}" key="label.price" var="Price"></fmt:message>
 <fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"></fmt:message>
