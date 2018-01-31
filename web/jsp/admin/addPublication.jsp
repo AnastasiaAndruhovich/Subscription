@@ -8,10 +8,30 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.addPublication" var="Title"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
+<fmt:message bundle="${loc}" key="label.price" var="Price"></fmt:message>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"></fmt:message>
+<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
+<fmt:message bundle="${loc}" key="label.name" var="Name"></fmt:message>
+<fmt:message bundle="${loc}" key="button.uploadPicture" var="UploadPicture"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"></fmt:message>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"></fmt:message>
+<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
 
 <html lang="en">
 <head>
-    <title>Add Genre</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,9 +41,10 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <style><%@include file="../../css/style.css"%></style>
+
 </head>
 <body>
-<%@include file="../../static/admin/header.jsp" %>
+<ctg:role></ctg:role>
 
 <div class="container-fluid">
     <div class="container">
@@ -31,62 +52,66 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
-                    <form name="addForm" method="POST" action="controller">
-                        <input type="hidden" name="command" value="add_publication"/>
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" id="name"/>
-                            </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <form name="addForm" method="POST" action="controller">
+                                <input type="hidden" name="command" value="add_publication"/>
+                                <div class="form-group row">
+                                    <label for="name" class="col-sm-3 col-form-label">${Name}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="name" id="name" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="publicationType" class="col-sm-3 col-form-label">${Type}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="publicationType"
+                                               id="publicationType" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="genre" class="col-sm-3 col-form-label">${Genre}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="genre" id="genre" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lastName" class="col-sm-3 col-form-label">${AuthorLastName}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="lastName" id="lastName"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="firstName" class="col-sm-3 col-form-label">${AuthorFirstName}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="firstName" id="firstName"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="publisherName" class="col-sm-3 col-form-label">${Publisher}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="publisherName" id="publisherName"
+                                               required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="description" class="col-sm-3 col-form-label">${Description}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="description" id="description"
+                                               required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="price" class="col-sm-3 col-form-label">${Price} ${MoneyUnit}</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="price" id="price" required=""
+                                               pattern="^[\d]+?\.[\d]{2}$" placeholder="0.00"/>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>
+                            </form>
                         </div>
-                        <div class="form-group row">
-                            <label for="publicationType" class="col-sm-2 col-form-label">Publication type</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="publicationType" id="publicationType"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="genre" class="col-sm-2 col-form-label">Genre</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="genre" id="genre"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="lastName" class="col-sm-2 col-form-label">Author last name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="lastName" id="lastName"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="firstName" class="col-sm-2 col-form-label">Author first name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="firstName" id="firstName"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="publisherName" class="col-sm-2 col-form-label">Publisher name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="publisherName" id="publisherName"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="description" class="col-sm-2 col-form-label">Description</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="description" id="description"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="price" class="col-sm-2 col-form-label">Price</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price" id="price"/>
-                            </div>
-                        </div>
-                        <form action="controller" method="POST" enctype="multipart/form-data">
-                            <input type="text" name="description" />
-                            <input type="file" name="file" />
-                            <button class="btn btn-outline-success my-2 my-sm-0">Add</button>
-                        </form>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="col-1"></div>
