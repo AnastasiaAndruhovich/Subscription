@@ -42,7 +42,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="genre card">
-                    <form name="addForm" method="POST" action="controller">
+                    <form name="addForm" method="POST" action="../../controller">
                         <input type="hidden" name="command" value="add_genre"/>
                         <div class="form-group row">
                             <label for="update" class="col-sm-2 col-form-label">${Genre}</label>

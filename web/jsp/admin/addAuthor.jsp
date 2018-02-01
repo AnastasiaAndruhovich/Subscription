@@ -43,7 +43,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    <form name="addForm" method="POST" action="controller">
+                    <form name="addForm" method="POST" action="../../controller">
                         <input type="hidden" name="command" value="add_author"/>
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>

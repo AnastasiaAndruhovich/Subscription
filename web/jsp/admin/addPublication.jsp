@@ -54,7 +54,7 @@
                 <div class="publication card">
                     <div class="row">
                         <div class="col-12">
-                            <form name="addForm" method="POST" action="controller">
+                            <form name="addForm" method="POST" action="../../controller">
                                 <input type="hidden" name="command" value="add_publication"/>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-3 col-form-label">${Name}</label>
