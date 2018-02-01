@@ -14,6 +14,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PublicationService extends BaseService {
@@ -39,7 +40,7 @@ public class PublicationService extends BaseService {
 
     public int addPublication(String name, List<String> authorFirstNames, List<String> authorLastNames,
                               String publisherName, String publicationTypeName, String genreName, String description,
-                              String price, String pictureName, byte[] picture) throws ServiceTechnicalException {
+                              String price) throws ServiceTechnicalException {
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
@@ -62,8 +63,7 @@ public class PublicationService extends BaseService {
         List<Author> authors = authorService.createAuthorList(authorFirstNames, authorLastNames, publisherName);
 
         BigDecimal decimalPrice = new BigDecimal(price);
-        Publication publication = new Publication(name, description, decimalPrice, pictureName, picture,
-                authors, genre, publicationType);
+        Publication publication = new Publication(name, description, decimalPrice, authors, genre, publicationType);
         int publicationId = findIdByPublication(publication);
         try {
             publicationDAO = daoFactory.createPublicationDAO();
@@ -265,6 +265,38 @@ public class PublicationService extends BaseService {
         }
     }
 
+    public Publication findPublicationById(int publicationId) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            Publication publication = publicationDAO.findEntityById(publicationId);
+            if (publication == null) return null;
+            List<Publication> publications = new LinkedList<>();
+            publications.add(publication);
+            return fillOutPublicationList(publications).get(0);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
+    }
+
+    public byte[] findPictureByPublicationId(int publicationId) throws ServiceTechnicalException {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            return publicationDAO.findPictureByPublicationId(publicationId);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
+    }
+
     private List<Author> correctAuthorList(List<Author> authors) {
         for (Author author : authors) {
             if ("-".equals(author.getAuthorFirstName())) {
@@ -275,5 +307,9 @@ public class PublicationService extends BaseService {
             }
         }
         return authors;
+    }
+
+    public boolean insertImage(String publicationId, byte[] picture, String pictureName) throws ServiceTechnicalException {
+        return false;
     }
 }

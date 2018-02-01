@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class GenreDAO extends GenreManagerDAO {
-    private static final String INSERT_GENRE= "INSERT INTO accounts(name, description) VALUES (?, ?)";
+    private static final String INSERT_GENRE= "INSERT INTO genres(name, description) VALUES (?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT genre_id FROM genres ORDER BY genre_id DESC LIMIT 1";
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(genre_id) AS count FROM genres";

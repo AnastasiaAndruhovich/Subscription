@@ -2,7 +2,7 @@ package by.andruhovich.subscription.command;
 
 public enum CommandType {
     //user
-    LOGIN, SIGN_UP, BLOCK_USER, UNBLOCK_USER, UPDATE_USER, SHOW_USERS, FIND_USER_BY_LOGIN, FIND_USER_BY_ACCOUNT_NUMBER,
+    LOGIN, LOGOUT, SIGN_UP, BLOCK_USER, UNBLOCK_USER, UPDATE_USER, SHOW_USERS, FIND_USER_BY_LOGIN, FIND_USER_BY_ACCOUNT_NUMBER,
     FIND_USER_BY_SUBSCRIPTION_ID, FIND_USER_BY_PAYMENT_NUMBER,
 
     //publication
@@ -20,7 +20,4 @@ public enum CommandType {
 
     //subscription
     SHOW_SUBSCRIPTIONS, ADD_SUBSCRIPTION, ACTIVATE_SUBSCRIPTION, DEACTIVATE_SUBSCRIPTION,
-
-    //redirect
-    redirect_author_update, redirect_publication_update, redirect_genre_update, redirect_publication_type_update,
 }

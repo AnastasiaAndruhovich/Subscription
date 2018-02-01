@@ -3,6 +3,7 @@ package by.andruhovich.subscription.servlet;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
+import by.andruhovich.subscription.service.PublicationService;
 import by.andruhovich.subscription.service.UserService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -57,8 +58,8 @@ public class ImageServlet extends HttpServlet {
                 byte[] picture = item.get();
                 String pictureName = item.getName();
                 String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
-                UserService userService = new UserService();
-                if (userService.insertImage(publicationId, picture, pictureName)) {
+                PublicationService publicationService = new PublicationService();
+                if (publicationService.insertImage(publicationId, picture, pictureName)) {
                     response.sendRedirect(pageManager.getProperty(PUBLICATION_ADMIN_PAGE));
                 } else {
                     response.sendRedirect(ERROR_PAGE);

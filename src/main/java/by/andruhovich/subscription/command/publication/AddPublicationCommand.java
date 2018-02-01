@@ -1,18 +1,13 @@
 package by.andruhovich.subscription.command.publication;
 
 import by.andruhovich.subscription.command.BaseCommand;
-import by.andruhovich.subscription.converter.ClientDataConverter;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.service.PublicationService;
 import by.andruhovich.subscription.validator.ServiceValidator;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +21,8 @@ import java.util.Locale;
 public class AddPublicationCommand extends BaseCommand {
     private PublicationService publicationService = new PublicationService();
 
-    private static final String PUBLICATION_ADMIN_PAGE = "path.page.admin.addPublication";
+    private static final String ADD_PUBLICATION_ADMIN_PAGE = "path.page.admin.addPublication";
+    private static final String ADD_PUBLICATION_PICTURE_ADMIN_PAGE = "path.page.admin.addPublicationPicture";
 
     private static final String NAME_ATTRIBUTE = "name";
     private static final String PUBLICATION_TYPE_ATTRIBUTE = "publicationType";
@@ -36,14 +32,13 @@ public class AddPublicationCommand extends BaseCommand {
     private static final String PUBLISHER_NAME_ATTRIBUTE = "publisherName";
     private static final String DESCRIPTION_ATTRIBUTE = "description";
     private static final String PRICE_ATTRIBUTE = "price";
-    private static final String RESULT_ATTRIBUTE = "result";
+    private static final String PUBLICATION_ATTRIBUTE = "publication";
+    private static final String SUCCESSFUL_ADD_PUBLICATION_ATTRIBUTE = "successfulAddPublication";
+    private static final String ERROR_ADD_PUBLICATION_ATTRIBUTE = "errorAddPublication";
 
-    private static final String SUCCESSFUL_ADDED_PUBLICATION_MESSAGE = "message.successfulAddedPublication";
-    private static final String ERROR_ADDED_PUBLICATION_MESSAGE = "message.errorAddedPublication";
+    private static final String SUCCESSFUL_ADD_PUBLICATION_MESSAGE = "message.successfulAddPublication";
+    private static final String ERROR_ADD_PUBLICATION_MESSAGE = "message.errorAddPublication";
     private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectPrice";
-
-    private static final String PICTURE_NAME = "no_pic.jpg";
-    private static final String PICTURE_PATH_NAME = "image/no_pic.jpg";
 
     private static final Logger LOGGER = LogManager.getLogger(AddPublicationCommand.class);
 
@@ -68,26 +63,27 @@ public class AddPublicationCommand extends BaseCommand {
         List<String> firstNames = new LinkedList<>();
         firstNames.add(firstName);
 
-        byte[] picture = ClientDataConverter.convertImageToByteArray(PICTURE_PATH_NAME);
-
         try {
             if (!ServiceValidator.verifyPrice(price)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(RESULT_ATTRIBUTE, incorrectPriceMessage);
-                page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
+                request.setAttribute(ERROR_ADD_PUBLICATION_ATTRIBUTE, incorrectPriceMessage);
+                page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
                 return page;
             }
 
-            int result = publicationService.addPublication(name, firstNames, lastNames, publisherName, publicationType,
-                    genre, description, price, PICTURE_NAME, picture);
-            if (result != -1) {
-                String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADDED_PUBLICATION_MESSAGE);
-                request.setAttribute(RESULT_ATTRIBUTE, successfulAddedPublicationMessage);
+            int publicationId = publicationService.addPublication(name, firstNames, lastNames, publisherName, publicationType,
+                    genre, description, price);
+            if (publicationId != -1) {
+                String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_PUBLICATION_MESSAGE);
+                request.setAttribute(SUCCESSFUL_ADD_PUBLICATION_ATTRIBUTE, successfulAddedPublicationMessage);
+                Publication publication = publicationService.findPublicationById(publicationId);
+                request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
+                page = pageManager.getProperty(ADD_PUBLICATION_PICTURE_ADMIN_PAGE);
             } else {
-                String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADDED_PUBLICATION_MESSAGE);
-                request.setAttribute(RESULT_ATTRIBUTE, errorAddedPublicationMessage);
+                String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_PUBLICATION_MESSAGE);
+                request.setAttribute(ERROR_ADD_PUBLICATION_ATTRIBUTE, errorAddedPublicationMessage);
+                page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
             }
-            page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
 
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

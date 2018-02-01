@@ -20,9 +20,9 @@ import java.util.Locale;
 public abstract class BaseCommand {
     protected static final String ERROR_PAGE = "/jsp/error/error.jsp";
 
-    protected static final String INFORMATION_MESSAGE_ATTRIBUTE = "informationIsAbsent";
+    protected static final String INFORMATION_IS_ABSENT_ATTRIBUTE = "informationIsAbsent";
+    protected static final String INFORMATION_IS_ABSENT_MESSAGE = "message.informationIsAbsent";
 
-    protected static final String PUBLICATION_MESSAGE = "message.informationIsAbsent";
     protected static final String CLIENT_TYPE = "clientType";
     protected static final String CLIENT_ID = "clientId";
     protected static final String LOCALE = "locale";
@@ -56,7 +56,7 @@ public abstract class BaseCommand {
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
             } else {
-                request.setAttribute(INFORMATION_MESSAGE_ATTRIBUTE, localeManager.getProperty(PUBLICATION_MESSAGE));
+                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();

@@ -23,8 +23,7 @@ public class UserService extends BaseService{
         try {
             userDAO = daoFactory.createUserDAO();
             String dataBasePassword = userDAO.findPasswordByLogin(login);
-            String hashedPassword = PasswordCoder.hashPassword(password);
-            return hashedPassword.equals(dataBasePassword);
+            return PasswordCoder.checkPassword(password, dataBasePassword);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -252,4 +251,5 @@ public class UserService extends BaseService{
             daoFactory.closeDAO(userDAO);
         }
     }
+
 }

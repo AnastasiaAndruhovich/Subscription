@@ -63,9 +63,9 @@ CREATE TABLE `authors_publications` (
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
-  `firstname` varchar(30) NOT NULL,
-  `birthdate` date NOT NULL,
+  `lastName` varchar(30) NOT NULL,
+  `firstName` varchar(30) NOT NULL,
+  `birthDate` date NOT NULL,
   `address` varchar(30) NOT NULL,
   `city` varchar(30) NOT NULL,
   `postal_index` int(10) unsigned NOT NULL,

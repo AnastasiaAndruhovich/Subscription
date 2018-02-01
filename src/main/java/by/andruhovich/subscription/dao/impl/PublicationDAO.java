@@ -13,10 +13,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PublicationDAO extends PublicationManagerDAO {
@@ -45,6 +42,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             "WHERE name = ? && publication_type_id = ? && genre_id = ? && description = ? && price = ?";
     private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE name = ?";
+    private static final String SELECT_PICTURE_BY_PUBLICATION_ID = "";
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
 
@@ -305,5 +303,31 @@ public class PublicationDAO extends PublicationManagerDAO {
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);
+    }
+
+    public byte[] findPictureByPublicationId(int publicationId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find picture by publication id");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PICTURE_BY_PUBLICATION_ID);
+            preparedStatement.setInt(1, publicationId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            byte[] picture = null;
+            while (resultSet.next()) {
+                Blob blob = resultSet.getBlob("picture");
+                if (blob != null) {
+                    int blobLength = (int) blob.length();
+                    picture = blob.getBytes(1, blobLength);
+                    blob.free();
+                }
+            }
+            LOGGER.log(Level.INFO, "Request for find picture by publication id - succeed");
+            return picture;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error", e);
+        } finally {
+            close(preparedStatement);
+        }
     }
 }

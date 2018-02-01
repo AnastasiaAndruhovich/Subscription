@@ -33,7 +33,12 @@ public class GenreMapper implements EntityMapper<Genre> {
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Genre entity) throws DAOTechnicalException {
         try {
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getDescription());
+            if (entity.getDescription() == null) {
+                preparedStatement.setNull(2, java.sql.Types.BLOB);
+            }
+            else {
+                preparedStatement.setString(2, entity.getDescription());
+            }
             return preparedStatement;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage());
