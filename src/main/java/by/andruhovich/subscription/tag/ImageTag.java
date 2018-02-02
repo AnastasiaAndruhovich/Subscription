@@ -21,10 +21,10 @@ public class ImageTag extends TagSupport {
         try {
             byte[] picture = publicationService.findPictureByPublicationId(publicationId);
             if (picture == null) {
-                pageContext.getOut().write("<img src=\"../img/no-image.png\" alt=\"user\" class=\"img-circle img-responsive\">");
+                pageContext.getOut().write("<img src=\"../images/cover.jpg\" alt=\"user\" class=\"image img-responsive\">");
             } else {
                 BASE64Encoder base64Encoder = new BASE64Encoder();
-                String image = "<img src=\"data:image/png;base64," + base64Encoder.encode(picture) + "\"alt=\"user\" class=\"img-circle img-responsive\">";
+                String image = "<img src=\"data:image/jpg;base64," + base64Encoder.encode(picture) + "\"alt=\"user\" class=\"image img-responsive\">";
                 pageContext.getOut().write(image);
             }
         } catch (IOException | ServiceTechnicalException e) {
