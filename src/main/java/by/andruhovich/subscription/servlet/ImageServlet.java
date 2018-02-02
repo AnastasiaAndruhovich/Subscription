@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.servlet;
 
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -44,34 +46,44 @@ public class ImageServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String PUBLICATION_ID_ATTRIBUTE = "publicationId";
+        final String PUBLICATION_ATTRIBUTE = "publication";
 
         final String ERROR_PAGE = "/jsp/error/error.jsp";
-        final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationList";
+        final String ADD_PUBLICATION_PICTURE_ADMIN_PAGE = "path.page.admin.addPublicationPicture";
 
         PageManager pageManager = PageManager.getInstance();
 
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
+        PublicationService publicationService = new PublicationService();
+        String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
+
         try {
             List<FileItem> fields = upload.parseRequest(request);
-            for (FileItem item : fields) {
-                byte[] picture = item.get();
-                String pictureName = item.getName();
-                String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
-                PublicationService publicationService = new PublicationService();
-                if (publicationService.insertImage(publicationId, picture, pictureName)) {
-                    response.sendRedirect(pageManager.getProperty(PUBLICATION_ADMIN_PAGE));
-                } else {
-                    response.sendRedirect(ERROR_PAGE);
+            if (fields.size() != 0) {
+                for (FileItem item : fields) {
+                    if (item.getSize() != 0) {
+                        byte[] picture = item.get();
+                        String pictureName = item.getName();
+                        if (!publicationService.insertImage(publicationId, picture, pictureName)) {
+                            response.sendRedirect(ERROR_PAGE);
+                        }
+                    }
                 }
             }
+            int id = Integer.parseInt(publicationId);
+            Publication publication = publicationService.findPublicationById(id);
+            request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
+            String page = pageManager.getProperty(ADD_PUBLICATION_PICTURE_ADMIN_PAGE);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(request, response);
         } catch (FileUploadException e) {
             LOGGER.log(Level.ERROR, "Error image uploading");
             response.sendRedirect(ERROR_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             response.sendRedirect(ERROR_PAGE);
-        } catch (MissingResourceTechnicalException e) {
+        } catch (MissingResourceTechnicalException | ServletException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
             response.sendRedirect(ERROR_PAGE);
         }
