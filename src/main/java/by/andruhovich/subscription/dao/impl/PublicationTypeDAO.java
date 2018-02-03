@@ -25,7 +25,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     private static final String SELECT_PUBLICATION_TYPE_BY_ID = "SELECT publication_type_id, name FROM publication_types " +
             "WHERE publication_type_id = ?";
     private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publication_types LIMIT ?, ?";
-    private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publication_types SET publication_type_id = ?, name = ?";
+    private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publication_types SET name = ? WHERE publication_type_id = ?";
 
     private static final String SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_FIELDS = "SELECT publication_type_id " +
             "FROM publication_types WHERE name = ?";
@@ -127,6 +127,7 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PUBLICATION_TYPE);
             PublicationTypeMapper mapper = new PublicationTypeMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(2, entity.getPublicationTypeId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update publication type - succeed");
             return true;
