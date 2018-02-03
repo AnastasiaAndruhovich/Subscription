@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -37,7 +37,7 @@
                     <div class="error-login">${errorLogin}</div>
                     <div class="row">
                         <div class="col-12">
-                            <form name="loginForm" method="POST" action="controller">
+                            <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="login"/>
                                 <div class="form-group row">
                                     <label for="login" class="col-sm-2 col-form-label">Login</label>

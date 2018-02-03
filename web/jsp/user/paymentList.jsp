@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -45,7 +46,7 @@
                                     <tr>
                                         <td>${payment.paymentNumber}</td>
                                         <td>
-                                            <a href="controller?command=find_subscription_by_subscription_id&subscriptionId=${payment.subscription.subscriptionId}">${payment.subscription.subscriptionId}</a>
+                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_subscription_id&subscriptionId=${payment.subscription.subscriptionId}">${payment.subscription.subscriptionId}</a>
                                         </td>
                                         <td>${payment.sum}</td>
                                         <td>${payment.date}</td>

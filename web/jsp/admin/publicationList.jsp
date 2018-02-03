@@ -8,10 +8,29 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.publications" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="label.price" var="Price"/>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="label.name" var="Name"/>
+<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"/>
+<fmt:message bundle="${loc}" key="label.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="label.delete" var="Delete"/>
 
 <html lang="en">
 <head>
-    <title>Publications</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +42,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/admin/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -37,42 +56,41 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4">
-                                            <img src="http://bookashka.name/fb2imgs/e1/e13744dcc4b253fbc4f826e9fb27157d.jpg"
-                                                 alt="" class="w-100">
+                                            <ctg:image publicationId="${publication.publicationId}"/>
                                         </div>
                                         <div class="col-8">
-                                            <p>Name: ${publication.name}</p>
+                                            <p>${Name}: ${publication.name}</p>
                                             <p>
-                                                Type:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
+                                                ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                Genre:<a href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
+                                                ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
-                                                        Authors:
+                                                        ${Authors}:
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
-                                                    <p>Publisher: ${publication.authors[0].publisherName}</p>
+                                                    <p>${Publisher}: ${publication.authors[0].publisherName}</p>
                                                 </c:when>
                                             </c:choose>
-                                            <p>Description: ${publication.description}</p>
-                                            <p>Price: ${publication.price} BY/month</p>
+                                            <p>${Description}: ${publication.description}</p>
+                                            <p>${Price}: ${publication.price} ${MoneyUnit}</p>
                                             <div class="row">
-                                                <form method="GET" action="controller">
+                                                <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
                                                     <input type="hidden" name="command" value="redirect_add_subscription"/>
-                                                    <button class="btn btn-outline-success my-2 my-sm-0">Subscribe</button>
+                                                    <button class="btn btn-outline-success my-2 my-sm-0">${Subscribe}</button>
                                                 </form>
-                                                <form method="GET" action="controller">
+                                                <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
                                                     <input type="hidden" name="command" value="redirect_update_publication"/>
-                                                    <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
+                                                    <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                                 </form>
-                                                <form method="POST" action="controller">
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                     <input type="hidden" name="command" value="delete_publication"/>
-                                                    <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                    <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
                                                 </form>
                                             </div>
                                         </div>

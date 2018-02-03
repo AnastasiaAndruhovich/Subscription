@@ -44,7 +44,7 @@
 
 </head>
 <body>
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -54,8 +54,9 @@
                 <div class="publication card">
                     <div class="row">
                         <div class="col-12">
-                            <form name="addForm" method="POST" action="../../controller">
+                            <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="add_publication"/>
+                                <div class="error-add-publication">${requestScope.errorAddPublication}</div>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                     <div class="col-sm-9">

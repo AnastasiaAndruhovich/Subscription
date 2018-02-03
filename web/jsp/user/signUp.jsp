@@ -24,7 +24,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -36,7 +36,7 @@
                     <div class="error-sign-up">${errorSignUp}</div>
                     <div class="row">
                         <div class="col-12">
-                            <form name="loginForm" method="POST" action="controller">
+                            <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="sign_up"/>
 
                                 <!-- Text input-->

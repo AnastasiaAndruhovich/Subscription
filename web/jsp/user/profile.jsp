@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -30,7 +31,7 @@
             <div class="col-8">
                 <c:choose>
                     <c:when test="${user!=null}">
-                        <form name="profileForm" method="POST" action="controller">
+                        <form name="profileForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                             <input type="hidden" name="command" value="update_user"/>
 
                             <!-- User names-->
@@ -65,7 +66,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 control-label" for="oldPassword">Old Password</label>
                                 <div class="col-sm-9">
-                                    <input id="oldPassword" name="oldPassword" type="password" placeholder=" Old password"
+                                    <input id="oldPassword" name="oldPassword" type="password" placeholder="Old password"
                                            class="form-control input-md" required="">
                                 </div>
                             </div>

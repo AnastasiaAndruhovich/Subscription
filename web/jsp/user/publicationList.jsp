@@ -15,16 +15,16 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publications" var="Title"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
-<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
-<fmt:message bundle="${loc}" key="label.author" var="Authors"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
-<fmt:message bundle="${loc}" key="label.price" var="Price"></fmt:message>
-<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"></fmt:message>
-<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
-<fmt:message bundle="${loc}" key="label.name" var="Name"></fmt:message>
-<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publications" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="label.price" var="Price"/>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="label.name" var="Name"/>
+<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"/>
 
 
 <html lang="en">
@@ -41,7 +41,7 @@
 </head>
 <body>
 
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -55,33 +55,32 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4">
-                                            <img src="http://bookashka.name/fb2imgs/e1/e13744dcc4b253fbc4f826e9fb27157d.jpg"
-                                                 alt="" class="w-100">
+                                            <ctg:image publicationId="${publication.publicationId}"/>
                                         </div>
                                         <div class="col-8">
                                             <p>${Name}: ${publication.name}</p>
                                             <p>
-                                                ${Type}:<a href="controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}&pageNumber=1"> ${publication.publicationType.name}</a>
+                                                ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}&pageNumber=1"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                ${Genre}:<a href="controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}&pageNumber=1"> ${publication.genre.name}</a>
+                                                ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}&pageNumber=1"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
                                                         ${Authors}:
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="controller?command=find_publications_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
                                                     <p>
-                                                        ${Publisher}: <a href="controller?command=find_publications_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>
+                                                        ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>
                                                     </p>
                                                 </c:when>
                                             </c:choose>
                                             <p>${Description}: ${publication.description}</p>
                                             <p>${Price}: ${publication.price} ${MoneyUnit}</p>
-                                            <form method="GET" action="controller">
+                                            <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
                                                 <input type="hidden" name="command" value="redirect_add_subscription"/>
                                                 <button class="btn btn-outline-success my-2 my-sm-0">${Subscribe}</button>
                                             </form>
@@ -118,7 +117,7 @@
             </c:when>
             <c:otherwise>
                 <li class="page-item">
-                    <a class="page-link" href="controller?command=show_publications&pageNumber=${currentPage-1}" aria-label="Previous">
+                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${currentPage-1}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Previous</span>
                     </a>
@@ -130,12 +129,12 @@
             <c:choose>
                 <c:when test="${currentPage eq i}">
                     <li class="page-item active">
-                        <a class="page-link" href="controller?command=show_publications&pageNumber=${i}">${i}</a>
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${i}">${i}</a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="controller?command=show_publications&pageNumber=${i}">${i}</a>
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${i}">${i}</a>
                     </li>
                 </c:otherwise>
             </c:choose>
@@ -151,7 +150,7 @@
             </c:when>
             <c:otherwise>
                 <li class="page-item">
-                    <a class="page-link" href="controller?command=show_publications&pageNumber=${currentPage+1}" aria-label="Next">
+                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${currentPage+1}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>

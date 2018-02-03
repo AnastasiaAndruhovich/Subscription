@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -31,7 +32,7 @@
                 <div class="content">
                     <c:choose>
                         <c:when test="${publication!=null}">
-                            <form name="subscriptionForm" method="POST" action="controller">
+                            <form name="subscriptionForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="add_subscription"/>
                                 <!-- Publication name-->
                                 <div class="form-group row">
@@ -116,7 +117,7 @@
                                     </div>
                                 </div>
 
-                                <form method="POST" action="controller">
+                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                     <input type="hidden" name="command" value="add_subscription"/>
                                     <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal"
                                             data-target="#subscribeModal">Subscribe

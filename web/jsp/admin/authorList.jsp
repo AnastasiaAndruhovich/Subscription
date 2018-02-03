@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -33,17 +34,37 @@
                         <c:when test="${authors!=null}">
                             <c:forEach var="author" items="${authors}">
                                 <p>
-                                    <a href="controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                                 <div class="row">
-                                    <form method="GET" action="controller">
+                                    <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
                                         <input type="hidden" name="command" value="redirect_update_author"/>
                                         <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
                                     </form>
-                                    <form method="POST" action="controller">
-                                        <input type="hidden" name="command" value="delete_author"/>
-                                        <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
-                                    </form>
+                                    <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#authorModal" data-toggle="modal">Delete</button>
+                                    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="authorModal" aria-hidden="true">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <p>WARNING!</p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                        <input type="hidden" name="command" value="delete_author"/>
+                                                        <input type="hidden" name="authorId" value="${author.authorId}">
+                                                        <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </c:when>

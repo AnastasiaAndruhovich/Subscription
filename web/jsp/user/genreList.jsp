@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -23,7 +24,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -36,7 +37,7 @@
                             <c:forEach var="genre" items="${genres}">
                                 <div class="container">
                                     <p>
-                                        <a href="controller?command=find_publications_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
+                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
                                     </p>
                                     <p>
                                         Description: ${genre.description}

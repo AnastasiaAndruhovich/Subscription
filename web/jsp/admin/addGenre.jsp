@@ -34,7 +34,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -42,8 +42,9 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="genre card">
-                    <form name="addForm" method="POST" action="../../controller">
+                    <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller?command=add_genre">
                         <input type="hidden" name="command" value="add_genre"/>
+                        <p>${successfulAddGenre}</p>
                         <div class="form-group row">
                             <label for="update" class="col-sm-2 col-form-label">${Genre}</label>
                             <div class="col-sm-10">

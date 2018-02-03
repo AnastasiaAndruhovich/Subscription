@@ -15,11 +15,11 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.addAuthor" var="Title"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
-<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"></fmt:message>
+<fmt:message bundle="${loc}" key="label.addAuthor" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="button.add" var="Add"/>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
 
 <html lang="en">
 <head>
@@ -35,7 +35,7 @@
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
-<ctg:role></ctg:role>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -43,20 +43,19 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    <form name="addForm" method="POST" action="../../controller">
+                    <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="add_author"/>
+                        <p>${result}</p>
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="lastName" id="lastName" required=""
-                                       placeholder="Last name"/>
+                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="firstName" id="firstName" required=""
-                                       placeholder="First name"/>
+                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name"/>
                             </div>
                         </div>
                         <div class="form-group row">

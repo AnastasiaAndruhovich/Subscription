@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtag"%>
 
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-<%@include file="../../static/user/header.jsp" %>
+<ctg:role/>
 
 <div class="container-fluid">
     <div class="container">
@@ -50,19 +51,19 @@
                                     <tr>
                                         <td>${subscription.subscriptionId}</td>
                                         <td>
-                                            <a href="controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
+                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
                                         </td>
                                         <td>
-                                            <a href="controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
+                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
                                         </td>
                                         <td>
-                                            <a href="controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
+                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
                                         </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="subscription.publication.authors!=null">
                                                     <c:forEach var="author" items="subsctription.publication.authors">
-                                                        <a href="controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
+                                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
                                                     </c:forEach>
                                                 </c:when>
                                             </c:choose>
@@ -78,10 +79,9 @@
                                         <td>${endDate}</td>
                                         <td>${subsctription.isActive}</td>
                                         <td>
-                                            <form method="POST" action="controller">
+                                            <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                 <input type="hidden" name="command" value="pay_subscription"/>
-                                                <input type="hidden" name="subscriptionId"
-                                                       value="${subscription.subscriptionId}">
+                                                <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
                                                 <button class="btn btn-outline-success my-2 my-sm-0">Pay</button>
                                             </form>
                                         </td>
