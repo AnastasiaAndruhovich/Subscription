@@ -23,8 +23,8 @@ public class AddGenreCommand extends BaseCommand {
     private static final String DESCRIPTION_ATTRIBUTE = "description";
     private static final String RESULT_ADD_GENRE_ATTRIBUTE = "result";
 
-    private static final String SUCCESSFUL_ADD_GENRE_MESSAGE = "message.successfulAddPublication";
-    private static final String ERROR_ADD_GENRE_MESSAGE = "message.errorAddPublication";
+    private static final String SUCCESSFUL_ADD_GENRE_MESSAGE = "message.successfulAddGenre";
+    private static final String ERROR_ADD_GENRE_MESSAGE = "message.errorAddGenre";
 
     private static final Logger LOGGER = LogManager.getLogger(AddGenreCommand.class);
 
