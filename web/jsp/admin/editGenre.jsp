@@ -35,12 +35,19 @@
                     <c:choose>
                         <c:when test="${genre!=null}">
                             <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                <input type="hidden" name="command" value="update_genre"/>
+                                <input type="hidden" name="command" value="edit_genre"/>
+                                <input type="hidden" name="genreId" value="${genre.genreId}">
+                                <p>${result}</p>
                                 <div class="form-group row">
-                                    <label for="update" class="col-sm-2 col-form-label">Name</label>
+                                    <label for="name" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="name" id="update"
+                                        <input type="text" class="form-control" name="name" id="name"
                                                value="${genre.name}"/>
+                                    </div>
+                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="description" id="description"
+                                               value="${genre.description}"/>
                                     </div>
                                 </div>
                                 <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>

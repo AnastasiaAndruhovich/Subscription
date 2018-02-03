@@ -44,7 +44,10 @@
                                     </p>
                                     <div class="row">
                                         <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
-                                            <input type="hidden" name="command" value="redirect_update_genre"/>
+                                            <input type="hidden" name="command" value="parse_genre"/>
+                                            <input type="hidden" name="genreId" value="${genre.genreId}">
+                                            <input type="hidden" name="name" value="${genre.name}">
+                                            <input type="hidden" name="description" value="${genre.description}">
                                             <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
                                         </form>
                                         <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#genreModal" data-toggle="modal">Delete</button>
