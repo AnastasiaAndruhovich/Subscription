@@ -8,17 +8,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="customtag"%>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.addGenre" var="Title"></fmt:message>
-<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
-<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
-<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
+<fmt:message bundle="${loc}" key="label.addGenre" var="Title"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="button.add" var="Add"/>
 
 <html lang="en">
 <head>
@@ -31,7 +31,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/style.css"%></style>
+    <style>
+        <%@include file="../../css/style.css" %>
+    </style>
 </head>
 <body>
 <ctg:role/>
@@ -42,9 +44,10 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="genre card">
-                    <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller?command=add_genre">
+                    <form name="addForm" method="POST"
+                          action="${pageContext.servletContext.contextPath}/controller?command=add_genre">
                         <input type="hidden" name="command" value="add_genre"/>
-                        <p>${successfulAddGenre}</p>
+                        <p>${result}</p>
                         <div class="form-group row">
                             <label for="update" class="col-sm-2 col-form-label">${Genre}</label>
                             <div class="col-sm-10">
@@ -55,7 +58,7 @@
                         <div class="form-group row">
                             <label for="description" class="col-sm-2 col-form-label">${Description}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="description" id="description" required=""
+                                <input type="text" class="form-control" name="description" id="description"
                                        placeholder="Description"/>
                             </div>
                         </div>
