@@ -27,53 +27,5 @@ public abstract class BaseCommand {
     protected static final String CLIENT_ID = "clientId";
     protected static final String LOCALE = "locale";
 
-    private static final Logger LOGGER = LogManager.getLogger(BaseCommand.class);
-
     public abstract String execute(HttpServletRequest request, HttpServletResponse response);
-
-    protected String showPublicationList(HttpServletRequest request, HttpServletResponse response) {
-        PublicationService publicationService = new PublicationService();
-
-        final String PAGE_NUMBER = "pageNumber";
-        final String PAGE_COUNT = "pageCount";
-        final String PUBLICATION_USER_PAGE = "path.page.user.publicationList";
-        final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationList";
-        final String PUBLICATION_LIST_ATTRIBUTE = "publications";
-
-        String page;
-        PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
-
-        String pageNumber = request.getParameter(PAGE_NUMBER);
-        pageNumber = (pageNumber == null) ? "1" : pageNumber;
-
-        try {
-            List<Publication> publications = publicationService.showPublications(pageNumber);
-            if (!publications.isEmpty()) {
-                int pageCount = publicationService.findPublicationPageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
-            }
-
-            HttpSession session = request.getSession();
-            ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
-            if (type.equals(ClientType.ADMIN)) {
-                page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
-            }
-            else {
-                page = pageManager.getProperty(PUBLICATION_USER_PAGE);
-            }
-        } catch (ServiceTechnicalException e) {
-            LOGGER.log(Level.ERROR, "Database error connection");
-            page = ERROR_PAGE;
-        } catch (MissingResourceTechnicalException e) {
-            LOGGER.log(Level.ERROR, e.getMessage());
-            page = ERROR_PAGE;
-        }
-        return page;
-    }
 }
