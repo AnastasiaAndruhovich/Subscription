@@ -16,4 +16,15 @@
         <body-content>empty</body-content>
     </tag>
 
+    <tag>
+        <name>image</name>
+        <tag-class>by.andruhovich.subscription.tag.ImageTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>publicationId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
 </taglib>
