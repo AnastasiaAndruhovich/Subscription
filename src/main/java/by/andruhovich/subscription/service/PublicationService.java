@@ -310,6 +310,18 @@ public class PublicationService extends BaseService {
     }
 
     public boolean insertImage(String publicationId, byte[] picture, String pictureName) throws ServiceTechnicalException {
-        return false;
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        PublicationDAO publicationDAO = null;
+
+        int id = Integer.parseInt(publicationId);
+
+        try {
+            publicationDAO = daoFactory.createPublicationDAO();
+            return publicationDAO.insertImage(id, picture, pictureName);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            daoFactory.closeDAO(publicationDAO);
+        }
     }
 }
