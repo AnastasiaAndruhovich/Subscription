@@ -88,10 +88,30 @@
                                                     <input type="hidden" name="command" value="redirect_update_publication"/>
                                                     <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                                 </form>
-                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                    <input type="hidden" name="command" value="delete_publication"/>
-                                                    <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
-                                                </form>
+                                                <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationModal" data-toggle="modal">Delete</button>
+                                                <div class="modal fade" id="publicationModal" tabindex="-1" role="dialog" aria-labelledby="publicationModal" aria-hidden="true">
+                                                    <div class="modal-dialog modal-sm" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container-fluid">
+                                                                    <p>WARNING!</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                                    <input type="hidden" name="command" value="delete_publication"/>
+                                                                    <input type="hidden" name="publicationId" value="${publication.publicationId}">
+                                                                    <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
