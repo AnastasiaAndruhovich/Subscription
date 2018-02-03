@@ -51,7 +51,7 @@ public abstract class ManagerDAO <T extends Entity> extends BaseDAO {
         try {
             preparedStatement = connection.prepareStatement(mysqlQuery);
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for delete entity - succeed");
             return true;
         } catch (SQLException e) {
