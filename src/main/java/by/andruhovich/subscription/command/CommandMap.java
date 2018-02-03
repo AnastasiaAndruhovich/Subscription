@@ -7,6 +7,7 @@ import by.andruhovich.subscription.command.genre.AddGenreCommand;
 import by.andruhovich.subscription.command.genre.DeleteGenreCommand;
 import by.andruhovich.subscription.command.genre.ShowGenreCommand;
 import by.andruhovich.subscription.command.publication.*;
+import by.andruhovich.subscription.command.publicationtype.DeletePublicationTypeCommand;
 import by.andruhovich.subscription.command.publicationtype.ShowPublicationTypeCommand;
 import by.andruhovich.subscription.command.user.BlockUserCommand;
 import by.andruhovich.subscription.command.user.LoginCommand;
@@ -23,6 +24,8 @@ public class CommandMap {
     static {
         commandMap = new EnumMap<>(CommandType.class);
         commandMap.put(CommandType.LOGIN, new LoginCommand());
+        commandMap.put(CommandType.SIGN_UP, new SignUpCommand());
+        commandMap.put(CommandType.LOGOUT, new LogoutCommand());
         commandMap.put(CommandType.BLOCK_USER, new BlockUserCommand());
         commandMap.put(CommandType.SHOW_PUBLICATIONS, new ShowPublicationCommand());
         commandMap.put(CommandType.SHOW_GENRES, new ShowGenreCommand());
@@ -31,13 +34,13 @@ public class CommandMap {
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_GENRE, new FindPublicationByGenreCommand());
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_AUTHOR, new FindPublicationByAuthorCommand());
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_PUBLICATION_TYPE, new FindPublicationByPublicationTypeCommand());
-        commandMap.put(CommandType.ADD_PUBLICATION, new AddPublicationCommand());
-        commandMap.put(CommandType.SIGN_UP, new SignUpCommand());
-        commandMap.put(CommandType.LOGOUT, new LogoutCommand());
         commandMap.put(CommandType.ADD_GENRE, new AddGenreCommand());
         commandMap.put(CommandType.ADD_AUTHOR, new AddAuthorCommand());
+        commandMap.put(CommandType.ADD_PUBLICATION, new AddPublicationCommand());
         commandMap.put(CommandType.DELETE_AUTHOR, new DeleteAuthorCommand());
         commandMap.put(CommandType.DELETE_GENRE, new DeleteGenreCommand());
+        commandMap.put(CommandType.DELETE_PUBLICATION_TYPE, new DeletePublicationTypeCommand());
+        commandMap.put(CommandType.DELETE_PUBLICATION, new DeletePublicationCommand());
     }
 
     private CommandMap() {}
