@@ -79,15 +79,19 @@ public class AuthorService extends BaseService{
     public boolean deleteAuthor(String authorId) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         AuthorPublicationDAO authorPublicationDAO = null;
+        AuthorDAO authorDAO = null;
         int intAuthorId = Integer.parseInt(authorId);
 
         try {
-            authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
-            return authorPublicationDAO.deletePublicationsByAuthorId(intAuthorId);
+            authorDAO = daoFactory.createAuthorDAO();
+            /*authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
+            return authorPublicationDAO.deletePublicationsByAuthorId(intAuthorId);*/
+            return authorDAO.delete(intAuthorId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(authorPublicationDAO);
+            daoFactory.closeDAO(authorDAO);
         }
     }
 
