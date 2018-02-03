@@ -1,15 +1,9 @@
 package by.andruhovich.subscription.command;
 
-import by.andruhovich.subscription.command.author.AddAuthorCommand;
-import by.andruhovich.subscription.command.author.DeleteAuthorCommand;
-import by.andruhovich.subscription.command.author.ShowAuthorCommand;
-import by.andruhovich.subscription.command.genre.AddGenreCommand;
-import by.andruhovich.subscription.command.genre.DeleteGenreCommand;
-import by.andruhovich.subscription.command.genre.ShowGenreCommand;
+import by.andruhovich.subscription.command.author.*;
+import by.andruhovich.subscription.command.genre.*;
 import by.andruhovich.subscription.command.publication.*;
-import by.andruhovich.subscription.command.publicationtype.AddPublicationTypeCommand;
-import by.andruhovich.subscription.command.publicationtype.DeletePublicationTypeCommand;
-import by.andruhovich.subscription.command.publicationtype.ShowPublicationTypeCommand;
+import by.andruhovich.subscription.command.publicationtype.*;
 import by.andruhovich.subscription.command.user.BlockUserCommand;
 import by.andruhovich.subscription.command.user.LoginCommand;
 import by.andruhovich.subscription.command.user.LogoutCommand;
@@ -43,9 +37,18 @@ public class CommandMap {
         commandMap.put(CommandType.DELETE_GENRE, new DeleteGenreCommand());
         commandMap.put(CommandType.DELETE_PUBLICATION_TYPE, new DeletePublicationTypeCommand());
         commandMap.put(CommandType.DELETE_PUBLICATION, new DeletePublicationCommand());
+        commandMap.put(CommandType.EDIT_AUTHOR, new EditAuthorCommand());
+        commandMap.put(CommandType.PARSE_AUTHOR, new ParseAuthorCommand());
+        commandMap.put(CommandType.EDIT_GENRE, new EditGenreCommand());
+        commandMap.put(CommandType.PARSE_GENRE, new ParseGenreCommand());
+        commandMap.put(CommandType.EDIT_PUBLICATION_TYPE, new EditPublicationTypeCommand());
+        commandMap.put(CommandType.PARSE_PUBLICATION_TYPE, new ParsePublicationTypeCommand());
+        commandMap.put(CommandType.EDIT_PUBLICATION, new EditPublicationCommand());
+        commandMap.put(CommandType.PARSE_PUBLICATION, new ParsePublicationCommand());
     }
 
     private CommandMap() {}
+
 
     public static CommandMap getInstance() {
         if (instance == null) {
