@@ -8,7 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="customtag"%>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <html lang="en">
 <head>
@@ -37,16 +37,24 @@
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                                 <div class="row">
-                                    <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
-                                        <input type="hidden" name="command" value="redirect_update_author"/>
+                                    <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                        <input type="hidden" name="command" value="parse_author"/>
+                                        <input type="hidden" name="authorId" value="${author.authorId}">
+                                        <input type="hidden" name="publisherName" value="${author.publisherName}">
+                                        <input type="hidden" name="lastName" value="${author.authorLastName}">
+                                        <input type="hidden" name="firstName" value="${author.authorFirstName}">
                                         <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
                                     </form>
-                                    <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#authorModal" data-toggle="modal">Delete</button>
-                                    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="authorModal" aria-hidden="true">
+                                    <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#authorModal"
+                                            data-toggle="modal">Delete
+                                    </button>
+                                    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="authorModal" aria-hidden="true">
                                         <div class="modal-dialog modal-sm" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                    <button class="close" type="button" data-dismiss="modal"
+                                                            aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -56,10 +64,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <form method="POST"
+                                                          action="${pageContext.servletContext.contextPath}/controller">
                                                         <input type="hidden" name="command" value="delete_author"/>
                                                         <input type="hidden" name="authorId" value="${author.authorId}">
-                                                        <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                        <button class="btn btn-outline-danger my-2 my-sm-0">Delete
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
