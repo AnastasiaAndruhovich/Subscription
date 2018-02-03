@@ -84,8 +84,9 @@
                                                     <input type="hidden" name="command" value="redirect_add_subscription"/>
                                                     <button class="btn btn-outline-success my-2 my-sm-0">${Subscribe}</button>
                                                 </form>
-                                                <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
-                                                    <input type="hidden" name="command" value="redirect_update_publication"/>
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="parse_publication"/>
+                                                    <input type="hidden" name="publicationId" value="${publication.publicationId}"/>
                                                     <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                                 </form>
                                                 <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationModal" data-toggle="modal">Delete</button>

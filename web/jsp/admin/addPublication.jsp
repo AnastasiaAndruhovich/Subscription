@@ -15,19 +15,19 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.addPublication" var="Title"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
-<fmt:message bundle="${loc}" key="label.genre" var="Genre"></fmt:message>
-<fmt:message bundle="${loc}" key="label.author" var="Authors"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"></fmt:message>
-<fmt:message bundle="${loc}" key="label.price" var="Price"></fmt:message>
-<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"></fmt:message>
-<fmt:message bundle="${loc}" key="label.description" var="Description"></fmt:message>
-<fmt:message bundle="${loc}" key="label.name" var="Name"></fmt:message>
-<fmt:message bundle="${loc}" key="button.uploadPicture" var="UploadPicture"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"></fmt:message>
-<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
+<fmt:message bundle="${loc}" key="label.addPublication" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="label.price" var="Price"/>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="label.name" var="Name"/>
+<fmt:message bundle="${loc}" key="button.uploadPicture" var="UploadPicture"/>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
+<fmt:message bundle="${loc}" key="button.add" var="Add"/>
 
 <html lang="en">
 <head>

@@ -10,6 +10,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.addPublication" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="label.price" var="Price"/>
+<fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="label.name" var="Name"/>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+
 <html lang="en">
 <head>
     <title>Edit Publication</title>
@@ -35,63 +53,68 @@
                     <c:choose>
                         <c:when test="${publication!=null}">
                             <div class="publication card">
-                                <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                    <input type="hidden" name="command" value="add_publication"/>
+                                <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                    <input type="hidden" name="command" value="edit_publication"/>
+                                    <input type="hidden" name="publicationId" value="${publication.publicationId}"/>
+                                    <p>${requestScope.errorEditPublication}</p>
                                     <div class="form-group row">
-                                        <label for="name" class="col-sm-2 col-form-label">Name</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name" id="name" value="${publication.name}"/>
+                                        <label for="name" class="col-sm-3 col-form-label">${Name}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="name" id="name" required="" value="${publication.name}"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="publicationType" class="col-sm-2 col-form-label">Publication type</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="publicationType" id="publicationType" value="${publication.publicationType.name}"/>
+                                        <label for="publicationType" class="col-sm-3 col-form-label">${Type}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="publicationType"
+                                                   id="publicationType" required="" value="${publication.publicationType.name}"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="genre" class="col-sm-2 col-form-label">Genre</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="genre" id="genre" value="${publication.genre.name}"/>
+                                        <label for="genre" class="col-sm-3 col-form-label">${Genre}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="genre" id="genre" required="" value="${publication.genre.name}"/>
                                         </div>
                                     </div>
                                     <c:choose>
                                         <c:when test="${publication.authors!=null}">
                                             <c:forEach var="author" items="${publication.authors}">
                                                 <div class="form-group row">
-                                                    <label for="lastName" class="col-sm-2 col-form-label">Author last name</label>
-                                                    <div class="col-sm-10">
+                                                    <label for="lastName" class="col-sm-3 col-form-label">${AuthorLastName}</label>
+                                                    <div class="col-sm-9">
                                                         <input type="text" class="form-control" name="lastName" id="lastName" value="${author.authorLastName}"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="firstName" class="col-sm-2 col-form-label">Author first name</label>
-                                                    <div class="col-sm-10">
+                                                    <label for="firstName" class="col-sm-3 col-form-label">${AuthorFirstName}</label>
+                                                    <div class="col-sm-9">
                                                         <input type="text" class="form-control" name="firstName" id="firstName" value="${author.authorFirstName}"/>
                                                     </div>
                                                 </div>
                                             </c:forEach>
-                                        </c:when>
-                                        <div class="form-group row">
-                                            <label for="publisherName" class="col-sm-2 col-form-label">Publisher name</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="publisherName" id="publisherName" value="${authors[0].publisherName}"/>
+                                            <div class="form-group row">
+                                                <label for="publisherName" class="col-sm-3 col-form-label">${Publisher}</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="publisherName" id="publisherName" value="${publication.authors[0].publisherName}"/>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </c:when>
                                     </c:choose>
                                     <div class="form-group row">
-                                        <label for="description" class="col-sm-2 col-form-label">Description</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="description" id="description" value="${publication.description}"/>
+                                        <label for="description" class="col-sm-3 col-form-label">${Description}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="description" id="description"
+                                                   required="" value="${publication.description}"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="price" class="col-sm-2 col-form-label">Price</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="price" id="price" value="${publication.price}"/>
+                                        <label for="price" class="col-sm-3 col-form-label">${Price} ${MoneyUnit}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="price" id="price" required="" value="${publication.price}"
+                                                   pattern="^[\d]+?\.[\d]{2}$" placeholder="0.00"/>
                                         </div>
                                     </div>
-                                    <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
+                                    <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>
                                 </form>
                             </div>
                         </c:when>
