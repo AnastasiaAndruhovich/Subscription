@@ -102,15 +102,16 @@ public class PublicationService extends BaseService {
 
     public boolean updatePublication(String oldPublicationId, String name, List<String> authorFirstNames,
                                      List<String> authorLastNames, String publisherName, String publicationTypeName,
-                                     String genreName, String description, String price, String pictureName,
-                                     InputStream picture) throws ServiceTechnicalException {
+                                     String genreName, String description, String price) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
+        AuthorPublicationDAO authorPublicationDAO = null;
         AuthorService authorService = new AuthorService();
         GenreService genreService = new GenreService();
         PublicationTypeService publicationTypeService = new PublicationTypeService();
         Genre genre;
         PublicationType publicationType;
+
         int genreId = genreService.findIdByGenreName(genreName);
         int publicationTypeId = publicationTypeService.findIdByPublicationTypeName(publicationTypeName);
         if (genreId == -1) {
@@ -122,16 +123,21 @@ public class PublicationService extends BaseService {
 
         genre = new Genre(genreId, genreName);
         publicationType = new PublicationType(publicationTypeId, publicationTypeName);
-
         List<Author> authors = authorService.createAuthorList(authorFirstNames, authorLastNames, publisherName);
-
-        byte[] pictureByte = PictureConverter.convertFileToByteArray(picture);
         BigDecimal decimalPrice = new BigDecimal(price);
         int intOldPublicationId = Integer.parseInt(oldPublicationId);
-        Publication publication = new Publication(intOldPublicationId, name, description, decimalPrice, pictureName,
-                pictureByte, authors, genre, publicationType);
+
         try {
             publicationDAO = daoFactory.createPublicationDAO();
+            byte[] picture = publicationDAO.findPictureByPublicationId(intOldPublicationId);
+            String pictureName = publicationDAO.findPictureNameByPublicationId(intOldPublicationId);
+            authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
+            authorPublicationDAO.deleteRecordByPublicationId(intOldPublicationId);
+            Publication publication = new Publication(intOldPublicationId, name, description, decimalPrice, pictureName, picture);
+            for (Author author : authors) {
+                authorPublicationDAO.createRecord(author, publication);
+            }
+            publication = new Publication(intOldPublicationId, name, description, decimalPrice, pictureName, picture, authors, genre, publicationType);
             return publicationDAO.update(publication);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
