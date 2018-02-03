@@ -7,6 +7,7 @@ import by.andruhovich.subscription.command.genre.AddGenreCommand;
 import by.andruhovich.subscription.command.genre.DeleteGenreCommand;
 import by.andruhovich.subscription.command.genre.ShowGenreCommand;
 import by.andruhovich.subscription.command.publication.*;
+import by.andruhovich.subscription.command.publicationtype.AddPublicationTypeCommand;
 import by.andruhovich.subscription.command.publicationtype.DeletePublicationTypeCommand;
 import by.andruhovich.subscription.command.publicationtype.ShowPublicationTypeCommand;
 import by.andruhovich.subscription.command.user.BlockUserCommand;
@@ -37,6 +38,7 @@ public class CommandMap {
         commandMap.put(CommandType.ADD_GENRE, new AddGenreCommand());
         commandMap.put(CommandType.ADD_AUTHOR, new AddAuthorCommand());
         commandMap.put(CommandType.ADD_PUBLICATION, new AddPublicationCommand());
+        commandMap.put(CommandType.ADD_PUBLICATION_TYPE, new AddPublicationTypeCommand());
         commandMap.put(CommandType.DELETE_AUTHOR, new DeleteAuthorCommand());
         commandMap.put(CommandType.DELETE_GENRE, new DeleteGenreCommand());
         commandMap.put(CommandType.DELETE_PUBLICATION_TYPE, new DeletePublicationTypeCommand());
