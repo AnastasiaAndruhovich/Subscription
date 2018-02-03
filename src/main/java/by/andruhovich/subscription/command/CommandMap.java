@@ -1,6 +1,9 @@
 package by.andruhovich.subscription.command;
 
+import by.andruhovich.subscription.command.author.AddAuthorCommand;
+import by.andruhovich.subscription.command.author.DeleteAuthorCommand;
 import by.andruhovich.subscription.command.author.ShowAuthorCommand;
+import by.andruhovich.subscription.command.genre.AddGenreCommand;
 import by.andruhovich.subscription.command.genre.ShowGenreCommand;
 import by.andruhovich.subscription.command.publication.*;
 import by.andruhovich.subscription.command.publicationtype.ShowPublicationTypeCommand;
@@ -30,6 +33,9 @@ public class CommandMap {
         commandMap.put(CommandType.ADD_PUBLICATION, new AddPublicationCommand());
         commandMap.put(CommandType.SIGN_UP, new SignUpCommand());
         commandMap.put(CommandType.LOGOUT, new LogoutCommand());
+        commandMap.put(CommandType.ADD_GENRE, new AddGenreCommand());
+        commandMap.put(CommandType.ADD_AUTHOR, new AddAuthorCommand());
+        commandMap.put(CommandType.DELETE_AUTHOR, new DeleteAuthorCommand());
     }
 
     private CommandMap() {}
