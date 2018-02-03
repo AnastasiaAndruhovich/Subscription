@@ -15,9 +15,9 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publications" var="Title"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publicationType" var="Type"></fmt:message>
-<fmt:message bundle="${loc}" key="button.add" var="Add"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publications" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Name"/>
+<fmt:message bundle="${loc}" key="button.add" var="Add"/>
 
 <html lang="en">
 <head>
@@ -43,8 +43,9 @@
                 <div class="publication type card">
                     <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="add_publication_type"/>
+                        <p>${result}</p>
                         <div class="form-group row">
-                            <label for="update" class="col-sm-2 col-form-label">${PublicationType}</label>
+                            <label for="update" class="col-sm-2 col-form-label">${Name}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" id="update" placeholder="Name"
                                        required=""/>
