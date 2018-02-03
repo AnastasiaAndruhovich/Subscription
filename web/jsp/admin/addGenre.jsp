@@ -49,9 +49,9 @@
                         <input type="hidden" name="command" value="add_genre"/>
                         <p>${result}</p>
                         <div class="form-group row">
-                            <label for="update" class="col-sm-2 col-form-label">${Genre}</label>
+                            <label for="name" class="col-sm-2 col-form-label">${Genre}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" id="update" placeholder="Name"
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Name"
                                        required=""/>
                             </div>
                         </div>
