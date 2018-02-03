@@ -1,12 +1,14 @@
 package by.andruhovich.subscription.command.common;
 
 import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.AuthorService;
+import by.andruhovich.subscription.service.GenreService;
 import by.andruhovich.subscription.service.PublicationService;
 import by.andruhovich.subscription.type.ClientType;
 import org.apache.logging.log4j.Level;
@@ -28,13 +30,14 @@ public class ShowEntityList {
     private static final String CLIENT_TYPE = "clientType";
     private static final String LOCALE = "locale";
 
+    private static final String PAGE_NUMBER = "pageNumber";
+    private static final String PAGE_COUNT = "pageCount";
+
     private static final Logger LOGGER = LogManager.getLogger(ShowEntityList.class);
 
     public static String showAuthorList(HttpServletRequest request, HttpServletResponse response) {
         AuthorService authorService = new AuthorService();
 
-        final String PAGE_NUMBER = "pageNumber";
-        final String PAGE_COUNT = "pageCount";
         final String PUBLICATION_USER_PAGE = "path.page.user.authorList";
         final String PUBLICATION_ADMIN_PAGE = "path.page.admin.authorList";
         final String PUBLICATION_LIST_ATTRIBUTE = "authors";
@@ -79,8 +82,6 @@ public class ShowEntityList {
     public static String showPublicationList(HttpServletRequest request, HttpServletResponse response) {
         PublicationService publicationService = new PublicationService();
 
-        final String PAGE_NUMBER = "pageNumber";
-        final String PAGE_COUNT = "pageCount";
         final String PUBLICATION_USER_PAGE = "path.page.user.publicationList";
         final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationList";
         final String PUBLICATION_LIST_ATTRIBUTE = "publications";
@@ -111,6 +112,50 @@ public class ShowEntityList {
             }
             else {
                 page = pageManager.getProperty(PUBLICATION_USER_PAGE);
+            }
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
+    public static String showGenreList(HttpServletRequest request, HttpServletResponse response) {
+        GenreService genreService = new GenreService();
+
+        final String GENRE_USER_PAGE = "path.page.user.genreList";
+        final String GENRE_ADMIN_PAGE = "path.page.admin.genreList";
+        final String PUBLICATION_LIST_ATTRIBUTE = "genres";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
+        LocaleManager localeManager = new LocaleManager(locale);
+
+        String pageNumber = request.getParameter(PAGE_NUMBER);
+        pageNumber = (pageNumber == null) ? "1" : pageNumber;
+
+        try {
+            List<Genre> genres = genreService.showGenres(pageNumber);
+            if (!genres.isEmpty()) {
+                int pageCount = genreService.findGenrePageCount();
+                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, genres);
+                request.setAttribute(PAGE_NUMBER, pageNumber);
+                request.setAttribute(PAGE_COUNT, pageCount);
+            } else {
+                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
+            }
+
+            HttpSession session = request.getSession();
+            ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
+            if (type.equals(ClientType.ADMIN)) {
+                page = pageManager.getProperty(GENRE_ADMIN_PAGE);
+            }
+            else {
+                page = pageManager.getProperty(GENRE_USER_PAGE);
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
