@@ -37,7 +37,9 @@
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                     <div class="row">
                                         <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
-                                            <input type="hidden" name="command" value="redirect_update_publication_type"/>
+                                            <input type="hidden" name="command" value="parse_publication_type"/>
+                                            <input type="hidden" name="publicationTypeId" value="${publicationType.publicationTypeId}">
+                                            <input type="hidden" name="name" value="${publicationType.name}">
                                             <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
                                         </form>
                                         <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationTypeModal" data-toggle="modal">Delete</button>

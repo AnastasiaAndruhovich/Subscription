@@ -35,11 +35,13 @@
                     <c:choose>
                         <c:when test="${publicationType!=null}">
                             <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                <input type="hidden" name="command" value="update_publication_type"/>
+                                <input type="hidden" name="command" value="edit_publication_type"/>
+                                <input type="hidden" name="publicationTypeId" value="${publicationType.publicationTypeId}">
+                                <p>${result}</p>
                                 <div class="form-group row">
-                                    <label for="update" class="col-sm-2 col-form-label">Name</label>
+                                    <label for="name" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="name" id="update"
+                                        <input type="text" class="form-control" name="name" id="name" required=""
                                                value="${publicationType.name}"/>
                                     </div>
                                 </div>
