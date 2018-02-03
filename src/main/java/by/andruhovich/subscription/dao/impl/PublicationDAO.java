@@ -9,10 +9,12 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
 import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.sql.*;
 import java.util.List;
 
@@ -42,7 +44,8 @@ public class PublicationDAO extends PublicationManagerDAO {
             "WHERE name = ? && publication_type_id = ? && genre_id = ? && description = ? && price = ?";
     private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE name = ?";
-    private static final String SELECT_PICTURE_BY_PUBLICATION_ID = "";
+    private static final String SELECT_PICTURE_BY_PUBLICATION_ID = "SELECT picture FROM publications WHERE publication_id = ?";
+    private static final String INSERT_IMAGE = "UPDATE publications SET picture = ?, picture_name = ? WHERE publication_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
 
@@ -69,6 +72,9 @@ public class PublicationDAO extends PublicationManagerDAO {
             }
             LOGGER.log(Level.INFO, "Request for create publication - succeed");
             return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Publication is already exist");
+            return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
@@ -80,7 +86,7 @@ public class PublicationDAO extends PublicationManagerDAO {
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete publication");
-        return delete(id,DELETE_PUBLICATION_BY_ID);
+        return delete(id, DELETE_PUBLICATION_BY_ID);
     }
 
     @Override
@@ -287,7 +293,7 @@ public class PublicationDAO extends PublicationManagerDAO {
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_NAME);
-            preparedStatement.setString (1, name);
+            preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             PublicationMapper mapper = new PublicationMapper();
             publications = mapper.mapResultSetToEntity(resultSet);
@@ -326,6 +332,27 @@ public class PublicationDAO extends PublicationManagerDAO {
             return picture;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    public boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for insert image");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(INSERT_IMAGE);
+            Blob blob = new SerialBlob(picture);
+            preparedStatement.setBlob(1, blob);
+            blob.free();
+            preparedStatement.setString(2, pictureName);
+            preparedStatement.setInt(3, publicationId);
+            preparedStatement.executeUpdate();
+            LOGGER.log(Level.INFO, "Request for insert image - succeed");
+            return true;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
             close(preparedStatement);
         }

@@ -9,6 +9,7 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.SubscriptionMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,6 +67,9 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
                 id = resultSet.getInt("subscription_id");
             }
             LOGGER.log(Level.INFO, "Request for create subscription - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Subscription is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

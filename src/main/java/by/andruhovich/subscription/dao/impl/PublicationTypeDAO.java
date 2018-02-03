@@ -5,6 +5,7 @@ import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PublicationTypeMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,12 +20,12 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
     private static final String INSERT_PUBLICATION_TYPE = "INSERT INTO publication_types(name) VALUE (?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT publication_type_id FROM publication_types ORDER BY " +
             "publication_type_id DESC LIMIT 1";
-    private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
+    private static final String DELETE_PUBLICATION_TYPE_BY_ID = "DELETE FROM publication_types WHERE publication_type_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(publication_type_id) AS count FROM publication_types";
     private static final String SELECT_PUBLICATION_TYPE_BY_ID = "SELECT publication_type_id, name FROM publication_types " +
             "WHERE publication_type_id = ?";
     private static final String SELECT_ALL_PUBLICATION_TYPES = "SELECT * FROM publication_types LIMIT ?, ?";
-    private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publications SET publication_type_id = ?, name = ?";
+    private static final String UPDATE_PUBLICATION_TYPE = "UPDATE publication_types SET publication_type_id = ?, name = ?";
 
     private static final String SELECT_PUBLICATION_TYPE_ID_BY_PUBLICATION_FIELDS = "SELECT publication_type_id " +
             "FROM publication_types WHERE name = ?";
@@ -53,6 +54,9 @@ public class PublicationTypeDAO extends PublicationTypeManagerDAO {
                 id = resultSet.getInt("publication_type_id");
             }
             LOGGER.log(Level.INFO, "Request for create publication type - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Publication type is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

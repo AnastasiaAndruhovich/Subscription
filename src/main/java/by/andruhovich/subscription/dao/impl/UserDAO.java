@@ -9,6 +9,7 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
 import by.andruhovich.subscription.mapper.RoleMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,6 +69,9 @@ public class UserDAO extends UserManagerDAO {
                 id = resultSet.getInt("user_id");
             }
             LOGGER.log(Level.INFO, "Request for create user - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "User is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

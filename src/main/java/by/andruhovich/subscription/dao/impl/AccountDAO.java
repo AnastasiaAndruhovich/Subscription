@@ -5,6 +5,7 @@ import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,6 +58,9 @@ public class AccountDAO extends AccountManagerDAO {
                 id = resultSet.getInt("account_number");
             }
             LOGGER.log(Level.INFO, "Request for create account - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Account is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

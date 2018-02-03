@@ -5,6 +5,7 @@ import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.RoleMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,6 +71,9 @@ public class RoleDAO extends RoleManagerDAO {
                 id = resultSet.getInt("role_id");
             }
             LOGGER.log(Level.INFO, "Request for create role - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Role is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);

@@ -5,6 +5,7 @@ import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +51,9 @@ public class GenreDAO extends GenreManagerDAO {
                 id = resultSet.getInt("genre_id");
             }
             LOGGER.log(Level.INFO, "Request for create genre - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Genre is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -120,6 +124,7 @@ public class GenreDAO extends GenreManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_GENRE);
             GenreMapper mapper = new GenreMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(3, entity.getGenreId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update genre - succeed");
             return true;

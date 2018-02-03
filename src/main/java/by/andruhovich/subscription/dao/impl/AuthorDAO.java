@@ -5,6 +5,7 @@ import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +54,9 @@ public class AuthorDAO extends AuthorManagerDAO {
                 id = resultSet.getInt("author_id");
             }
             LOGGER.log(Level.INFO, "Request for create author - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Author is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
@@ -128,6 +132,7 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_AUTHOR);
             AuthorMapper mapper = new AuthorMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(4, entity.getAuthorId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update author - succeed");
             return true;

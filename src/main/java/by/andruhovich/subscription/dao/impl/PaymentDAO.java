@@ -6,6 +6,7 @@ import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.PaymentMapper;
 import by.andruhovich.subscription.mapper.SubscriptionMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,6 +61,9 @@ public class PaymentDAO extends PaymentManagerDAO {
                 id = resultSet.getInt("payment_id");
             }
             LOGGER.log(Level.INFO, "Request for create payment - succeed");
+            return id;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Payment is already exist");
             return id;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
