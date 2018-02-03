@@ -14,26 +14,26 @@ To change this template use File | Settings | File Templates.
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publications" var="Publications"></fmt:message>
-<fmt:message bundle="${loc}" key="label.genres" var="Genres"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authors" var="Authors"></fmt:message>
-<fmt:message bundle="${loc}" key="label.logout" var="Logout"></fmt:message>
-<fmt:message bundle="${loc}" key="label.personalAccount" var="PersonalAccount"></fmt:message>
-<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"></fmt:message>
-<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"></fmt:message>
-<fmt:message bundle="${loc}" key="label.users" var="Users"></fmt:message>
-<fmt:message bundle="${loc}" key="label.showUsers" var="ShowUsers"></fmt:message>
-<fmt:message bundle="${loc}" key="label.blockUser" var="BlockUser"></fmt:message>
-<fmt:message bundle="${loc}" key="label.unblockUser" var="UnblockUser"></fmt:message>
-<fmt:message bundle="${loc}" key="label.showGenres" var="ShowGenres"></fmt:message>
-<fmt:message bundle="${loc}" key="label.showPublications" var="ShowPublications"></fmt:message>
-<fmt:message bundle="${loc}" key="label.showPublicationTypes" var="ShowPublicationTypes"></fmt:message>
-<fmt:message bundle="${loc}" key="label.showAuthors" var="ShowAuthors"></fmt:message>
-<fmt:message bundle="${loc}" key="label.addAuthor" var="AddAuthor"></fmt:message>
-<fmt:message bundle="${loc}" key="label.addGenre" var="AddGenre"></fmt:message>
-<fmt:message bundle="${loc}" key="label.addPublication" var="AddPublication"></fmt:message>
-<fmt:message bundle="${loc}" key="label.addPublicationType" var="AddPublicationType"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publications" var="Publications"/>
+<fmt:message bundle="${loc}" key="label.genres" var="Genres"/>
+<fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"/>
+<fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.logout" var="Logout"/>
+<fmt:message bundle="${loc}" key="label.personalAccount" var="PersonalAccount"/>
+<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
+<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
+<fmt:message bundle="${loc}" key="label.users" var="Users"/>
+<fmt:message bundle="${loc}" key="label.showUsers" var="ShowUsers"/>
+<fmt:message bundle="${loc}" key="label.blockUser" var="BlockUser"/>
+<fmt:message bundle="${loc}" key="label.unblockUser" var="UnblockUser"/>
+<fmt:message bundle="${loc}" key="label.showGenres" var="ShowGenres"/>
+<fmt:message bundle="${loc}" key="label.showPublications" var="ShowPublications"/>
+<fmt:message bundle="${loc}" key="label.showPublicationTypes" var="ShowPublicationTypes"/>
+<fmt:message bundle="${loc}" key="label.showAuthors" var="ShowAuthors"/>
+<fmt:message bundle="${loc}" key="label.addAuthor" var="AddAuthor"/>
+<fmt:message bundle="${loc}" key="label.addGenre" var="AddGenre"/>
+<fmt:message bundle="${loc}" key="label.addPublication" var="AddPublication"/>
+<fmt:message bundle="${loc}" key="label.addPublicationType" var="AddPublicationType"/>
 
 <html lang="en">
 <head>
@@ -68,7 +68,7 @@ To change this template use File | Settings | File Templates.
                     <div class="dropdown-menu" aria-labelledby="dropdownPublications">
                         <a class="dropdown-item" href="controller?command=show_publications&pageNumber=1">
                             ${ShowPublications}</a>
-                        <a class="dropdown-item" href="#">${AddPublication}</a>
+                        <a class="dropdown-item" href="../../jsp/admin/addPublication.jsp">${AddPublication}</a>
                     </div>
                 </div>
             </li>
@@ -78,7 +78,7 @@ To change this template use File | Settings | File Templates.
                        aria-haspopup="true" aria-expanded="false">${Authors}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownAuthors">
                         <a class="dropdown-item" href="controller?command=show_authors&pageNumber=1">${ShowAuthors}</a>
-                        <a class="dropdown-item" href="#">${AddAuthor}</a>
+                        <a class="dropdown-item" href="../../jsp/admin/addAuthor.jsp">${AddAuthor}</a>
                     </div>
                 </div>
             </li>
@@ -88,7 +88,7 @@ To change this template use File | Settings | File Templates.
                        aria-haspopup="true" aria-expanded="false">${Genres}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownGenres">
                         <a class="dropdown-item" href="controller?command=show_genres&pageNumber=1">${ShowGenres}</a>
-                        <a class="dropdown-item" href="#">${AddGenre}</a>
+                        <a class="dropdown-item" href="../../jsp/admin/addGenre.jsp">${AddGenre}</a>
                     </div>
                 </div>
             </li>
@@ -99,7 +99,7 @@ To change this template use File | Settings | File Templates.
                     <div class="dropdown-menu" aria-labelledby="dropdownPublicationTypes">
                         <a class="dropdown-item" href="controller?command=show_publication_types&pageNumber=1">
                             ${ShowPublicationTypes}</a>
-                        <a class="dropdown-item" href="#">${AddPublicationType}</a>
+                        <a class="dropdown-item" href="../../jsp/admin/addPublicationType.jsp">${AddPublicationType}</a>
                     </div>
                 </div>
             </li>

@@ -14,14 +14,14 @@ To change this template use File | Settings | File Templates.
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.publications" var="Publications"></fmt:message>
-<fmt:message bundle="${loc}" key="label.genres" var="Genres"></fmt:message>
-<fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"></fmt:message>
-<fmt:message bundle="${loc}" key="label.authors" var="Authors"></fmt:message>
-<fmt:message bundle="${loc}" key="label.login" var="Login"></fmt:message>
-<fmt:message bundle="${loc}" key="label.signUp" var="SignUp"></fmt:message>
-<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"></fmt:message>
-<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"></fmt:message>
+<fmt:message bundle="${loc}" key="label.publications" var="Publications"/>
+<fmt:message bundle="${loc}" key="label.genres" var="Genres"/>
+<fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"/>
+<fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.login" var="Login"/>
+<fmt:message bundle="${loc}" key="label.signUp" var="SignUp"/>
+<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
+<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 
 <html lang="en">
 <head>
@@ -76,8 +76,8 @@ To change this template use File | Settings | File Templates.
 </nav>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav ml-auto">
-        <a href="controller?command=show_publications&language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
-        <a href="controller?command=show_publications&language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img class="lang" src="${pageContext.servletContext.contextPath}/images/rus_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img class="lang" src="${pageContext.servletContext.contextPath}/images/gbr_flag.jpg"></a>
     </ul>
 </nav>
 
