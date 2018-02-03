@@ -3,6 +3,7 @@ package by.andruhovich.subscription.command.common;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
+import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
@@ -10,6 +11,7 @@ import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.AuthorService;
 import by.andruhovich.subscription.service.GenreService;
 import by.andruhovich.subscription.service.PublicationService;
+import by.andruhovich.subscription.service.PublicationTypeService;
 import by.andruhovich.subscription.type.ClientType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -156,6 +158,50 @@ public class ShowEntityList {
             }
             else {
                 page = pageManager.getProperty(GENRE_USER_PAGE);
+            }
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
+    public static String showPublicationTypeList(HttpServletRequest request, HttpServletResponse response) {
+        PublicationTypeService publicationTypeService = new PublicationTypeService();
+
+        final String PUBLICATION_TYPE_USER_PAGE = "path.page.user.publicationTypeList";
+        final String PUBLICATION_TYPE_ADMIN_PAGE = "path.page.admin.publicationTypeList";
+        final String PUBLICATION_LIST_ATTRIBUTE = "publicationTypes";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
+        LocaleManager localeManager = new LocaleManager(locale);
+
+        String pageNumber = request.getParameter(PAGE_NUMBER);
+        pageNumber = (pageNumber == null) ? "1" : pageNumber;
+
+        try {
+            List<PublicationType> publicationTypes = publicationTypeService.showPublicationTypes(pageNumber);
+            if (!publicationTypes.isEmpty()) {
+                int pageCount = publicationTypeService.findPublicationTypePageCount();
+                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publicationTypes);
+                request.setAttribute(PAGE_NUMBER, pageNumber);
+                request.setAttribute(PAGE_COUNT, pageCount);
+            } else {
+                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
+            }
+
+            HttpSession session = request.getSession();
+            ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
+            if (type.equals(ClientType.ADMIN)) {
+                page = pageManager.getProperty(PUBLICATION_TYPE_ADMIN_PAGE);
+            }
+            else {
+                page = pageManager.getProperty(PUBLICATION_TYPE_USER_PAGE);
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
