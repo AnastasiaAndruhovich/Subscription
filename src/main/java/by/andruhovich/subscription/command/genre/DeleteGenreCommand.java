@@ -20,7 +20,7 @@ public class DeleteGenreCommand extends BaseCommand {
     private static final String GENRE_ID_ATTRIBUTE = "genreId";
     private static final String RESULT_DELETE_GENRE_ATTRIBUTE = "result";
 
-    private static final String ERROR_DELETE_GENRE_MESSAGE = "message.errorDeleteAuthor";
+    private static final String ERROR_DELETE_GENRE_MESSAGE = "message.errorDeleteGenre";
 
     private static final Logger LOGGER = LogManager.getLogger(AddGenreCommand.class);
 
