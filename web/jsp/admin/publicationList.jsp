@@ -24,9 +24,10 @@
 <fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
 <fmt:message bundle="${loc}" key="label.description" var="Description"/>
 <fmt:message bundle="${loc}" key="label.name" var="Name"/>
-<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"/>
-<fmt:message bundle="${loc}" key="label.edit" var="Edit"/>
-<fmt:message bundle="${loc}" key="label.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="button.subscribe" var="Subscribe"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
 <head>
@@ -51,8 +52,8 @@
             <div class="col-10">
                 <div class="publication card">
                     <c:choose>
-                        <c:when test="${publications!=null}">
-                            <c:forEach var="publication" items="${publications}">
+                        <c:when test="${requestScope.publications!=null}">
+                            <c:forEach var="publication" items="${requestScope.publications}">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4">
@@ -89,7 +90,7 @@
                                                     <input type="hidden" name="publicationId" value="${publication.publicationId}"/>
                                                     <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                                 </form>
-                                                <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationModal" data-toggle="modal">Delete</button>
+                                                <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationModal" data-toggle="modal">${Delete}</button>
                                                 <div class="modal fade" id="publicationModal" tabindex="-1" role="dialog" aria-labelledby="publicationModal" aria-hidden="true">
                                                     <div class="modal-dialog modal-sm" role="document">
                                                         <div class="modal-content">
@@ -107,7 +108,7 @@
                                                                 <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                                     <input type="hidden" name="command" value="delete_publication"/>
                                                                     <input type="hidden" name="publicationId" value="${publication.publicationId}">
-                                                                    <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                                    <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -120,7 +121,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

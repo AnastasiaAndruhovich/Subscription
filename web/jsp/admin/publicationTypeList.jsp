@@ -10,9 +10,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.publicationTypes" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Name"/>
+<fmt:message bundle="${loc}" key="label.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="label.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Publication Types</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,16 +42,16 @@
             <div class="col-10">
                 <div class="genre card">
                     <c:choose>
-                        <c:when test="${publicationTypes!=null}">
-                            <c:forEach var="publicationType" items="${publicationTypes}">
+                        <c:when test="${requestScope.publicationTypes!=null}">
+                            <c:forEach var="publicationType" items="${requestScope.publicationTypes}">
                                 <div class="container">
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                     <div class="row">
-                                        <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
+                                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                             <input type="hidden" name="command" value="parse_publication_type"/>
                                             <input type="hidden" name="publicationTypeId" value="${publicationType.publicationTypeId}">
                                             <input type="hidden" name="name" value="${publicationType.name}">
-                                            <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
+                                            <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                         </form>
                                         <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#publicationTypeModal" data-toggle="modal">Delete</button>
                                         <div class="modal fade" id="publicationTypeModal" tabindex="-1" role="dialog" aria-labelledby="publicationTypeModal" aria-hidden="true">
@@ -60,7 +71,7 @@
                                                         <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                             <input type="hidden" name="command" value="delete_publication_type"/>
                                                             <input type="hidden" name="publicationTypeId" value="${publicationType.publicationTypeId}">
-                                                            <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                            <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -71,7 +82,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

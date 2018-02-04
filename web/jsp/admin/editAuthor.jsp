@@ -10,9 +10,21 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag" %>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.editAuthor" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Edit Genre</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,6 +33,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
+    <jsp:useBean id="author" type="by.andruhovich.subscription.entity.Author"/>
     <style><%@include file="../../css/style.css" %></style>
 </head>
 <body>
@@ -38,33 +51,33 @@
                                   action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_author"/>
                                 <input type="hidden" name="authorId" value="${author.authorId}">
-                                <p>${result}</p>
+                                <p>${requestScope.result}</p>
                                 <div class="form-group row">
-                                    <label for="lastName" class="col-sm-2 col-form-label">Author last name</label>
+                                    <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="lastName" id="lastName"
                                                value="${author.authorLastName}"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="firstName" class="col-sm-2 col-form-label">Author first name</label>
+                                    <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="firstName" id="firstName"
                                                value="${author.authorFirstName}"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="publisherName" class="col-sm-2 col-form-label">Publisher name</label>
+                                    <label for="publisherName" class="col-sm-2 col-form-label">${Publisher}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="publisherName" id="publisherName"
                                                value="${author.publisherName}" required=""/>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
+                                <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>
                             </form>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

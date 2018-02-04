@@ -10,9 +10,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.editGenre" var="Title"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Name"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Edit Genre</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,6 +32,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
+    <jsp:useBean id="genre" type="by.andruhovich.subscription.entity.Genre"/>
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
@@ -37,24 +49,24 @@
                             <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_genre"/>
                                 <input type="hidden" name="genreId" value="${genre.genreId}">
-                                <p>${result}</p>
+                                <p>${requestScope.result}</p>
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Name</label>
+                                    <label for="name" class="col-sm-2 col-form-label">${Name}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="name" id="name"
                                                value="${genre.name}"/>
                                     </div>
-                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                                    <label for="description" class="col-sm-2 col-form-label">${Description}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="description" id="description"
                                                value="${genre.description}"/>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline-success my-2 my-sm-0">Edit</button>
+                                <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>
                             </form>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

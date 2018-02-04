@@ -27,6 +27,7 @@
 <fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
 <fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
 <fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
 <head>
@@ -39,6 +40,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
+    <jsp:useBean id="publication" type="by.andruhovich.subscription.entity.Publication"/>
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
@@ -119,7 +121,7 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

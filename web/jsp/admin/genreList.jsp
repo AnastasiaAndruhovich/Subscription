@@ -10,9 +10,21 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.genres" var="Title"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Genres</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,24 +45,24 @@
             <div class="col-10">
                 <div class="genre card">
                     <c:choose>
-                        <c:when test="${genres!=null}">
-                            <c:forEach var="genre" items="${genres}">
+                        <c:when test="${requestScope.genres!=null}">
+                            <c:forEach var="genre" items="${requestScope.genres}">
                                 <div class="container">
                                     <p>
                                         <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
                                     </p>
                                     <p>
-                                        Description: ${genre.description}
+                                        ${Description}: ${genre.description}
                                     </p>
                                     <div class="row">
-                                        <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
+                                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                             <input type="hidden" name="command" value="parse_genre"/>
                                             <input type="hidden" name="genreId" value="${genre.genreId}">
                                             <input type="hidden" name="name" value="${genre.name}">
                                             <input type="hidden" name="description" value="${genre.description}">
-                                            <button class="btn btn-outline-warning my-2 my-sm-0">Edit</button>
+                                            <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                         </form>
-                                        <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#genreModal" data-toggle="modal">Delete</button>
+                                        <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#genreModal" data-toggle="modal">${Delete}</button>
                                         <div class="modal fade" id="genreModal" tabindex="-1" role="dialog" aria-labelledby="genreModal" aria-hidden="true">
                                             <div class="modal-dialog modal-sm" role="document">
                                                 <div class="modal-content">
@@ -68,7 +80,7 @@
                                                         <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                             <input type="hidden" name="command" value="delete_genre"/>
                                                             <input type="hidden" name="genreId" value="${genre.genreId}">
-                                                            <button class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+                                                            <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -79,7 +91,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

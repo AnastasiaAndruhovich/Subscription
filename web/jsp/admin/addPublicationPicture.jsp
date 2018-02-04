@@ -28,6 +28,7 @@
 <fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
 <fmt:message bundle="${loc}" key="button.uploadPicture" var="UploadPicture"/>
 <fmt:message bundle="${loc}" key="button.finish" var="Finish"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
 <head>
@@ -40,8 +41,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
+    <jsp:useBean id="publication" scope="request" type="by.andruhovich.subscription.entity.Publication"/>
     <style><%@include file="../../css/style.css"%></style>
-    <style><%@include file="../../css/uploadImage.css"%></style>
 
 </head>
 <body>
@@ -65,15 +66,15 @@
                             <div class="publication card">
                                 <c:choose>
                                     <c:when test="${publication!=null}">
-                                        <p>${successfulAddPublication}</p>
+                                        <p>${requestScope.successfulAddPublication}</p>
                                         <p>${Name}: ${publication.name}</p>
-                                        <p>${Type}: ${publication.publicationType.name}</></p>
+                                        <p>${Type}: ${publication.publicationType.name}</p>
                                         <p>${Genre}: ${publication.genre.name}</p>
                                         <c:choose>
                                             <c:when test="${publication.authors!=null}">
                                                 <div class="row">${Authors}:
                                                     <c:forEach var="author" items="${publication.authors}">
-                                                        ${author.authorLastName} ${author.authorFirstName}</a>
+                                                        ${author.authorLastName} ${author.authorFirstName}
                                                     </c:forEach>
                                                 </div>
                                                 <p>${Publisher}: ${publication.authors[0].publisherName}</p>
@@ -83,7 +84,7 @@
                                         <p>${Price}: ${publication.price} ${MoneyUnit}</p>
                                     </c:when>
                                     <c:otherwise>
-                                        <p>${infromationIsAbsent}</p>
+                                        <p>${InformationIsAbsent}</p>
                                     </c:otherwise>
                                 </c:choose>
                             </div>

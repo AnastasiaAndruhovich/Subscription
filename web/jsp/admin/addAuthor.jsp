@@ -45,7 +45,7 @@
                 <div class="author card">
                     <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="add_author"/>
-                        <p>${result}</p>
+                        <p>${requestScope.result}</p>
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">
