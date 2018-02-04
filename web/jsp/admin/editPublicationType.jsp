@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="publicationType" type="by.andruhovich.subscription.entity.PublicationType"/>
+    <jsp:useBean id="publicationType" scope="request" type="by.andruhovich.subscription.entity.PublicationType"/>
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
