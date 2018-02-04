@@ -56,8 +56,9 @@
                 <div class="publication card">
                     <div class="row">
                         <div class="col-4">
-                            <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/imageController?publicationId=${publication.publicationId}" enctype="multipart/form-data">
+                            <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/imageController" enctype="multipart/form-data">
                                 <input type="file" id="files" name="files[]" accept=".jpg"/>
+                                <input type="hidden" name="publicationId" value="${publication.publicationId}">
                                 <button class="btn btn-outline-success my-2 my-sm-0">${UploadPicture}</button>
                                 <ctg:image publicationId="${publication.publicationId}"/>
                             </form>
