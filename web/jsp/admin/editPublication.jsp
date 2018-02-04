@@ -15,7 +15,7 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.addPublication" var="Title"/>
+<fmt:message bundle="${loc}" key="label.editPublication" var="Title"/>
 <fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
 <fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
 <fmt:message bundle="${loc}" key="label.author" var="Authors"/>
