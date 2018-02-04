@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
@@ -44,7 +45,7 @@ public class LoginCommand extends BaseCommand {
                 request.setAttribute(CLIENT_ID, clientId);
                 Role role = userService.findRoleByUserId(clientId);
                 request.getSession().setAttribute(CLIENT_TYPE, ClientType.valueOf(role.getName().toUpperCase()));
-                page = showPublicationList(request, response);
+                page = ShowEntityList.showPublicationList(request, response);
             } else {
                 String errorLoginMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
                 request.setAttribute(ERROR_LOGIN_ATTRIBUTE, errorLoginMessage);

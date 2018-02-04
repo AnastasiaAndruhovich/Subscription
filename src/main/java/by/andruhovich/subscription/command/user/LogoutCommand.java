@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.type.ClientType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,6 @@ public class LogoutCommand extends BaseCommand {
 
         request.setAttribute(CLIENT_ID, clientId);
         session.setAttribute(CLIENT_TYPE, ClientType.GUEST);
-        return showPublicationList(request, response);
+        return ShowEntityList.showPublicationList(request, response);
     }
 }

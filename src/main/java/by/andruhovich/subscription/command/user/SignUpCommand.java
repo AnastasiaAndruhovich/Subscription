@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
 import by.andruhovich.subscription.converter.ClientDataConverter;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
@@ -103,7 +104,7 @@ public class SignUpCommand extends BaseCommand {
             if (result != -1) {
                 request.getSession().setAttribute(CLIENT_TYPE, ClientType.USER);
                 request.getSession().setAttribute(CLIENT_ID, result);
-                page = showPublicationList(request, response);
+                page = ShowEntityList.showPublicationList(request, response);
             } else {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_MESSAGE);
