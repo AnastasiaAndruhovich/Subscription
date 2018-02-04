@@ -1,6 +1,6 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.dao.ConnectionFactory;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import by.andruhovich.subscription.dao.impl.*;
 import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -28,7 +28,7 @@ public class UserService extends BaseService{
             connection = connectionFactory.getConnection();
             UserDAO userDAO = new UserDAO(connection);
             String dataBasePassword = userDAO.findPasswordByLogin(login);
-            return PasswordCoder.checkPassword(password, dataBasePassword);
+            return dataBasePassword != null && PasswordCoder.checkPassword(password, dataBasePassword);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {

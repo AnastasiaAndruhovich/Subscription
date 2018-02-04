@@ -1,6 +1,6 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.dao.ConnectionFactory;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.dao.impl.PublicationTypeDAO;
 import by.andruhovich.subscription.entity.Publication;

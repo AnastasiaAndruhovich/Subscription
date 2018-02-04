@@ -1,6 +1,6 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.dao.ConnectionFactory;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import by.andruhovich.subscription.dao.impl.GenreDAO;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
