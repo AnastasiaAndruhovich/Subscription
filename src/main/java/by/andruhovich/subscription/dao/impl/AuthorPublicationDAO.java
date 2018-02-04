@@ -54,7 +54,7 @@ public class AuthorPublicationDAO extends BaseDAO {
         }
     }
 
-    public List<Author> findAuthorByPublicationId(int id) throws DAOTechnicalException {
+    public List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find author by publication id");
         PreparedStatement preparedStatement = null;
         List<Author> authors;
