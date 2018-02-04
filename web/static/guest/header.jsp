@@ -18,8 +18,8 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.genres" var="Genres"/>
 <fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"/>
 <fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
-<fmt:message bundle="${loc}" key="label.login" var="Login"/>
-<fmt:message bundle="${loc}" key="label.signUp" var="SignUp"/>
+<fmt:message bundle="${loc}" key="button.login" var="Login"/>
+<fmt:message bundle="${loc}" key="button.signUp" var="SignUp"/>
 <fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
 <fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 

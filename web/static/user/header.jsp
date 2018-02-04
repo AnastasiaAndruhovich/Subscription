@@ -18,8 +18,8 @@ scope="session"/>
 <fmt:message bundle="${loc}" key="label.genres" var="Genres"/>
 <fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"/>
 <fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
-<fmt:message bundle="${loc}" key="label.logout" var="Logout"/>
-<fmt:message bundle="${loc}" key="label.personalAccount" var="PersonalAccount"/>
+<fmt:message bundle="${loc}" key="button.logout" var="Logout"/>
+<fmt:message bundle="${loc}" key="button.personalAccount" var="PersonalAccount"/>
 <fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
 <fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 

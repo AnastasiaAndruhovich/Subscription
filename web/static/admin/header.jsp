@@ -18,8 +18,8 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.genres" var="Genres"/>
 <fmt:message bundle="${loc}" key="label.publicationTypes" var="PublicationTypes"/>
 <fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
-<fmt:message bundle="${loc}" key="label.logout" var="Logout"/>
-<fmt:message bundle="${loc}" key="label.personalAccount" var="PersonalAccount"/>
+<fmt:message bundle="${loc}" key="button.logout" var="Logout"/>
+<fmt:message bundle="${loc}" key="button.personalAccount" var="PersonalAccount"/>
 <fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
 <fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 <fmt:message bundle="${loc}" key="label.users" var="Users"/>
@@ -124,7 +124,7 @@ To change this template use File | Settings | File Templates.
         <form class="form-inline my-2 my-lg-0">
             <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</button>
+            <a href="controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">${PersonalAccount}</button>
         </form>
     </div>
