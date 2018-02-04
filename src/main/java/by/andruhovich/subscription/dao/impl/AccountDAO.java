@@ -179,13 +179,6 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public User findUserByAccountNumber(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find user by account number");
-        UserDAO userDAO = new UserDAO(connection);
-        return userDAO.findUserByAccountNumber(id);
-    }
-
-    @Override
     public BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find balance by id");
 

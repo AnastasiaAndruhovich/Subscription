@@ -31,6 +31,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             "picture_name, picture FROM publications LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
+    private static final String SELECT_PICTURE_NAME_BY_PUBLICATION_ID = "SELECT picture_name FROM publications WHERE publication_id = ?";
 
     private static final String SELECT_PUBLICATIONS_BY_GENRE_ID = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE genre_id = ? LIMIT ?, ?";
@@ -144,6 +145,7 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PUBLICATION);
             PublicationMapper mapper = new PublicationMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(8, entity.getPublicationId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update publication - succeed");
             return true;
@@ -229,13 +231,6 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find authors by publication id");
-        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-        return authorPublicationDAO.findAuthorByPublicationId(id);
-    }
-
-    @Override
     public List<Publication> findPublicationsByGenreId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication by genre id");
         PreparedStatement preparedStatement = null;
@@ -276,13 +271,6 @@ public class PublicationDAO extends PublicationManagerDAO {
         } finally {
             close(preparedStatement);
         }
-    }
-
-    @Override
-    public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for create record");
-        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-        return authorPublicationDAO.createRecord(author, publication);
     }
 
     @Override
@@ -337,6 +325,27 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    public String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find picture name by publication id");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PICTURE_NAME_BY_PUBLICATION_ID);
+            preparedStatement.setInt(1, publicationId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            String pictureName = null;
+            while (resultSet.next()) {
+                pictureName = resultSet.getString("picture_name");
+            }
+            LOGGER.log(Level.INFO, "Request for find picture name by publication id - succeed");
+            return pictureName;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
     public boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for insert image");
         PreparedStatement preparedStatement = null;
@@ -357,4 +366,6 @@ public class PublicationDAO extends PublicationManagerDAO {
             close(preparedStatement);
         }
     }
+
+
 }

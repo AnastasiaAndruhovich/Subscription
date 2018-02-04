@@ -199,13 +199,6 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     }
 
     @Override
-    public List<Payment> findPaymentsBySubscriptionId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find payments by subscription id");
-        PaymentDAO paymentDAO = new PaymentDAO(connection);
-        return paymentDAO.findPaymentsBySubscriptionId(id);
-    }
-
-    @Override
     public List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find subscriptions by user id");
         PreparedStatement preparedStatement = null;

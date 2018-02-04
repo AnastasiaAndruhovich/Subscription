@@ -285,27 +285,6 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find subscriptions by user id ");
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-        return subscriptionDAO.findSubscriptionsByUserId(id);
-    }
-
-    @Override
-    public User findBlockedAdminByUserId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find blocked admin by user id");
-        BlockDAO blockDAO = new BlockDAO(connection);
-        return blockDAO.findAdminByUserId(id);
-    }
-
-    @Override
-    public List<User> findBlockedUsersByAdminId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find blocked users by admin id");
-        BlockDAO blockDAO = new BlockDAO(connection);
-        return blockDAO.findUsersByAdminId(id);
-    }
-
-    @Override
     public User findUserByLogin(String login) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find user by login");
         PreparedStatement preparedStatement = null;
@@ -328,15 +307,10 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
-    @Override
-    public User findUserBySubscriptionId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find user by subscription id");
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-        return subscriptionDAO.findUserBySubscriptionId(id);
-    }
-
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);
     }
+
+
 }

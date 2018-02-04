@@ -13,5 +13,4 @@ public abstract class AuthorManagerDAO extends MediatorManagerDAO<Author> {
     }
 
     public abstract int findIdByEntity(Author author) throws DAOTechnicalException;
-    public abstract boolean createRecord(Author author, Publication publication) throws DAOTechnicalException;
 }

@@ -7,6 +7,7 @@ import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
 import by.andruhovich.subscription.mapper.PublicationMapper;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ public class AuthorPublicationDAO extends BaseDAO {
     private final static String SELECT_PUBLICATION_BY_AUTHOR_ID = "SELECT p.publication_id, p.name, p.description, " +
             "p.price, p.picture_name, p.picture FROM authors_publications RIGHT JOIN publications p " +
             "USING (publication_id) WHERE author_id = ? LIMIT ?, ?";
+    private final static String DELETE_RECORD_BY_PUBLICATION_ID = "DELETE FROM authors_publications WHERE publication_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorPublicationDAO.class);
 
@@ -42,6 +44,9 @@ public class AuthorPublicationDAO extends BaseDAO {
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for create record - succeed");
             return true;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Record is already exist");
+            return false;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
@@ -104,6 +109,23 @@ public class AuthorPublicationDAO extends BaseDAO {
         }
         LOGGER.log(Level.INFO, "Request for delete publications by author id - not succeed");*/
         return false;
+    }
+
+    public boolean deleteRecordByPublicationId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for delete record by publication id");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(DELETE_RECORD_BY_PUBLICATION_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            LOGGER.log(Level.INFO, "Request for delete record by publication id - succeed");
+            return true;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
     }
 
 }

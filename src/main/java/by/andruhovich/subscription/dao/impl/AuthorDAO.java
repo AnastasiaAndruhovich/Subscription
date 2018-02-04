@@ -167,10 +167,4 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
-    @Override
-    public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for create record");
-        AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-        return authorPublicationDAO.createRecord(author, publication);
-    }
 }

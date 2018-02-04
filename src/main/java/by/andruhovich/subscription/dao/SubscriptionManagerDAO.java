@@ -16,6 +16,5 @@ public abstract class SubscriptionManagerDAO extends MediatorManagerDAO<Subscrip
 
     public abstract User findUserBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException;
-    public abstract List<Payment> findPaymentsBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException;
 }

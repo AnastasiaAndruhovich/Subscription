@@ -15,8 +15,6 @@ public abstract class AccountManagerDAO  extends MediatorManagerDAO <Account>{
 
     public abstract Account createEmptyAccount() throws DAOTechnicalException;
 
-    public abstract User findUserByAccountNumber(int id) throws DAOTechnicalException;
-
     public abstract BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException;
     public abstract BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException;
 

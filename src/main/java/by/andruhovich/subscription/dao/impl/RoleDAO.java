@@ -32,28 +32,6 @@ public class RoleDAO extends RoleManagerDAO {
     }
 
     @Override
-    public int findIdByName(String name) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find id by name");
-        PreparedStatement preparedStatement = null;
-        int id = -1;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_ID_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                id = resultSet.getInt("role_id");
-            }
-            LOGGER.log(Level.INFO, "Request for find id by name - succeed");
-            return id;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
     public int create(Role entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create role");
         PreparedStatement preparedStatement = null;
@@ -151,10 +129,4 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
-    @Override
-    public List<User> findUsersByRoleId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find users by role id");
-        UserDAO userDAO = new UserDAO(connection);
-        return userDAO.findUsersByRoleId(id);
-    }
 }

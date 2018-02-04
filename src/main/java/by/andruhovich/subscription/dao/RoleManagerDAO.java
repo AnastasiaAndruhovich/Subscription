@@ -12,7 +12,4 @@ public abstract class RoleManagerDAO extends MediatorManagerDAO<Role> {
         super(connection);
     }
 
-    public abstract int findIdByName(String role) throws DAOTechnicalException;
-
-    public abstract List<User> findUsersByRoleId(int id) throws DAOTechnicalException;
 }
