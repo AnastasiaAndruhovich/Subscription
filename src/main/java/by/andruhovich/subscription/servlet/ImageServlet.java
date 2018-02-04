@@ -45,7 +45,6 @@ public class ImageServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final String PUBLICATION_ID_ATTRIBUTE = "publicationId";
         final String PUBLICATION_ATTRIBUTE = "publication";
 
         final String ERROR_PAGE = "/jsp/error/error.jsp";
@@ -56,21 +55,26 @@ public class ImageServlet extends HttpServlet {
         FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
         PublicationService publicationService = new PublicationService();
-        String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
+        String publicationId = null;
+        byte[] picture = null;
+        String pictureName = null;
 
         try {
             List<FileItem> fields = upload.parseRequest(request);
             if (fields.size() != 0) {
                 for (FileItem item : fields) {
-                    if (item.getSize() != 0) {
-                        byte[] picture = item.get();
-                        String pictureName = item.getName();
-                        if (!publicationService.insertImage(publicationId, picture, pictureName)) {
-                            response.sendRedirect(ERROR_PAGE);
-                        }
+                    if (item.isFormField()) {
+                        publicationId = item.getString();
+                    } else {
+                        picture = item.get();
+                        pictureName = item.getName();
                     }
                 }
             }
+            if (publicationId == null || !publicationService.insertImage(publicationId, picture, pictureName)) {
+                response.sendRedirect(ERROR_PAGE);
+            }
+
             int id = Integer.parseInt(publicationId);
             Publication publication = publicationService.findPublicationById(id);
             request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
