@@ -1,10 +1,7 @@
 package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.dao.DAOFactory;
-import by.andruhovich.subscription.dao.impl.AccountDAO;
-import by.andruhovich.subscription.dao.impl.BlockDAO;
-import by.andruhovich.subscription.dao.impl.PaymentDAO;
-import by.andruhovich.subscription.dao.impl.UserDAO;
+import by.andruhovich.subscription.dao.impl.*;
 import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
@@ -202,38 +199,38 @@ public class UserService extends BaseService{
 
     public User findUserBySubscriptionId(String id) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
-        UserDAO userDAO = null;
+        SubscriptionDAO subscriptionDAO = null;
 
         try {
-            userDAO = daoFactory.createUserDAO();
+            subscriptionDAO = daoFactory.createSubscriptionDAO();
             int intId = Integer.parseInt(id);
-            return userDAO.findUserBySubscriptionId(intId);
+            return subscriptionDAO.findUserBySubscriptionId(intId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
-            daoFactory.closeDAO(userDAO);
+            daoFactory.closeDAO(subscriptionDAO);
         }
     }
 
     public User findUserByPaymentNumber(String paymentNumber) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PaymentDAO paymentDAO = null;
-        UserDAO userDAO = null;
+        SubscriptionDAO subscriptionDAO = null;
 
         try {
             paymentDAO = daoFactory.createPaymentDAO();
             int intPaymentNumber = Integer.parseInt(paymentNumber);
             Subscription subscription = paymentDAO.findSubscriptionByPaymentNumber(intPaymentNumber);
             if (subscription != null) {
-                userDAO = daoFactory.createUserDAO();
-                return userDAO.findUserBySubscriptionId(subscription.getSubscriptionId());
+                subscriptionDAO = daoFactory.createSubscriptionDAO();
+                return subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId());
             }
             return null;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(paymentDAO);
-            daoFactory.closeDAO(userDAO);
+            daoFactory.closeDAO(subscriptionDAO);
         }
     }
 

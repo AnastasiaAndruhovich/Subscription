@@ -44,6 +44,7 @@ public class PublicationService extends BaseService {
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
+        AuthorPublicationDAO authorPublicationDAO = null;
         AuthorService authorService = new AuthorService();
         GenreService genreService = new GenreService();
         PublicationTypeService publicationTypeService = new PublicationTypeService();
@@ -72,14 +73,16 @@ public class PublicationService extends BaseService {
             }
             publicationId = publicationDAO.create(publication);
             publication.setPublicationId(publicationId);
+            authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
             for (Author author : authors) {
-                publicationDAO.createRecord(author, publication);
+                authorPublicationDAO.createRecord(author, publication);
             }
 
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(publicationDAO);
+            daoFactory.closeDAO(authorPublicationDAO);
         }
         return publicationId;
     }
@@ -255,12 +258,15 @@ public class PublicationService extends BaseService {
     private List<Publication> fillOutPublicationList(List<Publication> publications) throws ServiceTechnicalException {
         DAOFactory daoFactory = DAOFactory.getInstance();
         PublicationDAO publicationDAO = null;
+        AuthorPublicationDAO authorPublicationDAO = null;
+
         try {
             publicationDAO = daoFactory.createPublicationDAO();
+            authorPublicationDAO = daoFactory.createAuthorPublicationDAO();
             for (Publication publication : publications) {
                 publication.setGenre(publicationDAO.findGenreByPublicationId(publication.getPublicationId()));
                 publication.setPublicationType(publicationDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
-                List<Author> authors = publicationDAO.findAuthorsByPublicationId(publication.getPublicationId());
+                List<Author> authors = authorPublicationDAO.findAuthorsByPublicationId(publication.getPublicationId());
                 publication.setAuthors(correctAuthorList(authors));
             }
             return publications;
@@ -268,6 +274,7 @@ public class PublicationService extends BaseService {
             throw new ServiceTechnicalException(e);
         } finally {
             daoFactory.closeDAO(publicationDAO);
+            daoFactory.closeDAO(authorPublicationDAO);
         }
     }
 
