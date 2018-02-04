@@ -26,9 +26,6 @@ import java.util.Locale;
 public class ShowEntityList {
     private static final String ERROR_PAGE = "/jsp/error/error.jsp";
 
-    private static final String INFORMATION_IS_ABSENT_ATTRIBUTE = "informationIsAbsent";
-    private static final String INFORMATION_IS_ABSENT_MESSAGE = "message.informationIsAbsent";
-
     private static final String CLIENT_TYPE = "clientType";
     private static final String LOCALE = "locale";
 
@@ -46,8 +43,6 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -59,8 +54,6 @@ public class ShowEntityList {
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, authors);
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();
@@ -90,8 +83,6 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -103,8 +94,6 @@ public class ShowEntityList {
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();
@@ -134,8 +123,6 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -147,8 +134,6 @@ public class ShowEntityList {
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, genres);
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();
@@ -191,8 +176,6 @@ public class ShowEntityList {
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publicationTypes);
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();
