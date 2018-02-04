@@ -10,6 +10,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.publicationTypes" var="Title"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Name"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
     <title>Publication Types</title>
@@ -31,15 +40,15 @@
             <div class="col-8">
                 <div class="publication type card">
                     <c:choose>
-                        <c:when test="${publicationTypes!=null}">
-                            <c:forEach var="publicationType" items="${publicationTypes}">
+                        <c:when test="${requestScope.publicationTypes!=null}">
+                            <c:forEach var="publicationType" items="${requestScope.publicationTypes}">
                                 <div class="container">
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                 </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

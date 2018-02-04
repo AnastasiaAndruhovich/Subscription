@@ -25,7 +25,7 @@
 <fmt:message bundle="${loc}" key="label.description" var="Description"/>
 <fmt:message bundle="${loc}" key="label.name" var="Name"/>
 <fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"/>
-
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
 <head>
@@ -40,7 +40,6 @@
 
 </head>
 <body>
-
 <ctg:role/>
 
 <div class="container-fluid">
@@ -50,8 +49,8 @@
             <div class="col-10">
                 <div class="publication card">
                     <c:choose>
-                        <c:when test="${publications!=null}">
-                            <c:forEach var="publication" items="${publications}">
+                        <c:when test="${requestScope.publications!=null}">
+                            <c:forEach var="publication" items="${requestScope.publications}">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4">
@@ -90,7 +89,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

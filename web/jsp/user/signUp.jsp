@@ -10,9 +10,27 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.signUp" var="Title"/>
+<fmt:message bundle="${loc}" key="label.registerForm" var="RegisterForm"/>
+<fmt:message bundle="${loc}" key="label.userLastName" var="LastName"/>
+<fmt:message bundle="${loc}" key="label.userFirstName" var="FirstName"/>
+<fmt:message bundle="${loc}" key="label.login" var="Login"/>
+<fmt:message bundle="${loc}" key="label.password" var="Password"/>
+<fmt:message bundle="${loc}" key="label.repeatPassword" var="RepeatPassword"/>
+<fmt:message bundle="${loc}" key="label.birthDate" var="BirthDate"/>
+<fmt:message bundle="${loc}" key="label.address" var="Address"/>
+<fmt:message bundle="${loc}" key="label.city" var="City"/>
+<fmt:message bundle="${loc}" key="label.postalIndex" var="PostalIndex"/>
+<fmt:message bundle="${loc}" key="button.signUp" var="SignUp"/>
+
 <html lang="en">
 <head>
-    <title>Sign up</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,8 +50,8 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="sign-up card">
-                    <h1 class="title" id="registerTitle">Register Form</h1>
-                    <div class="error-sign-up">${errorSignUp}</div>
+                    <h1 class="title" id="registerTitle">${RegisterForm}</h1>
+                    <div class="error-sign-up">${requestScope.errorSignUp}</div>
                     <div class="row">
                         <div class="col-12">
                             <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
@@ -41,14 +59,14 @@
 
                                 <!-- Text input-->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="lastName">Last Name</label>
+                                    <label class="col-sm-3 control-label" for="lastName">${LastName}</label>
                                     <div class="col-sm-9">
                                         <input id="lastName" name="lastName" type="text" placeholder="LastName"
                                                class="form-control input-md" required="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="firstName">First Name</label>
+                                    <label class="col-sm-3 control-label" for="firstName">${FirstName}</label>
                                     <div class="col-sm-9">
                                         <input id="firstName" name="firstName" type="text" placeholder="FirstName"
                                                class="form-control input-md" required="">
@@ -57,7 +75,7 @@
 
                                 <!--Login -->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="registerLogin">Login</label>
+                                    <label class="col-sm-3 control-label" for="registerLogin">${Login}</label>
                                     <div class="col-sm-9">
                                         <input id="registerLogin" name="login" type="text" placeholder="Login"
                                                class="form-control input-md" required=""
@@ -71,7 +89,7 @@
 
                                 <!--Password -->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="password">Password</label>
+                                    <label class="col-sm-3 control-label" for="password">${Password}</label>
                                     <div class="col-sm-9">
                                         <input id="password" name="password" type="password" placeholder="Password"
                                                class="form-control input-md" required=""
@@ -82,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="confirmPassword">Repeat password</label>
+                                    <label class="col-sm-3 control-label" for="confirmPassword">${RepeatPassword}</label>
                                     <div class="col-sm-9">
                                         <input id="confirmPassword" name="confirmPassword" type="password"
                                                placeholder="Repeat password" class="form-control input-md" required=""
@@ -92,7 +110,7 @@
 
                                 <!-- Select Date Of Birth-->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="birthDate">Birth date</label>
+                                    <label class="col-sm-3 control-label" for="birthDate">${BirthDate}</label>
                                     <div class="col-sm-9">
                                         <input id="birthDate" name="birthDate" type="text" placeholder="yyyy-mm-dd"
                                                class="form-control input-md" required=""
@@ -102,14 +120,14 @@
 
                                 <!-- Address input-->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="address">Address</label>
+                                    <label class="col-sm-3 control-label" for="address">${Address}</label>
                                     <div class="col-sm-9">
                                         <input id="address" name="address" type="text" placeholder="Address"
                                                class="form-control input-md" required="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="city">City</label>
+                                    <label class="col-sm-3 control-label" for="city">${City}</label>
                                     <div class="col-sm-9">
                                         <input id="city" name="city" type="text" placeholder="City"
                                                class="form-control input-md" required="">
@@ -118,14 +136,14 @@
 
                                 <!-- Postal index input-->
                                 <div class="form-group row">
-                                    <label class="col-sm-3 control-label" for="postalIndex">Postal Index</label>
+                                    <label class="col-sm-3 control-label" for="postalIndex">${PostalIndex}</label>
                                     <div class="col-sm-9">
                                         <input id="postalIndex" name="postalIndex" type="text" placeholder="XXXXXX"
                                                class="form-control input-md" required="" pattern="[0-9]{6}">
                                     </div>
                                 </div>
 
-                                <button class="btn btn-primary">Sign Up</button>
+                                <button class="btn btn-primary">${SignUp}</button>
                             </form>
                         </div>
                     </div>

@@ -10,9 +10,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.authors" var="Title"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Authors</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,15 +39,15 @@
             <div class="col-10">
                 <div class="author card">
                     <c:choose>
-                        <c:when test="${authors!=null}">
-                            <c:forEach var="author" items="${authors}">
+                        <c:when test="${requestScope.authors!=null}">
+                            <c:forEach var="author" items="${requestScope.authors}">
                                 <p>
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p>${infromationIsAbsent}</p>
+                            <p>${InformationIsAbsent}</p>
                         </c:otherwise>
                     </c:choose>
                 </div>

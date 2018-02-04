@@ -10,9 +10,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.login" var="Title"/>
+<fmt:message bundle="${loc}" key="label.login" var="Login"/>
+<fmt:message bundle="${loc}" key="label.password" var="Password"/>
+<fmt:message bundle="${loc}" key="label.loginToYourAccount" var="LoginToYourAccount"/>
+<fmt:message bundle="${loc}" key="button.login" var="Login"/>
+
 <html lang="en">
 <head>
-    <title>Login</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,27 +44,27 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="login card">
-                    <h1 class="title" id="loginTitle">Login to your account</h1>
-                    <div class="error-login">${errorLogin}</div>
+                    <h1 class="title" id="loginTitle">${LoginToYourAccount}</h1>
+                    <p>${requestScope.errorLogin}</p>
                     <div class="row">
                         <div class="col-12">
                             <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="login"/>
                                 <div class="form-group row">
-                                    <label for="login" class="col-sm-2 col-form-label">Login</label>
+                                    <label for="login" class="col-sm-2 col-form-label">${Login}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="login" id="login"
                                                placeholder="Login" required=""/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                                    <label for="inputPassword" class="col-sm-2 col-form-label">${Password}</label>
                                     <div class="col-sm-10">
                                         <input type="password" class="form-control" name="password" id="inputPassword"
                                                placeholder="Password" required=""/>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary">Login</button>
+                                <button class="btn btn-primary">${Login}</button>
                             </form>
                         </div>
                     </div>
