@@ -35,8 +35,6 @@ public class FindPublicationByPublicationTypeCommand extends BaseCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
 
         String pageNumber = request.getParameter(PAGE_NUMBER_ATTRIBUTE);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -49,8 +47,6 @@ public class FindPublicationByPublicationTypeCommand extends BaseCommand {
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
                 request.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
                 request.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();

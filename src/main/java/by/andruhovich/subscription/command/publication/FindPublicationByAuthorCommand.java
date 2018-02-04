@@ -35,8 +35,6 @@ public class FindPublicationByAuthorCommand extends BaseCommand{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -49,8 +47,6 @@ public class FindPublicationByAuthorCommand extends BaseCommand{
                 request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
                 request.setAttribute(PAGE_NUMBER, pageNumber);
                 request.setAttribute(PAGE_COUNT, pageCount);
-            } else {
-                request.setAttribute(INFORMATION_IS_ABSENT_ATTRIBUTE, localeManager.getProperty(INFORMATION_IS_ABSENT_MESSAGE));
             }
 
             HttpSession session = request.getSession();
