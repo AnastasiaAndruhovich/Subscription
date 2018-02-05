@@ -112,7 +112,7 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public List findAll(int startIndex, int endIndex) throws DAOTechnicalException {
+    public List<User> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
         List<User> users;
         PreparedStatement preparedStatement = null;
