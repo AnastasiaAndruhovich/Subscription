@@ -8,6 +8,7 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionFactory;
 
+import javax.servlet.jsp.el.ScopedAttributeELResolver;
 import java.math.BigDecimal;
 import java.sql.Connection;
 
@@ -70,6 +71,27 @@ public class AccountService extends BaseService {
                 return null;
             }
             return accountDAO.takeLoan(account.getAccountNumber(), loanSum);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage());
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public Account withdraw(String userId, String sum) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        BigDecimal loanSum = new BigDecimal(sum);
+
+        try {
+            connection = connectionFactory.getConnection();
+            AccountDAO accountDAO = new AccountDAO(connection);
+            Account account = findAccountByUserId(userId);
+            if (account.getBalance().compareTo(loanSum) < 0) {
+                return null;
+            }
+            return accountDAO.withdraw(account.getAccountNumber(), loanSum);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
