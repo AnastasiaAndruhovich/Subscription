@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 public class FindAccountByUserIdCommand extends BaseCommand {
     private AccountService accountService = new AccountService();
 
-    private static final String CLIENT_ID_ATTRIBUTE = "clientId";
     private static final String ACCOUNT_ATTRIBUTE = "account";
 
     private static final String ACCOUNT_USER_PAGE = "path.page.user.account";
@@ -27,7 +26,7 @@ public class FindAccountByUserIdCommand extends BaseCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
+        Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID);
 
         try {
             Account account = accountService.findAccountByUserId(userId.toString());
