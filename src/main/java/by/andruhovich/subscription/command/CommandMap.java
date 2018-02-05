@@ -1,5 +1,8 @@
 package by.andruhovich.subscription.command;
 
+import by.andruhovich.subscription.command.account.FindAccountByUserIdCommand;
+import by.andruhovich.subscription.command.account.RechargeCommand;
+import by.andruhovich.subscription.command.account.TakeLoanCommand;
 import by.andruhovich.subscription.command.author.*;
 import by.andruhovich.subscription.command.genre.*;
 import by.andruhovich.subscription.command.publication.*;
@@ -44,6 +47,9 @@ public class CommandMap {
         commandMap.put(CommandType.PARSE_PUBLICATION_TYPE, new ParsePublicationTypeCommand());
         commandMap.put(CommandType.EDIT_PUBLICATION, new EditPublicationCommand());
         commandMap.put(CommandType.PARSE_PUBLICATION, new ParsePublicationCommand());
+        commandMap.put(CommandType.FIND_ACCOUNT_BY_USER_ID, new FindAccountByUserIdCommand());
+        commandMap.put(CommandType.RECHARGE, new RechargeCommand());
+        commandMap.put(CommandType.TAKE_LOAN, new TakeLoanCommand());
     }
 
     private CommandMap() {}
