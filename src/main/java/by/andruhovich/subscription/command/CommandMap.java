@@ -4,10 +4,7 @@ import by.andruhovich.subscription.command.author.*;
 import by.andruhovich.subscription.command.genre.*;
 import by.andruhovich.subscription.command.publication.*;
 import by.andruhovich.subscription.command.publicationtype.*;
-import by.andruhovich.subscription.command.user.BlockUserCommand;
-import by.andruhovich.subscription.command.user.LoginCommand;
-import by.andruhovich.subscription.command.user.LogoutCommand;
-import by.andruhovich.subscription.command.user.SignUpCommand;
+import by.andruhovich.subscription.command.user.*;
 import by.andruhovich.subscription.exception.UndefinedCommandTechnicalException;
 
 import java.util.EnumMap;
@@ -22,10 +19,12 @@ public class CommandMap {
         commandMap.put(CommandType.SIGN_UP, new SignUpCommand());
         commandMap.put(CommandType.LOGOUT, new LogoutCommand());
         commandMap.put(CommandType.BLOCK_USER, new BlockUserCommand());
+        commandMap.put(CommandType.UNBLOCK_USER, new UnblockUserCommand());
         commandMap.put(CommandType.SHOW_PUBLICATIONS, new ShowPublicationCommand());
         commandMap.put(CommandType.SHOW_GENRES, new ShowGenreCommand());
         commandMap.put(CommandType.SHOW_PUBLICATION_TYPES, new ShowPublicationTypeCommand());
         commandMap.put(CommandType.SHOW_AUTHORS, new ShowAuthorCommand());
+        commandMap.put(CommandType.SHOW_USERS, new ShowUserCommand());
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_GENRE, new FindPublicationByGenreCommand());
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_AUTHOR, new FindPublicationByAuthorCommand());
         commandMap.put(CommandType.FIND_PUBLICATIONS_BY_PUBLICATION_TYPE, new FindPublicationByPublicationTypeCommand());
