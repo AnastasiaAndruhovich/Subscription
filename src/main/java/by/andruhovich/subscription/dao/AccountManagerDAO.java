@@ -15,11 +15,7 @@ public abstract class AccountManagerDAO  extends MediatorManagerDAO <Account>{
 
     public abstract Account createEmptyAccount() throws DAOTechnicalException;
 
-    public abstract BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException;
-    public abstract BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException;
-
-    public abstract BigDecimal recharge(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
-    public abstract BigDecimal takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
-    public abstract BigDecimal repayLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
-    public abstract BigDecimal withdraw(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
+    public abstract Account recharge(int accountNumber, BigDecimal rechargeSum, BigDecimal loanSum) throws DAOTechnicalException;
+    public abstract Account takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException;
+    public abstract Account withdraw(int accountNumber, BigDecimal sim) throws DAOTechnicalException;
 }

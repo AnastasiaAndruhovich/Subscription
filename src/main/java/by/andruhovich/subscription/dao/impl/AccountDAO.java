@@ -2,7 +2,6 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.AccountManagerDAO;
 import by.andruhovich.subscription.entity.Account;
-import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -27,11 +26,9 @@ public class AccountDAO extends AccountManagerDAO {
     private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts LIMIT ?, ?";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, loan = ? WHERE account_number = ?";
 
-    private static final String SELECT_BALANCE_BY_ID = "SELECT balance FROM accounts WHERE account_number = ?";
-    private static final String SELECT_LOAN_BY_ID = "SELECT loan FROM accounts WHERE account_number = ?";
-
-    private static final String UPDATE_BALANCE = "UPDATE accounts SET balance = balance + ? WHERE account_number = ?";
-    private static final String UPDATE_LOAN = "UPDATE accounts SET loan = loan + ? WHERE account_number = ?";
+    private static final String RECHARGE = "UPDATE accounts SET balance = balance + ?, loan = loan - ? WHERE account_number = ?";
+    private static final String TAKE_LOAN = "UPDATE accounts SET balance = balance + ?, loan = loan + ? WHERE account_number = ?";
+    private static final String WITHDRAW = "UPDATE accounts SET balance = balance - ? WHERE account_number = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AccountDAO.class);
 
@@ -179,60 +176,18 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public BigDecimal findBalanceById(int accountNumber) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find balance by id");
-
+    public Account recharge(int accountNumber, BigDecimal rechargeSum, BigDecimal loanSum) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for sumBalance");
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement(SELECT_BALANCE_BY_ID);
-            preparedStatement.setInt(1, accountNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            BigDecimal balance = resultSet.getBigDecimal("balance");
-            LOGGER.log(Level.INFO, "Request for find balance by id - succeed");
-            return balance;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public BigDecimal findLoanById(int accountNumber) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find loan by id");
-
-        PreparedStatement preparedStatement = null;
-        BigDecimal loan = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_LOAN_BY_ID);
-            preparedStatement.setInt(1, accountNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                loan = resultSet.getBigDecimal("loan");
-            }
-            LOGGER.log(Level.INFO, "Request for find loan by id - succeed");
-            return loan;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public BigDecimal recharge(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for recharge");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE_BALANCE);
-            preparedStatement.setBigDecimal(1, sum);
-            preparedStatement.setInt(2, accountNumber);
+            preparedStatement = connection.prepareStatement(RECHARGE);
+            preparedStatement.setBigDecimal(1, rechargeSum);
+            preparedStatement.setBigDecimal(2, loanSum);
+            preparedStatement.setInt(3, accountNumber);
             preparedStatement.executeUpdate();
-            LOGGER.log(Level.INFO, "Request for recharge - succeed");
-            return findBalanceById(accountNumber);
+            LOGGER.log(Level.INFO, "Request for sumBalance - succeed");
+            return findEntityById(accountNumber);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
@@ -241,36 +196,18 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public BigDecimal withdraw(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for withdraw");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE_BALANCE);
-            preparedStatement.setBigDecimal(1, sum.negate());
-            preparedStatement.setInt(2, accountNumber);
-            preparedStatement.executeUpdate();
-            LOGGER.log(Level.INFO, "Request for withdraw - succeed");
-            return findBalanceById(accountNumber);
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public BigDecimal takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
+    public Account takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for take loan");
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement(UPDATE_LOAN);
+            preparedStatement = connection.prepareStatement(TAKE_LOAN);
             preparedStatement.setBigDecimal(1, sum);
-            preparedStatement.setInt(2, accountNumber);
+            preparedStatement.setBigDecimal(2, sum);
+            preparedStatement.setInt(3, accountNumber);
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for take loan - succeed");
-            return findLoanById(accountNumber);
+            return findEntityById(accountNumber);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
@@ -279,17 +216,17 @@ public class AccountDAO extends AccountManagerDAO {
     }
 
     @Override
-    public BigDecimal repayLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for repay loan");
+    public Account withdraw(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for withdraw");
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement(UPDATE_LOAN);
-            preparedStatement.setBigDecimal(1, sum.negate());
+            preparedStatement = connection.prepareStatement(WITHDRAW);
+            preparedStatement.setBigDecimal(1, sum);
             preparedStatement.setInt(2, accountNumber);
             preparedStatement.executeUpdate();
-            LOGGER.log(Level.INFO, "Request for repay loan - succeed");
-            return findLoanById(accountNumber);
+            LOGGER.log(Level.INFO, "Request for withdraw - succeed");
+            return findEntityById(accountNumber);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
