@@ -25,6 +25,7 @@
 <fmt:message bundle="${loc}" key="label.postalIndex" var="PostalIndex"/>
 <fmt:message bundle="${loc}" key="label.balance" var="Balance"/>
 <fmt:message bundle="${loc}" key="label.loan" var="Loan"/>
+<fmt:message bundle="${loc}" key="label.money" var="Money"/>
 <fmt:message bundle="${loc}" key="label.subscriptions" var="Subscriptions"/>
 <fmt:message bundle="${loc}" key="label.payments" var="Payments"/>
 <fmt:message bundle="${loc}" key="label.block" var="Block"/>
@@ -69,8 +70,8 @@
                                 <td>${Address}</td>
                                 <td>${City}</td>
                                 <td>${PostalIndex}</td>
-                                <td>${Balance}</td>
-                                <td>${Loan}</td>
+                                <td>${Balance} ${Money}</td>
+                                <td>${Loan} ${Money}</td>
                                 <td>${Subscriptions}</td>
                                 <td>${Payments}</td>
                                 <td>${Block}</td>
