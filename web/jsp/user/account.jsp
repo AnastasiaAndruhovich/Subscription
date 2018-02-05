@@ -8,7 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="customtag"%>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -37,7 +37,9 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <jsp:useBean id="account" scope="request" type="by.andruhovich.subscription.entity.Account"/>
-    <style><%@include file="../../css/style.css" %></style>
+    <style>
+        <%@include file="../../css/style.css" %>
+    </style>
 </head>
 <body>
 <ctg:role/>
@@ -47,20 +49,21 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10">
+                ${requestScope.errorSum}
                 <c:choose>
                     <c:when test="${account!=null}">
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th scope="col">${Balance} ${Money}</th>
-                                    <th scope="col">${Loan} ${Money}</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">${Balance} ${Money}</th>
+                                <th scope="col">${Loan} ${Money}</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>${account.balance}</td>
-                                    <td>${account.loan}</td>
-                                </tr>
+                            <tr>
+                                <td>${account.balance}</td>
+                                <td>${account.loan}</td>
+                            </tr>
                             </tbody>
                         </table>
 
@@ -68,9 +71,10 @@
                         <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                             <input type="hidden" name="command" value="recharge"/>
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="recharge">${RechargeSum}</label>
+                                <label class="col-sm-2 control-label" for="rechargeSum">${RechargeSum}</label>
                                 <div class="col-sm-3">
-                                    <input id="recharge" name="recharge" type="text" placeholder="sum" class="form-control input-md">
+                                    <input id="rechargeSum" name="rechargeSum" type="text" placeholder="0.00"
+                                           class="form-control input-md" pattern="^[\d]+?\.[\d]{2}$"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <button class="btn btn-outline-success my-2 my-sm-0">${Recharge}</button>
@@ -82,9 +86,10 @@
                         <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                             <input type="hidden" name="command" value="take_loan"/>
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="takeLoan">${LoanSum}</label>
+                                <label class="col-sm-2 control-label" for="loanSum">${LoanSum}</label>
                                 <div class="col-sm-3">
-                                    <input id="takeLoan" name="takeLoan" type="text" placeholder="sum" class="form-control input-md">
+                                    <input id="loanSum" name="loanSum" type="text" placeholder="0.00"
+                                           class="form-control input-md" pattern="^[\d]+?\.[\d]{2}$"/>
                                 </div>
                                 <div class="col-sm-3">
                                     <button class="btn btn-outline-warning my-2 my-sm-0">${TakeLoan}</button>
