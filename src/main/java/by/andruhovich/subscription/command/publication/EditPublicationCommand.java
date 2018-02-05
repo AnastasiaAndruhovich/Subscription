@@ -39,7 +39,7 @@ public class EditPublicationCommand extends BaseCommand {
 
     private static final String SUCCESSFUL_EDIT_PUBLICATION_MESSAGE = "message.successfulEditPublication";
     private static final String ERROR_EDIT_PUBLICATION_MESSAGE = "message.errorEditPublication";
-    private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectPrice";
+    private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectMoneyFormat";
 
     private static final Logger LOGGER = LogManager.getLogger(EditPublicationCommand.class);
 
