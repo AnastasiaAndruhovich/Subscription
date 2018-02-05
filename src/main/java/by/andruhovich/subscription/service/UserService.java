@@ -133,19 +133,20 @@ public class UserService extends BaseService{
         }
     }
 
-    public boolean unblockUser(String login) throws ServiceTechnicalException {
+    public boolean unblockUser(String userId, String adminId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
 
+        int intUserId = Integer.parseInt(userId);
+        int intAdminId = Integer.parseInt(adminId);
+
         try {
-            if (findUserIdByLogin(login) != -1) {
-                connection = connectionFactory.getConnection();
-                UserDAO userDAO = new UserDAO(connection);
-                User user = userDAO.findUserByLogin(login);
-                BlockDAO blockDAO = new BlockDAO(connection);
-                return blockDAO.deleteBlockByUserId(user.getUserId());
-            }
-            return true;
+            connection = connectionFactory.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            BlockDAO blockDAO = new BlockDAO(connection);
+            User user = userDAO.findEntityById(intUserId);
+            User admin = blockDAO.findAdminByUserId(intUserId);
+            return intAdminId == admin.getUserId() && blockDAO.deleteBlockByUserId(user.getUserId());
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
