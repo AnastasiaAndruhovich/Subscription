@@ -71,7 +71,13 @@ scope="session"/>
             <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
             <a href="controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">${PersonalAccount}</button>
+            <div class="dropdown open">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownPersonalAccount" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">${PersonalAccount}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownUsers">
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user_id">${MyAccount}</a>
+                </div>
+            </div>
         </form>
     </div>
 </nav>
