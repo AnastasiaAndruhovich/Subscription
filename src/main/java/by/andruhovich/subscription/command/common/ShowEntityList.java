@@ -1,17 +1,12 @@
 package by.andruhovich.subscription.command.common;
 
-import by.andruhovich.subscription.entity.Author;
-import by.andruhovich.subscription.entity.Genre;
-import by.andruhovich.subscription.entity.Publication;
-import by.andruhovich.subscription.entity.PublicationType;
+import by.andruhovich.subscription.command.user.ShowUserCommand;
+import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
-import by.andruhovich.subscription.service.AuthorService;
-import by.andruhovich.subscription.service.GenreService;
-import by.andruhovich.subscription.service.PublicationService;
-import by.andruhovich.subscription.service.PublicationTypeService;
+import by.andruhovich.subscription.service.*;
 import by.andruhovich.subscription.type.ClientType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -186,6 +181,38 @@ public class ShowEntityList {
             else {
                 page = pageManager.getProperty(PUBLICATION_TYPE_USER_PAGE);
             }
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
+    public static String showUserList(HttpServletRequest request, HttpServletResponse response) {
+        UserService userService = new UserService();
+
+        final String USER_ADMIN_PAGE = "path.page.admin.userList";
+        final String USER_LIST_ATTRIBUTE = "users";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+
+        String pageNumber = request.getParameter(PAGE_NUMBER);
+        pageNumber = (pageNumber == null) ? "1" : pageNumber;
+
+        try {
+            List<User> users = userService.showUsers(pageNumber);
+            if (!users.isEmpty()) {
+                int pageCount = userService.findUserPageCount();
+                request.setAttribute(USER_LIST_ATTRIBUTE, users);
+                request.setAttribute(PAGE_NUMBER, pageNumber);
+                request.setAttribute(PAGE_COUNT, pageCount);
+            }
+            page = pageManager.getProperty(USER_ADMIN_PAGE);
+
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
