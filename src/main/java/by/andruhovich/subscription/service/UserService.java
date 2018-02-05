@@ -108,23 +108,24 @@ public class UserService extends BaseService{
         }
     }
 
-    public boolean blockUser(String userLogin, String adminLogin) throws ServiceTechnicalException {
+    public boolean blockUser(String userId, String adminId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
 
+        int intUserId = Integer.parseInt(userId);
+        int intAdminId = Integer.parseInt(adminId);
+        if (intAdminId == intUserId) return false;
+
         try {
-            if (findUserIdByLogin(userLogin) != -1) {
-                connection = connectionFactory.getConnection();
-                UserDAO userDAO = new UserDAO(connection);
-                User user = userDAO.findUserByLogin(userLogin);
-                User admin = userDAO.findUserByLogin(adminLogin);
-                Date date = Calendar.getInstance().getTime();
-                Block block = new Block(user, admin, date);
-                BlockDAO blockDAO = new BlockDAO(connection);
-                blockDAO.create(block);
-                return true;
-            }
-            return false;
+            connection = connectionFactory.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            User user = userDAO.findEntityById(intUserId);
+            User admin = userDAO.findEntityById(intAdminId);
+            Date date = Calendar.getInstance().getTime();
+            Block block = new Block(user, admin, date);
+            BlockDAO blockDAO = new BlockDAO(connection);
+            blockDAO.create(block);
+            return true;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -152,7 +153,7 @@ public class UserService extends BaseService{
         }
     }
 
-    public boolean updateUser(String lastname, String firstname, Date birthdate, String address, String city,
+    public boolean updateUser(String lastName, String firstName, Date birthDate, String address, String city,
                               String postalIndex, String login, String password) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -165,7 +166,7 @@ public class UserService extends BaseService{
                 Account account = userDAO.findAccountByUserId(userId);
                 int intPostalIndex = Integer.parseInt(postalIndex);
                 password = PasswordCoder.hashPassword(password);
-                User user = new User(lastname, firstname, birthdate, address, city, intPostalIndex, login, password, account);
+                User user = new User(lastName, firstName, birthDate, address, city, intPostalIndex, login, password, account);
                 return userDAO.update(user);
             }
             return false;
@@ -186,7 +187,8 @@ public class UserService extends BaseService{
         try {
             connection = connectionFactory.getConnection();
             UserDAO userDAO = new UserDAO(connection);
-            return userDAO.findAll(startIndex, endIndex);
+            List<User> users = userDAO.findAll(startIndex, endIndex);
+            return fillOutUserList(users);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -278,4 +280,25 @@ public class UserService extends BaseService{
         }
     }
 
+    private List<User> fillOutUserList(List<User> users) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        try {
+            connection = connectionFactory.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            BlockDAO blockDAO = new BlockDAO(connection);
+            for (User user : users) {
+                user.setAccount(userDAO.findAccountByUserId(user.getUserId()));
+                user.setRole(userDAO.findRoleByUserId(user.getUserId()));
+                user.setAdmin(blockDAO.findAdminByUserId(user.getUserId()));
+                user.setUsers(blockDAO.findUsersByAdminId(user.getUserId()));
+            }
+            return users;
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
 }
