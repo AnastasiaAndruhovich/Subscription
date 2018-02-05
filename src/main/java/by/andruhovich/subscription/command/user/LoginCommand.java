@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class LoginCommand extends BaseCommand {
@@ -38,13 +39,14 @@ public class LoginCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
 
         try {
             if (userService.confirmPassword(login, password)) {
                 int clientId = userService.findUserIdByLogin(login);
-                request.setAttribute(CLIENT_ID, clientId);
+                session.setAttribute(CLIENT_ID, clientId);
                 Role role = userService.findRoleByUserId(clientId);
-                request.getSession().setAttribute(CLIENT_TYPE, ClientType.valueOf(role.getName().toUpperCase()));
+                session.setAttribute(CLIENT_TYPE, ClientType.valueOf(role.getName().toUpperCase()));
                 page = ShowEntityList.showPublicationList(request, response);
             } else {
                 String errorLoginMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
