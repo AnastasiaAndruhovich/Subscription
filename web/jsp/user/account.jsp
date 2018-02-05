@@ -10,9 +10,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.account" var="Title"/>
+<fmt:message bundle="${loc}" key="label.balance" var="Balance"/>
+<fmt:message bundle="${loc}" key="label.loan" var="Loan"/>
+<fmt:message bundle="${loc}" key="label.money" var="Money"/>
+<fmt:message bundle="${loc}" key="label.loanSum" var="LoanSum"/>
+<fmt:message bundle="${loc}" key="label.rechargeSum" var="RechargeSum"/>
+<fmt:message bundle="${loc}" key="button.recharge" var="Recharge"/>
+<fmt:message bundle="${loc}" key="button.takeLoan" var="TakeLoan"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
-    <title>Account</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,6 +35,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <jsp:useBean id="account" scope="request" type="by.andruhovich.subscription.entity.Account"/>
+    <style><%@include file="../../css/style.css" %></style>
 </head>
 <body>
 <ctg:role/>
@@ -27,59 +45,59 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <c:choose>
                     <c:when test="${account!=null}">
                         <table class="table table-bordered">
                             <thead>
-                            <tr>
-                                <th scope="col">Balance</th>
-                                <th scope="col">Loan</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">${Balance} ${Money}</th>
+                                    <th scope="col">${Loan} ${Money}</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>account.balance BY</td>
-                                <td>account.loan BY</td>
-                            </tr>
+                                <tr>
+                                    <td>${account.balance}</td>
+                                    <td>${account.loan}</td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <!--Recharge -->
-                        <div class="form-group row">
-                            <label class="col-sm-3 control-label" for="recharge">Start date</label>
-                            <div class="col-sm-5">
-                                <input id="recharge" name="recharge" type="text" placeholder="sum" class="form-control input-md">
+                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                            <input type="hidden" name="command" value="recharge"/>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label" for="recharge">${RechargeSum}</label>
+                                <div class="col-sm-3">
+                                    <input id="recharge" name="recharge" type="text" placeholder="sum" class="form-control input-md">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-outline-success my-2 my-sm-0">${Recharge}</button>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                    <input type="hidden" name="command" value="recharge"/>
-                                    <button class="btn btn-outline-success my-2 my-sm-0">Recharge</button>
-                                </form>
-                            </div>
-                        </div>
+                        </form>
 
                         <!--Take a loan -->
-                        <div class="form-group row">
-                            <label class="col-sm-3 control-label" for="takeLoan">Start date</label>
-                            <div class="col-sm-5">
-                                <input id="takeLoan" name="takeLoan" type="text" placeholder="sum" class="form-control input-md">
+                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                            <input type="hidden" name="command" value="take_loan"/>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label" for="takeLoan">${LoanSum}</label>
+                                <div class="col-sm-3">
+                                    <input id="takeLoan" name="takeLoan" type="text" placeholder="sum" class="form-control input-md">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-outline-warning my-2 my-sm-0">${TakeLoan}</button>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                    <input type="hidden" name="command" value="recharge"/>
-                                    <button class="btn btn-outline-warning my-2 my-sm-0">Take loan</button>
-                                </form>
-                            </div>
-                        </div>
+                        </form>
                     </c:when>
                     <c:otherwise>
-                        <p>${infromationIsAbsent}</p>
+                        <p>${InformationIsAbsent}</p>
                     </c:otherwise>
                 </c:choose>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>
