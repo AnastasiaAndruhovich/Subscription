@@ -38,7 +38,7 @@ public class AddPublicationCommand extends BaseCommand {
 
     private static final String SUCCESSFUL_ADD_PUBLICATION_MESSAGE = "message.successfulAddPublication";
     private static final String ERROR_ADD_PUBLICATION_MESSAGE = "message.errorAddPublication";
-    private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectPrice";
+    private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectMoneyFormat";
 
     private static final Logger LOGGER = LogManager.getLogger(AddPublicationCommand.class);
 
