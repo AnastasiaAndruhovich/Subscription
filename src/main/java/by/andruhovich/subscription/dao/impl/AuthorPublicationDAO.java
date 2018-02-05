@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.BaseDAO;
-import by.andruhovich.subscription.dao.DAOFactory;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
