@@ -95,10 +95,10 @@
                                             <td>${user.account.balance}</td>
                                             <td>${user.account.loan}</td>
                                             <td>
-                                                <a href="${pageContext.servletContext.contextPath}/controller?command=show_subscriptions_by_user_id&userId=${user.userId}">${Detailed}</a>
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user&userId=${user.userId}">${Detailed}</a>
                                             </td>
                                             <td>
-                                                <a href="${pageContext.servletContext.contextPath}/controller?command=show_payments_by_user_id&userId=${user.userId}">${Detailed}</a>
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${user.userId}">${Detailed}</a>
                                             </td>
                                             <td>${user.admin.login}
                                                 <c:if test="${user.userId!=2}">
