@@ -5,6 +5,7 @@ import by.andruhovich.subscription.command.account.RechargeCommand;
 import by.andruhovich.subscription.command.account.TakeLoanCommand;
 import by.andruhovich.subscription.command.author.*;
 import by.andruhovich.subscription.command.genre.*;
+import by.andruhovich.subscription.command.payment.AddPaymentCommand;
 import by.andruhovich.subscription.command.publication.*;
 import by.andruhovich.subscription.command.publicationtype.*;
 import by.andruhovich.subscription.command.subscription.AddSubscriptionCommand;
@@ -54,6 +55,7 @@ public class CommandMap {
         commandMap.put(CommandType.TAKE_LOAN, new TakeLoanCommand());
         commandMap.put(CommandType.FIND_SUBSCRIPTION_BY_USER, new FindSubscriptionByUserCommand());
         commandMap.put(CommandType.ADD_SUBSCRIPTION, new AddSubscriptionCommand());
+        commandMap.put(CommandType.ADD_PAYMENT, new AddPaymentCommand());
     }
 
     private CommandMap() {}
