@@ -35,7 +35,7 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             PublicationDAO publicationDAO = new PublicationDAO(connection);
             List<Publication> publications = publicationDAO.findAll(startIndex, endIndex);
-            return fillOutPublicationList(publications);
+            return FillOutEntityService.fillOutPublicationList(publications);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -197,7 +197,7 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             PublicationDAO publicationDAO = new PublicationDAO(connection);
             List<Publication> publications = publicationDAO.findPublicationByName(name);
-            return fillOutPublicationList(publications);
+            return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -218,7 +218,7 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
             List<Publication> publications = authorPublicationDAO.findPublicationsByAuthorId(intAuthorId, startIndex, endIndex);
-            return fillOutPublicationList(publications);
+            return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -239,7 +239,7 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             PublicationDAO publicationDAO = new PublicationDAO(connection);
             List<Publication> publications = publicationDAO.findPublicationsByGenreId(intGenreId, startIndex, endIndex);
-            return fillOutPublicationList(publications);
+            return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -261,7 +261,7 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             PublicationDAO publicationDAO = new PublicationDAO(connection);
             List<Publication> publications = publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
-            return fillOutPublicationList(publications);
+            return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -301,44 +301,6 @@ public class PublicationService extends BaseService {
         }
     }
 
-    private List<Publication> fillOutPublicationList(List<Publication> publications) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            connection.setAutoCommit(false);
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-            for (Publication publication : publications) {
-                publication.setGenre(publicationDAO.findGenreByPublicationId(publication.getPublicationId()));
-                publication.setPublicationType(publicationDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
-                List<Author> authors = authorPublicationDAO.findAuthorsByPublicationId(publication.getPublicationId());
-                publication.setAuthors(correctAuthorList(authors));
-            }
-            connection.commit();
-            return publications;
-        } catch (DAOTechnicalException | SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                LOGGER.log(Level.ERROR, "Error roll back transaction");
-            }
-            throw new ServiceTechnicalException(e);
-        } catch (ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                } catch (SQLException e1) {
-                    LOGGER.log(Level.ERROR, "Error set auto commit true");
-                }
-            }
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
     public Publication findPublicationById(int publicationId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -350,7 +312,7 @@ public class PublicationService extends BaseService {
             if (publication == null) return null;
             List<Publication> publications = new LinkedList<>();
             publications.add(publication);
-            return fillOutPublicationList(publications).get(0);
+            return FillOutEntityService.fillOutPublicationList(publications).get(0);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -387,17 +349,5 @@ public class PublicationService extends BaseService {
         } finally {
             connectionFactory.returnConnection(connection);
         }
-    }
-
-    private List<Author> correctAuthorList(List<Author> authors) {
-        for (Author author : authors) {
-            if ("-".equals(author.getAuthorFirstName())) {
-                author.setAuthorFirstName(null);
-            }
-            if ("-".equals(author.getAuthorLastName())) {
-                author.setAuthorLastName(null);
-            }
-        }
-        return authors;
     }
 }

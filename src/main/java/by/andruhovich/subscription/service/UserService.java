@@ -189,7 +189,7 @@ public class UserService extends BaseService{
             connection = connectionFactory.getConnection();
             UserDAO userDAO = new UserDAO(connection);
             List<User> users = userDAO.findAll(startIndex, endIndex);
-            return fillOutUserList(users);
+            return FillOutEntityService.fillOutUserList(users);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -294,28 +294,6 @@ public class UserService extends BaseService{
             return admin != null;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    private List<User> fillOutUserList(List<User> users) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            BlockDAO blockDAO = new BlockDAO(connection);
-            for (User user : users) {
-                user.setAccount(userDAO.findAccountByUserId(user.getUserId()));
-                user.setRole(userDAO.findRoleByUserId(user.getUserId()));
-                user.setAdmin(blockDAO.findAdminByUserId(user.getUserId()));
-                user.setUsers(blockDAO.findUsersByAdminId(user.getUserId()));
-            }
-            return users;
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
         } finally {
             connectionFactory.returnConnection(connection);
         }

@@ -34,7 +34,7 @@ public class SubscriptionService extends BaseService {
             connection = connectionFactory.getConnection();
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
             List<Subscription> subscriptions = subscriptionDAO.findAll(startIndex, endIndex);
-            return fillOutSubscriptionList(subscriptions);
+            return FillOutEntityService.fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -64,7 +64,7 @@ public class SubscriptionService extends BaseService {
             int id = subscriptionDAO.create(subscription);
             subscription = subscriptionDAO.findEntityById(id);
             subscriptions.add(subscription);
-            return fillOutSubscriptionList(subscriptions).get(0);
+            return FillOutEntityService.fillOutSubscriptionList(subscriptions).get(0);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -143,26 +143,7 @@ public class SubscriptionService extends BaseService {
             connection = connectionFactory.getConnection();
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
             List<Subscription> subscriptions = subscriptionDAO.findSubscriptionsByUserId(id);
-            return fillOutSubscriptionList(subscriptions);
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    private List<Subscription> fillOutSubscriptionList(List<Subscription> subscriptions) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            for (Subscription subscription : subscriptions) {
-                subscription.setUser(subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId()));
-                subscription.setPublication(subscriptionDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId()));
-            }
-            return subscriptions;
+            return FillOutEntityService.fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
