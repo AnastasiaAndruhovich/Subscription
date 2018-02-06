@@ -28,14 +28,4 @@ public class ClientDataConverter {
         }
         return resultDate;
     }
-
-    public static byte[] convertImageToByteArray(String pathName) {
-        File file = new File(pathName);
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            LOGGER.log(Level.ERROR, "Error convert image to byte array");
-        }
-        return null;
-    }
 }
