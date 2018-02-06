@@ -95,12 +95,16 @@
                                             <td>${user.account.balance}</td>
                                             <td>${user.account.loan}</td>
                                             <td>
-                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user&userId=${user.userId}">${Detailed}</a>
+                                                <c:if test="${user.subscriptions!=null && !user.subscriptions.isEmpty()}">
+                                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user&userId=${user.userId}">${Detailed}</a>
+                                                </c:if>
                                             </td>
                                             <td>
-                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${user.userId}">${Detailed}</a>
+                                                <c:if test="${user.subscriptions!=null && !user.subscriptions.isEmpty()}">
+                                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${user.userId}">${Detailed}</a>
+                                                </c:if>
                                             </td>
-                                            <td>${user.admin.login}
+                                            <td>
                                                 <c:if test="${user.userId!=2}">
                                                     <c:choose>
                                                         <c:when test="${user.admin==null}">
