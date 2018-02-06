@@ -28,6 +28,7 @@
 <fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
 <fmt:message bundle="${loc}" key="label.startDate" var="StartDate"/>
 <fmt:message bundle="${loc}" key="label.endDate" var="EndDate"/>
+<fmt:message bundle="${loc}" key="label.active" var="Active"/>
 <fmt:message bundle="${loc}" key="button.payNow" var="PayNow"/>
 <fmt:message bundle="${loc}" key="button.payLater" var="PayLater"/>
 <fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
@@ -84,11 +85,12 @@
                                         <p>${Description}: ${subscription.publication.description}</p>
                                         <p>${StartDate}: ${subscription.startDate}</p>
                                         <p>${EndDate}: ${subscription.endDate}</p>
+                                        <p>${Active}: ${subscription.subscriptionIsActive}</p>
                                         <p>${Price}: ${subscription.publication.price} ${MoneyUnit}</p>
                                         <div class="row">
                                             <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                <input type="hidden" name="command" value="pay_subscription"/>
-                                                <input type="hidden" name="publicationId" value="${subscription.subscriptionId}">
+                                                <input type="hidden" name="command" value="add_payment"/>
+                                                <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
                                                 <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
                                             </form>
                                             <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
