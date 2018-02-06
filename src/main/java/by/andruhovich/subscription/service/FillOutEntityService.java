@@ -11,6 +11,8 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionFactory;
 
 import java.sql.Connection;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +43,6 @@ class FillOutEntityService {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         List<Publication> publications = new LinkedList<>();
-        PublicationService publicationService = new PublicationService();
 
         try {
             connection = connectionFactory.getConnection();
@@ -52,6 +53,7 @@ class FillOutEntityService {
                 Publication publication = publicationDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId());
                 publications.add(publication);
                 subscription.setPublication(fillOutPublicationList(publications).get(0));
+                checkSubscriptionActive(subscription);
             }
             return subscriptions;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
@@ -83,6 +85,26 @@ class FillOutEntityService {
         } finally {
             connectionFactory.returnConnection(connection);
         }
+    }
+
+    private static Subscription checkSubscriptionActive(Subscription subscription) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        Date date = Calendar.getInstance().getTime();
+
+        if (date.getTime() > subscription.getEndDate().getTime()) {
+            try {
+                connection = connectionFactory.getConnection();
+                SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+                subscription.setSubscriptionIsActive(false);
+                subscriptionDAO.update(subscription);
+            } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+                throw new ServiceTechnicalException(e);
+            } finally {
+                connectionFactory.returnConnection(connection);
+            }
+        }
+        return subscription;
     }
 
     private static List<Author> correctAuthorList(List<Author> authors) {
