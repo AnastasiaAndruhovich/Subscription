@@ -281,6 +281,24 @@ public class UserService extends BaseService{
         }
     }
 
+    public boolean isUserBlocked(String userId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        int intUserId = Integer.parseInt(userId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            BlockDAO blockDAO = new BlockDAO(connection);
+            User admin = blockDAO.findAdminByUserId(intUserId);
+            return admin != null;
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage());
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
     private List<User> fillOutUserList(List<User> users) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
