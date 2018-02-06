@@ -10,7 +10,8 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import java.sql.Connection;
 import java.util.List;
 
-public class GenreService extends BaseService{
+public class GenreService extends BaseService {
+
     int findIdByGenreName(String genreName) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
