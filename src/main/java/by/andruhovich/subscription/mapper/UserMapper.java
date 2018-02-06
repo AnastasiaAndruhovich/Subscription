@@ -18,15 +18,15 @@ public class UserMapper implements EntityMapper<User> {
         try {
             while (resultSet.next()) {
                 int userId = resultSet.getInt("user_id");
-                String firstname = resultSet.getString("firstname");
-                String lastname = resultSet.getString("lastname");
-                Date birthdate = resultSet.getDate("birthdate");
+                String firstName = resultSet.getString("firstname");
+                String lastName = resultSet.getString("lastname");
+                Date birthDate = resultSet.getDate("birthdate");
                 String address = resultSet.getString("address");
                 String city = resultSet.getString("city");
                 int postalIndex = resultSet.getInt("postal_index");
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
-                user = new User(userId, firstname, lastname, birthdate, address, city, postalIndex, login, password);
+                user = new User(userId, firstName, lastName, birthDate, address, city, postalIndex, login, password);
                 users.add(user);
             }
             return users;
