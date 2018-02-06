@@ -72,48 +72,6 @@ public class SubscriptionService extends BaseService {
         }
     }
 
-    public boolean activateSubscription(String subscriptionId) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-        int intSubscriptionId = Integer.parseInt(subscriptionId);
-
-        try {
-            connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            Subscription subscription = subscriptionDAO.findEntityById(intSubscriptionId);
-            if (subscription != null) {
-                subscription.setSubscriptionIsActive(true);
-                return subscriptionDAO.update(subscription);
-            }
-            return false;
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public boolean deactivateSubscription(String subscriptionId) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-        int intSubscriptionId = Integer.parseInt(subscriptionId);
-
-        try {
-            connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            Subscription subscription = subscriptionDAO.findEntityById(intSubscriptionId);
-            if (subscription != null) {
-                subscription.setSubscriptionIsActive(false);
-                return subscriptionDAO.update(subscription);
-            }
-            return false;
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
     public int findSubscriptionPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
