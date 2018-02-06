@@ -13,14 +13,14 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class FindAccountByUserIdCommand extends BaseCommand {
+public class FindAccountByUserCommand extends BaseCommand {
     private AccountService accountService = new AccountService();
 
     private static final String ACCOUNT_ATTRIBUTE = "account";
 
     private static final String ACCOUNT_USER_PAGE = "path.page.user.account";
 
-    private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserIdCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

@@ -28,7 +28,7 @@ public class TakeLoanCommand extends BaseCommand{
 
     private static final String ACCOUNT_USER_PAGE = "path.page.user.account";
 
-    private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserIdCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
