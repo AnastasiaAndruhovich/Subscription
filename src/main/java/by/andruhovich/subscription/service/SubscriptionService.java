@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
 import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.dao.impl.SubscriptionDAO;
 import by.andruhovich.subscription.dao.impl.UserDAO;
@@ -10,16 +9,17 @@ import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import org.apache.logging.log4j.Level;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
-public class SubscriptionService extends BaseService{
+public class SubscriptionService extends BaseService {
     private static final Logger LOGGER = LogManager.getLogger(SubscriptionService.class);
 
     public List<Subscription> showSubscriptions(String pageNumber) throws ServiceTechnicalException {
@@ -28,12 +28,12 @@ public class SubscriptionService extends BaseService{
 
         int number = Integer.parseInt(pageNumber);
         int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE ;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             connection = connectionFactory.getConnection();
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            List<Subscription> subscriptions =  subscriptionDAO.findAll(startIndex, endIndex);
+            List<Subscription> subscriptions = subscriptionDAO.findAll(startIndex, endIndex);
             return fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -42,41 +42,32 @@ public class SubscriptionService extends BaseService{
         }
     }
 
-    public int addSubscription(String login, Date startDate, Date endDate, String publicationId)
+    public Subscription addSubscription(String userId, String publicationId)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         int intPublicationId = Integer.parseInt(publicationId);
+        int intUserId = Integer.parseInt(userId);
+        List<Subscription> subscriptions = new LinkedList<>();
+
+        Date startDate = defineStartDate();
+        Date endDate = defineEndDate(startDate);
 
         try {
             connection = connectionFactory.getConnection();
-            connection.setAutoCommit(false);
             UserDAO userDAO = new UserDAO(connection);
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
             PublicationDAO publicationDAO = new PublicationDAO(connection);
-            User user = userDAO.findUserByLogin(login);
+            User user = userDAO.findEntityById(intUserId);
             Publication publication = publicationDAO.findEntityById(intPublicationId);
             Subscription subscription = new Subscription(startDate, endDate, false, user, publication);
             int id = subscriptionDAO.create(subscription);
-            connection.commit();
-            return id;
-        } catch (DAOTechnicalException | SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                LOGGER.log(Level.ERROR, "Error roll back transaction");
-            }
-            throw new ServiceTechnicalException(e);
-        } catch (ConnectionTechnicalException e) {
+            subscription = subscriptionDAO.findEntityById(id);
+            subscriptions.add(subscription);
+            return fillOutSubscriptionList(subscriptions).get(0);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                } catch (SQLException e1) {
-                    LOGGER.log(Level.ERROR, "Error set auto commit true");
-                }
-            }
             connectionFactory.returnConnection(connection);
         }
     }
@@ -131,7 +122,28 @@ public class SubscriptionService extends BaseService{
             connection = connectionFactory.getConnection();
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
             int count = subscriptionDAO.findEntityCount();
-            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
+            return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public List<Subscription> findSubscriptionByUserId(String userId, String pageNumber) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        int number = Integer.parseInt(pageNumber);
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+        int id = Integer.parseInt(userId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+            List<Subscription> subscriptions = subscriptionDAO.findSubscriptionsByUserId(id);
+            return fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -146,7 +158,7 @@ public class SubscriptionService extends BaseService{
         try {
             connection = connectionFactory.getConnection();
             SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            for(Subscription subscription : subscriptions) {
+            for (Subscription subscription : subscriptions) {
                 subscription.setUser(subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId()));
                 subscription.setPublication(subscriptionDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId()));
             }
@@ -156,5 +168,20 @@ public class SubscriptionService extends BaseService{
         } finally {
             connectionFactory.returnConnection(connection);
         }
+    }
+
+    private Date defineStartDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        Calendar date = Calendar.getInstance();
+        date.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
+        return date.getTime();
+    }
+
+    private Date defineEndDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.getTime();
     }
 }
