@@ -20,8 +20,8 @@ public class SubscriptionMapper implements EntityMapper<Subscription> {
         try {
             while (resultSet.next()) {
                 int subscriptionId = resultSet.getInt("subscription_id");
-                java.util.Date startDate = new java.util.Date(resultSet.getDate("startDate").getTime());
-                java.util.Date endDate = new java.util.Date(resultSet.getDate("endDate").getTime());
+                java.util.Date startDate = new java.util.Date(resultSet.getDate("start_date").getTime());
+                java.util.Date endDate = new java.util.Date(resultSet.getDate("end_date").getTime());
                 boolean subscriptionIsActive = typeConverter.convertStringToBoolean(resultSet.getString("subscription_is_active"));
                 subscription = new Subscription(subscriptionId, startDate, endDate, subscriptionIsActive);
                 subscriptions.add(subscription);
