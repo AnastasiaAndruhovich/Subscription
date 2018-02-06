@@ -51,6 +51,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
+                    ${requestScope.errorSubscribe}
                     <c:choose>
                         <c:when test="${requestScope.publications!=null}">
                             <c:forEach var="publication" items="${requestScope.publications}">
@@ -62,17 +63,17 @@
                                         <div class="col-8">
                                             <p>${Name}: ${publication.name}</p>
                                             <p>
-                                                ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
+                                                ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
+                                                ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
                                                         ${Authors}:
                                                         <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
                                                     <p>${Publisher}: ${publication.authors[0].publisherName}</p>
@@ -82,7 +83,8 @@
                                             <p>${Price}: ${publication.price} ${MoneyUnit}</p>
                                             <div class="row">
                                                 <form method="GET" action="${pageContext.servletContext.contextPath}/controller">
-                                                    <input type="hidden" name="command" value="redirect_add_subscription"/>
+                                                    <input type="hidden" name="command" value="add_subscription"/>
+                                                    <input type="hidden" name="publicationId" value="${publication.publicationId}">
                                                     <button class="btn btn-outline-success my-2 my-sm-0">${Subscribe}</button>
                                                 </form>
                                                 <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
