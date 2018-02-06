@@ -47,6 +47,7 @@
 
     <style><%@include file="../../css/style.css"%></style>
     <style><%@include file="../../css/tableStyle.css"%></style>
+    <%@ page import="java.util.Date" %>
 </head>
 <body>
 <ctg:role/>
@@ -100,11 +101,13 @@
                                     <td>
                                         <div class="row">
                                             <c:if test="${!subscription.subscriptionIsActive}">
-                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                    <input type="hidden" name="command" value="pay_subscription"/>
-                                                    <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
-                                                    <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
-                                                </form>
+                                                <c:if test="${requestScope.currentDate.getTime()<subscription.startDate.getTime()}">
+                                                    <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                        <input type="hidden" name="command" value="add_payment"/>
+                                                        <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
+                                                        <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
+                                                    </form>
+                                                </c:if>
                                                 <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                     <input type="hidden" name="command" value="delete_subscription"/>
                                                     <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
