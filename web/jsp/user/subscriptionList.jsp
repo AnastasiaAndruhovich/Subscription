@@ -10,6 +10,30 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtag"%>
 
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.subscriptions" var="Title"/>
+<fmt:message bundle="${loc}" key="label.subscriptionId" var="SubscriptionId"/>
+<fmt:message bundle="${loc}" key="label.active" var="Active"/>
+<fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.author" var="Authors"/>
+<fmt:message bundle="${loc}" key="label.publisher" var="Publisher"/>
+<fmt:message bundle="${loc}" key="label.price" var="Price"/>
+<fmt:message bundle="${loc}" key="label.money" var="Money"/>
+<fmt:message bundle="${loc}" key="label.description" var="Description"/>
+<fmt:message bundle="${loc}" key="label.name" var="Name"/>
+<fmt:message bundle="${loc}" key="label.authorLastName" var="AuthorLastName"/>
+<fmt:message bundle="${loc}" key="label.authorFirstName" var="AuthorFirstName"/>
+<fmt:message bundle="${loc}" key="label.startDate" var="StartDate"/>
+<fmt:message bundle="${loc}" key="label.endDate" var="EndDate"/>
+<fmt:message bundle="${loc}" key="button.payNow" var="PayNow"/>
+<fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
+
 <html lang="en">
 <head>
     <title>Subscriptions</title>
@@ -20,6 +44,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style><%@include file="../../css/style.css"%></style>
+    <style><%@include file="../../css/tableStyle.css"%></style>
 </head>
 <body>
 <ctg:role/>
@@ -27,75 +54,73 @@
 <div class="container-fluid">
     <div class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <c:choose>
-                    <c:when test="${subscriptions!=null}">
-                        <table class="table table-bordered">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="scrolling outer">
+                    <div class="inner">
+                        <table class="table table-striped table-hover table-condensed table-bordered">
                             <thead>
                             <tr>
-                                <th scope="col">Subscription Id</th>
-                                <th scope="col">Publication Name</th>
-                                <th scope="col">Publication Type</th>
-                                <th scope="col">Genre</th>
-                                <th scope="col">Authors</th>
-                                <th scope="col">Publisher</th>
-                                <th scope="col">Start date</th>
-                                <th scope="col">End date</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">Payment</th>
+                                <th>${SubscriptionId}</th>
+                                <td>${Name}</td>
+                                <td>${Type}</td>
+                                <td>${Genre}</td>
+                                <td>${Authors}</td>
+                                <td>${Publisher}</td>
+                                <td>${StartDate}</td>
+                                <td>${EndDate}</td>
+                                <td>${Price} ${Money}</td>
+                                <td>${Active}</td>
+                                <td></td>
                             </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="subscription" items="${subscriptions}">
-                                    <tr>
-                                        <td>${subscription.subscriptionId}</td>
-                                        <td>
-                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_id&publicationId=${subscription.publication.publicationId}">${subscription.publication.name}</a>
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
-                                        </td>
-                                        <td>
-                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="subscription.publication.authors!=null">
-                                                    <c:forEach var="author" items="subsctription.publication.authors">
-                                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}">${author.authorFirstName} ${author.authorLastName}</a>
-                                                    </c:forEach>
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="subscription.publication.authors!=null">
-                                                    ${subscription.publication.authors[0].publisherName}
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-                                        <td>${startDate}</td>
-                                        <td>${endDate}</td>
-                                        <td>${subsctription.isActive}</td>
-                                        <td>
-                                            <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                <input type="hidden" name="command" value="pay_subscription"/>
-                                                <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
-                                                <button class="btn btn-outline-success my-2 my-sm-0">Pay</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                            <c:forEach var="subscription" items="${requestScope.subscriptions}">
+                                <tr>
+                                    <th>${subscription.subscriptionId}</th>
+                                    <td>${subscription.publication.name}</td>
+                                    <td>${subscription.publication.publicationType.name}</td>
+                                    <td>${subscription.publication.genre.name}</td>
+                                    <td>
+                                        <c:if test="${subscription.publication.authors!=null}">
+                                            <c:forEach var="author" items="${subscription.publication.authors}">
+                                                ${author.authorLastName} ${author.authorFirstName}
+                                            </c:forEach>
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <c:if test="${subscription.publication.authors!=null}">
+                                            ${subscription.publication.authors[0].publisherName}
+                                        </c:if>
+                                    </td>
+                                    <td>${subscription.startDate}</td>
+                                    <td>${subscription.endDate}</td>
+                                    <td>${subscription.publication.price}</td>
+                                    <td>${subscription.subscriptionIsActive}</td>
+                                    <td>
+                                        <div class="row">
+                                            <c:if test="${!subscription.subscriptionIsActive}">
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="pay_subscription"/>
+                                                    <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
+                                                    <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
+                                                </form>
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="delete_subscription"/>
+                                                    <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
+                                                    <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
+                                                </form>
+                                            </c:if>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
-                    </c:when>
-                    <c:otherwise>
-                        <p>${infromationIsAbsent}</p>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </div>
