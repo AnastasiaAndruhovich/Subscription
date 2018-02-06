@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -213,6 +215,43 @@ public class ShowEntityList {
             }
             page = pageManager.getProperty(USER_ADMIN_PAGE);
 
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
+    public static String findSubscriptionByUser(HttpServletRequest request, HttpServletResponse response) {
+        SubscriptionService subscriptionService = new SubscriptionService();
+
+        final String CLIENT_ID_ATTRIBUTE = "clientId";
+        final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
+        final String CURRENT_DATE_ATTRIBUTE = "currentDate";
+
+        final String PUBLICATION_USER_PAGE = "path.page.user.subscriptionList";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+
+        String pageNumber = request.getParameter(PAGE_NUMBER);
+        pageNumber = (pageNumber == null) ? "1" : pageNumber;
+        Integer clientId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
+        Date date = Calendar.getInstance().getTime();
+        request.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
+
+        try {
+            List<Subscription> subscriptions = subscriptionService.findSubscriptionByUserId(clientId.toString(), pageNumber);
+            if (!subscriptions.isEmpty()) {
+                int pageCount = subscriptionService.findSubscriptionPageCount();
+                request.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
+                request.setAttribute(PAGE_NUMBER, pageNumber);
+                request.setAttribute(PAGE_COUNT, pageCount);
+            }
+            page = pageManager.getProperty(PUBLICATION_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
