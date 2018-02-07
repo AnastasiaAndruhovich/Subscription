@@ -22,6 +22,7 @@ scope="session"/>
 <fmt:message bundle="${loc}" key="button.personalAccount" var="PersonalAccount"/>
 <fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
 <fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
+<fmt:message bundle="${loc}" key="label.myProfile" var="MyProfile"/>
 <fmt:message bundle="${loc}" key="label.myAccount" var="MyAccount"/>
 <fmt:message bundle="${loc}" key="label.mySubscriptions" var="MySubscriptions"/>
 
@@ -72,11 +73,12 @@ scope="session"/>
         <form class="form-inline my-2 my-lg-0">
             <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
-            <a href="controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
+            <a href="${pageContext.servletContext.contextPath}/controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
             <div class="dropdown open">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownPersonalAccount" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">${PersonalAccount}</a>
                 <div class="dropdown-menu" aria-labelledby="dropdownUsers">
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_user">${MyProfile}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
                 </div>

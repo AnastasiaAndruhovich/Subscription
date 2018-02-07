@@ -35,6 +35,7 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.addGenre" var="AddGenre"/>
 <fmt:message bundle="${loc}" key="label.addPublication" var="AddPublication"/>
 <fmt:message bundle="${loc}" key="label.addPublicationType" var="AddPublicationType"/>
+<fmt:message bundle="${loc}" key="label.myProfile" var="MyProfile"/>
 <fmt:message bundle="${loc}" key="label.myAccount" var="MyAccount"/>
 <fmt:message bundle="${loc}" key="label.mySubscriptions" var="MySubscriptions"/>
 
@@ -147,6 +148,7 @@ To change this template use File | Settings | File Templates.
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownPersonalAccount" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">${PersonalAccount}</a>
                 <div class="dropdown-menu" aria-labelledby="dropdownUsers">
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_user">${MyProfile}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
                 </div>
