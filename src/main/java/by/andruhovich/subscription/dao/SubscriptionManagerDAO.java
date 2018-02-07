@@ -13,5 +13,5 @@ public abstract class SubscriptionManagerDAO extends ManagerDAO<Subscription> {
     }
 
     public abstract User findUserBySubscriptionId(int id) throws DAOTechnicalException;
-    public abstract List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException;
+    public abstract List<Subscription> findSubscriptionsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
 }

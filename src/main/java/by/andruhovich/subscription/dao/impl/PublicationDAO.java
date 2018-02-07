@@ -27,19 +27,20 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE publication_id = ?";
     private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price, " +
-            "picture_name, picture FROM publications LIMIT ?, ?";
+            "picture_name, picture FROM publications ORDER BY publication_id DESC LIMIT ?, ?";
     private static final String UPDATE_PUBLICATION = "UPDATE publications SET name = ?, publication_type_id = ?, " +
             "genre_id = ?, description = ?, price = ?, picture_name = ?, picture = ? WHERE publication_id = ?";
     private static final String SELECT_PICTURE_NAME_BY_PUBLICATION_ID = "SELECT picture_name FROM publications WHERE publication_id = ?";
 
     private static final String SELECT_PUBLICATIONS_BY_GENRE_ID = "SELECT publication_id, name, description, price, " +
-            "picture_name, picture FROM publications WHERE genre_id = ? LIMIT ?, ?";
+            "picture_name, picture FROM publications WHERE genre_id = ? ORDER BY genre_id DESC LIMIT ?, ?";
     private static final String SELECT_GENRE_BY_PUBLICATION_ID = "SELECT g.genre_id, g.name, g.description " +
             "FROM publications JOIN genres g USING (genre_id) WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_TYPE_BY_PUBLICATION_ID = "SELECT  p.publication_type_id, p.name " +
             "FROM publications JOIN publication_types p USING (publication_type_id) WHERE publication_id = ?";
     private static final String SELECT_PUBLICATIONS_BY_PUBLICATION_TYPE_ID = "SELECT publication_id, name, " +
-            "description, price, picture_name, picture FROM publications WHERE publication_type_id = ? LIMIT ?, ?";
+            "description, price, picture_name, picture FROM publications WHERE publication_type_id = ? " +
+            "ORDER BY publication_type_id DESC LIMIT ?, ?";
     private static final String SELECT_PUBLICATION_ID_BY_PUBLICATION_FIELDS = "SELECT publication_id FROM publications " +
             "WHERE name = ? && publication_type_id = ? && genre_id = ? && description = ? && price = ?";
     private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +

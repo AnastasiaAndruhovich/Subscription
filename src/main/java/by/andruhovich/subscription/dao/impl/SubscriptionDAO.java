@@ -27,7 +27,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String SELECT_SUBSCRIPTION_BY_ID = "SELECT subscription_id, start_date, end_date, " +
             "subscription_is_active FROM subscriptions WHERE subscription_id = ?";
     private static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT subscription_id, start_date, end_date, " +
-            "subscription_is_active FROM subscriptions LIMIT ?, ?";
+            "subscription_is_active FROM subscriptions ORDER BY subscription_id DESC LIMIT ?, ?";
     private static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET user_id = ?, publication_id = ?, " +
             "start_date = ?, end_date = ?, subscription_is_active = ? WHERE subscription_id = ?";
 
@@ -35,7 +35,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             "u.birthdate, u.address, u.city, u.postal_index, u.login, u.password FROM subscriptions JOIN users u USING (user_id) " +
             "WHERE subscription_id = ?";
     private static final String SELECT_SUBSCRIPTIONS_BY_USER_ID = "SELECT subscription_id, start_date, end_date, " +
-            "subscription_is_active FROM subscriptions WHERE user_id = ?";
+            "subscription_is_active FROM subscriptions WHERE user_id = ? ORDER BY user_id DESC LIMIT ?, ?";
 
     private static final Logger LOGGER = LogManager.getLogger(SubscriptionDAO.class);
 
@@ -170,13 +170,15 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     }
 
     @Override
-    public List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException {
+    public List<Subscription> findSubscriptionsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find subscriptions by user id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_SUBSCRIPTIONS_BY_USER_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.log(Level.INFO, "Request for find subscriptions by user id - succeed");
             SubscriptionMapper subscriptionMapper = new SubscriptionMapper();

@@ -30,15 +30,12 @@ public class UserDAO extends UserManagerDAO {
     private static final String SELECT_USER_BY_ID = "SELECT user_id, lastname, firstname, birthdate, address, city, " +
             "postal_index, login, password FROM users WHERE user_id = ?";
     private static final String SELECT_ALL_USERS = "SELECT user_id, lastname, firstname, birthdate, address, " +
-            "city, postal_index, login, password FROM users LIMIT ?, ?";
+            "city, postal_index, login, password FROM users ORDER BY user_id DESC LIMIT ?, ?";
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
-    private static final String SELECT_USERS_BY_ROLE_ID = "";
 
     private static final String SELECT_USER_BY_ACCOUNT_NUMBER = "SELECT user_id, lastname, firstname, birthdate, " +
             "address, city, postal_index, login, password FROM users WHERE account_number = ?";
-    private static final String SELECT_USER_BY_LOGIN = "SELECT user_id, lastname, firstname, birthdate, " +
-            "address, city, postal_index, login, password FROM users WHERE login = ?";
     private static final String SELECT_ROLE_BY_USER_ID = "SELECT  r.role_id, r.name FROM users " +
             "JOIN roles r USING (role_id) WHERE user_id = ?";
     private static final String SELECT_ACCOUNT_BY_USER_ID = "SELECT a.account_number, a.balance, a.loan FROM users " +
@@ -175,25 +172,6 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public List<User> findUsersByRoleId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find users by role id");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_USERS_BY_ROLE_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.log(Level.INFO, "Request for find users by role id - succeed");
-            UserMapper userMapper = new UserMapper();
-            return userMapper.mapResultSetToEntity(resultSet);
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
     public String findPasswordById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find password by id");
         PreparedStatement preparedStatement = null;
@@ -276,29 +254,6 @@ public class UserDAO extends UserManagerDAO {
             LOGGER.log(Level.INFO, "Request for find account by user id - succeed");
             if (!accounts.isEmpty()) {
                 return accounts.get(0);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public User findUserByLogin(String login) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find user by login");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_USER_BY_LOGIN);
-            preparedStatement.setString(1, login);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            UserMapper userMapper = new UserMapper();
-            List<User> users = userMapper.mapResultSetToEntity(resultSet);
-            LOGGER.log(Level.INFO, "Request for find user by login - succeed");
-            if (!users.isEmpty()) {
-                return users.get(0);
             }
             return null;
         } catch (SQLException e) {

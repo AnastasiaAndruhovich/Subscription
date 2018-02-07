@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PaymentDAO extends PaymentManagerDAO {
-    private static final String INSERT_PAYMENT= "INSERT INTO payments(subscription_id, sum, date, statement) " +
+    private static final String INSERT_PAYMENT = "INSERT INTO payments(subscription_id, sum, date, statement) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT payment_number FROM payments ORDER BY payment_number " +
             "DESC LIMIT 1";
@@ -27,7 +27,7 @@ public class PaymentDAO extends PaymentManagerDAO {
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
             "WHERE payment_number = ?";
     private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments " +
-            "LIMIT ?, ?";
+            "ORDER BY payment_number DESC LIMIT ?, ?";
     private static final String UPDATE_PAYMENT = "UPDATE payments SET user_id = ?, subscription_id = ?, sum = ?, " +
             "date = ?, statement = ? WHERE payment_number = ?";
 
@@ -35,7 +35,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             "s.end_date, s.subscription_is_active FROM payments JOIN subscriptions s USING (subscription_id) " +
             "WHERE payment_number = ?";
     private static final String SELECT_PAYMENTS_BY_SUBSCRIPTION_ID = "SELECT payment_number, sum, date, statement " +
-            "FROM payments WHERE subscription_id = ?";
+            "FROM payments WHERE subscription_id = ? ORDER BY subscription_id DESC LIMIT ?, ?";
 
     private static final Logger LOGGER = LogManager.getLogger(PaymentDAO.class);
 
@@ -169,13 +169,15 @@ public class PaymentDAO extends PaymentManagerDAO {
     }
 
     @Override
-    public List<Payment> findPaymentsBySubscriptionId(int id) throws DAOTechnicalException {
+    public List<Payment> findPaymentsBySubscriptionId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find payments by subscription id");
         PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement(SELECT_PAYMENTS_BY_SUBSCRIPTION_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.log(Level.INFO, "Request for find payments by subscription id - succeed");
             PaymentMapper paymentMapper = new PaymentMapper();
