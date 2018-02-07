@@ -3,7 +3,6 @@ package by.andruhovich.subscription.dao.impl;
 import by.andruhovich.subscription.dao.UserManagerDAO;
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.entity.Role;
-import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AccountMapper;
@@ -142,6 +141,7 @@ public class UserDAO extends UserManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_USER);
             UserMapper mapper = new UserMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(11, entity.getUserId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update user - succeed");
             return true;
