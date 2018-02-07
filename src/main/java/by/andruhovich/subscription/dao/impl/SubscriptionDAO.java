@@ -140,6 +140,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             preparedStatement = connection.prepareStatement(UPDATE_SUBSCRIPTION);
             SubscriptionMapper mapper = new SubscriptionMapper();
             preparedStatement = mapper.mapEntityToPreparedStatement(preparedStatement, entity);
+            preparedStatement.setInt(6, entity.getSubscriptionId());
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update subscription - succeed");
             return true;
@@ -165,30 +166,6 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             LOGGER.log(Level.INFO, "Request for find user by subscription id - succeed");
             if (!users.isEmpty()) {
                 return users.get(0);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publication by subscription id");
-        PreparedStatement preparedStatement = null;
-        List<Publication> publications;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_SUBSCRIPTION_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PublicationMapper publicationMapper = new PublicationMapper();
-            publications = publicationMapper.mapResultSetToEntity(resultSet);
-            LOGGER.log(Level.INFO, "Request for find publication by subscription id - succeed");
-            if (!publications.isEmpty()) {
-                return publications.get(0);
             }
             return null;
         } catch (SQLException e) {
