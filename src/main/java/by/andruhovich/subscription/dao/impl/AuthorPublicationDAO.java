@@ -23,7 +23,7 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
             "a.author_firstname FROM authors_publications RIGHT JOIN authors a USING (author_id) WHERE publication_id = ?";
     private final static String SELECT_PUBLICATION_BY_AUTHOR_ID = "SELECT p.publication_id, p.name, p.description, " +
             "p.price, p.picture_name, p.picture FROM authors_publications RIGHT JOIN publications p " +
-            "USING (publication_id) WHERE author_id = ? LIMIT ?, ?";
+            "USING (publication_id) WHERE author_id = ? ORDER BY author_id DESC LIMIT ?, ?";
     private final static String DELETE_RECORD_BY_PUBLICATION_ID = "DELETE FROM authors_publications WHERE publication_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorPublicationDAO.class);
