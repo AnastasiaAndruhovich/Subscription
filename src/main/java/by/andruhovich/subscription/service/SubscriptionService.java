@@ -72,6 +72,43 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    public boolean deleteSubscription(String subscriptionId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int intSubscriptionId = Integer.parseInt(subscriptionId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+            Subscription subscription = subscriptionDAO.findEntityById(intSubscriptionId);
+            return !subscription.isSubscriptionIsActive() && subscriptionDAO.delete(intSubscriptionId);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public Subscription findSubscriptionById(String subscriptionId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        int id = Integer.parseInt(subscriptionId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+            Subscription subscription = subscriptionDAO.findEntityById(id);
+            List<Subscription> subscriptions = new LinkedList<>();
+            subscriptions.add(subscription);
+            return FillOutEntityService.fillOutSubscriptionList(subscriptions).get(0);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
     public int findSubscriptionPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
