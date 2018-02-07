@@ -23,7 +23,7 @@ public class AccountDAO extends AccountManagerDAO {
     private static final String DELETE_ACCOUNT_BY_ACCOUNT_NUMBER = "DELETE FROM accounts WHERE account_number = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(account_number) AS count FROM accounts";
     private static final String SELECT_ACCOUNT_BY_ACCOUNT_NUMBER = "SELECT * FROM accounts WHERE account_number = ?";
-    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts LIMIT ?, ?";
+    private static final String SELECT_ALL_ACCOUNTS = "SELECT * FROM accounts ORDER BY account_number DESC LIMIT ?, ?";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts SET balance = ?, loan = ? WHERE account_number = ?";
 
     private static final String RECHARGE = "UPDATE accounts SET balance = balance + ?, loan = loan - ? WHERE account_number = ?";
