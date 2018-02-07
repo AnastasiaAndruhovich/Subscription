@@ -1,12 +1,12 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
+import by.andruhovich.subscription.coder.PasswordCoder;
 import by.andruhovich.subscription.dao.impl.*;
 import by.andruhovich.subscription.entity.*;
-import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.coder.PasswordCoder;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -155,7 +155,7 @@ public class UserService extends BaseService{
     }
 
     public boolean updateUser(String lastName, String firstName, Date birthDate, String address, String city,
-                              String postalIndex, String login, String password) throws ServiceTechnicalException {
+                              String postalIndex, String login) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
 
@@ -166,7 +166,7 @@ public class UserService extends BaseService{
                 int userId = userDAO.findUserByLogin(login).getUserId();
                 Account account = userDAO.findAccountByUserId(userId);
                 int intPostalIndex = Integer.parseInt(postalIndex);
-                password = PasswordCoder.hashPassword(password);
+                String password = userDAO.findPasswordByLogin(login);
                 User user = new User(lastName, firstName, birthDate, address, city, intPostalIndex, login, password, account);
                 return userDAO.update(user);
             }
@@ -292,6 +292,23 @@ public class UserService extends BaseService{
             BlockDAO blockDAO = new BlockDAO(connection);
             User admin = blockDAO.findAdminByUserId(intUserId);
             return admin != null;
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage());
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public User findUserById(String userId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        int id = Integer.parseInt(userId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            return userDAO.findEntityById(id);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
