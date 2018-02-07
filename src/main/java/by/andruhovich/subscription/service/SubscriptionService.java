@@ -1,5 +1,8 @@
 package by.andruhovich.subscription.service;
 
+import by.andruhovich.subscription.dao.PublicationManagerDAO;
+import by.andruhovich.subscription.dao.SubscriptionManagerDAO;
+import by.andruhovich.subscription.dao.UserManagerDAO;
 import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.dao.impl.SubscriptionDAO;
 import by.andruhovich.subscription.dao.impl.UserDAO;
@@ -32,8 +35,8 @@ public class SubscriptionService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            List<Subscription> subscriptions = subscriptionDAO.findAll(startIndex, endIndex);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            List<Subscription> subscriptions = subscriptionManagerDAO.findAll(startIndex, endIndex);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -55,14 +58,14 @@ public class SubscriptionService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            User user = userDAO.findEntityById(intUserId);
-            Publication publication = publicationDAO.findEntityById(intPublicationId);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            User user = userManagerDAO.findEntityById(intUserId);
+            Publication publication = publicationManagerDAO.findEntityById(intPublicationId);
             Subscription subscription = new Subscription(startDate, endDate, false, user, publication);
-            int id = subscriptionDAO.create(subscription);
-            subscription = subscriptionDAO.findEntityById(id);
+            int id = subscriptionManagerDAO.create(subscription);
+            subscription = subscriptionManagerDAO.findEntityById(id);
             subscriptions.add(subscription);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions).get(0);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
@@ -79,9 +82,9 @@ public class SubscriptionService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            Subscription subscription = subscriptionDAO.findEntityById(intSubscriptionId);
-            return !subscription.isSubscriptionIsActive() && subscriptionDAO.delete(intSubscriptionId);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            Subscription subscription = subscriptionManagerDAO.findEntityById(intSubscriptionId);
+            return !subscription.isSubscriptionIsActive() && subscriptionManagerDAO.delete(intSubscriptionId);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -97,8 +100,8 @@ public class SubscriptionService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            Subscription subscription = subscriptionDAO.findEntityById(id);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            Subscription subscription = subscriptionManagerDAO.findEntityById(id);
             List<Subscription> subscriptions = new LinkedList<>();
             subscriptions.add(subscription);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions).get(0);
@@ -136,8 +139,8 @@ public class SubscriptionService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            List<Subscription> subscriptions = subscriptionDAO.findSubscriptionsByUserId(id);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            List<Subscription> subscriptions = subscriptionManagerDAO.findSubscriptionsByUserId(id);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);

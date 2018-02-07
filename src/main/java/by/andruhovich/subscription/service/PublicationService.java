@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
+import by.andruhovich.subscription.dao.AuthorPublicationManagerDAO;
+import by.andruhovich.subscription.dao.PublicationManagerDAO;
 import by.andruhovich.subscription.dao.impl.AuthorPublicationDAO;
 import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.entity.Author;
@@ -10,6 +11,7 @@ import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,8 +35,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationDAO.findAll(startIndex, endIndex);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            List<Publication> publications = publicationManagerDAO.findAll(startIndex, endIndex);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -81,7 +83,7 @@ public class PublicationService extends BaseService {
             }
             publicationId = publicationDAO.create(publication);
             publication.setPublicationId(publicationId);
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+            AuthorPublicationManagerDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
             for (Author author : authors) {
                 authorPublicationDAO.createRecord(author, publication);
             }
@@ -116,8 +118,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            return publicationDAO.delete(intPublicationId);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            return publicationManagerDAO.delete(intPublicationId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -155,17 +157,17 @@ public class PublicationService extends BaseService {
         try {
             connection = connectionFactory.getConnection();
             connection.setAutoCommit(false);
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            byte[] picture = publicationDAO.findPictureByPublicationId(intOldPublicationId);
-            String pictureName = publicationDAO.findPictureNameByPublicationId(intOldPublicationId);
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-            authorPublicationDAO.deleteRecordByPublicationId(intOldPublicationId);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            byte[] picture = publicationManagerDAO.findPictureByPublicationId(intOldPublicationId);
+            String pictureName = publicationManagerDAO.findPictureNameByPublicationId(intOldPublicationId);
+            AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
+            authorPublicationManagerDAO.deleteRecordByPublicationId(intOldPublicationId);
             Publication publication = new Publication(intOldPublicationId, name, description, decimalPrice, pictureName, picture);
             for (Author author : authors) {
-                authorPublicationDAO.createRecord(author, publication);
+                authorPublicationManagerDAO.createRecord(author, publication);
             }
             publication = new Publication(intOldPublicationId, name, description, decimalPrice, pictureName, picture, authors, genre, publicationType);
-            boolean result = publicationDAO.update(publication);
+            boolean result = publicationManagerDAO.update(publication);
             connection.commit();
             return result;
         } catch (DAOTechnicalException | SQLException e) {
@@ -189,22 +191,6 @@ public class PublicationService extends BaseService {
         }
     }
 
-    public List<Publication> findPublicationByName(String name) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationDAO.findPublicationByName(name);
-            return FillOutEntityService.fillOutPublicationList(publications);
-        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
     public List<Publication> findPublicationByAuthorId(String authorId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -216,8 +202,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
-            List<Publication> publications = authorPublicationDAO.findPublicationsByAuthorId(intAuthorId, startIndex, endIndex);
+            AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
+            List<Publication> publications = authorPublicationManagerDAO.findPublicationsByAuthorId(intAuthorId, startIndex, endIndex);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -237,7 +223,7 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
+            PublicationManagerDAO publicationDAO = new PublicationDAO(connection);
             List<Publication> publications = publicationDAO.findPublicationsByGenreId(intGenreId, startIndex, endIndex);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
@@ -259,8 +245,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            List<Publication> publications = publicationManagerDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -275,8 +261,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            int count = publicationDAO.findEntityCount();
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            int count = publicationManagerDAO.findEntityCount();
             return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -292,8 +278,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            return publicationDAO.findIdByEntity(publication);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            return publicationManagerDAO.findIdByEntity(publication);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -307,8 +293,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            Publication publication = publicationDAO.findEntityById(publicationId);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            Publication publication = publicationManagerDAO.findEntityById(publicationId);
             if (publication == null) return null;
             List<Publication> publications = new LinkedList<>();
             publications.add(publication);
@@ -326,8 +312,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            return publicationDAO.findPictureByPublicationId(publicationId);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            return publicationManagerDAO.findPictureByPublicationId(publicationId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -342,8 +328,8 @@ public class PublicationService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            return publicationDAO.insertImage(id, picture, pictureName);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            return publicationManagerDAO.insertImage(id, picture, pictureName);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

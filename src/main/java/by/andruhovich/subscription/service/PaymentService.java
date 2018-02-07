@@ -1,5 +1,9 @@
 package by.andruhovich.subscription.service;
 
+import by.andruhovich.subscription.dao.AccountManagerDAO;
+import by.andruhovich.subscription.dao.PaymentManagerDAO;
+import by.andruhovich.subscription.dao.SubscriptionManagerDAO;
+import by.andruhovich.subscription.dao.UserManagerDAO;
 import by.andruhovich.subscription.dao.impl.AccountDAO;
 import by.andruhovich.subscription.dao.impl.PaymentDAO;
 import by.andruhovich.subscription.dao.impl.SubscriptionDAO;
@@ -29,22 +33,22 @@ public class PaymentService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            UserDAO userDAO = new UserDAO(connection);
-            PaymentDAO paymentDAO = new PaymentDAO(connection);
-            AccountDAO accountDAO = new AccountDAO(connection);
-            Subscription subscription = subscriptionDAO.findEntityById(intSubscriptionId);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            PaymentManagerDAO paymentManagerDAO = new PaymentDAO(connection);
+            AccountManagerDAO accountManagerDAO = new AccountDAO(connection);
+            Subscription subscription = subscriptionManagerDAO.findEntityById(intSubscriptionId);
             List<Subscription> subscriptions = new LinkedList<>();
             subscriptions.add(subscription);
             subscription = FillOutEntityService.fillOutSubscriptionList(subscriptions).get(0);
-            Account account = userDAO.findAccountByUserId(intUserId);
+            Account account = userManagerDAO.findAccountByUserId(intUserId);
             boolean statement = account.getBalance().compareTo(subscription.getPublication().getPrice()) > 0;
             Payment payment = new Payment(subscription.getPublication().getPrice(), date, statement, subscription);
-            int paymentId = paymentDAO.create(payment);
+            int paymentId = paymentManagerDAO.create(payment);
             if (paymentId != -1 && statement) {
-                accountDAO.withdraw(account.getAccountNumber(), subscription.getPublication().getPrice());
+                accountManagerDAO.withdraw(account.getAccountNumber(), subscription.getPublication().getPrice());
                 subscription.setSubscriptionIsActive(true);
-                subscriptionDAO.update(subscription);
+                subscriptionManagerDAO.update(subscription);
                 payment.setPaymentNumber(paymentId);
             }
             return payment;

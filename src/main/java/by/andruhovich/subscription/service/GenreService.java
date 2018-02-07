@@ -1,11 +1,12 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
+import by.andruhovich.subscription.dao.GenreManagerDAO;
 import by.andruhovich.subscription.dao.impl.GenreDAO;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 
 import java.sql.Connection;
 import java.util.List;
@@ -19,8 +20,8 @@ public class GenreService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            GenreDAO genreDAO = new GenreDAO(connection);
-            return genreDAO.findIdByEntity(genre);
+            GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            return genreManagerDAO.findIdByEntity(genre);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -35,8 +36,8 @@ public class GenreService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            GenreDAO genreDAO = new GenreDAO(connection);
-            return genreDAO.create(genre);
+            GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            return genreManagerDAO.create(genre);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -53,8 +54,8 @@ public class GenreService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            GenreDAO genreDAO = new GenreDAO(connection);
-            return genreDAO.findAll(startIndex, endIndex);
+            GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            return genreManagerDAO.findAll(startIndex, endIndex);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -69,8 +70,8 @@ public class GenreService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            GenreDAO genreDAO = new GenreDAO(connection);
-            return genreDAO.delete(intGenreId);
+            GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            return genreManagerDAO.delete(intGenreId);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -86,8 +87,8 @@ public class GenreService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            GenreDAO genreDAO = new GenreDAO(connection);
-            return genreDAO.update(genre);
+            GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            return genreManagerDAO.update(genre);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

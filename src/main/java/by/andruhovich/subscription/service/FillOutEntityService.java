@@ -1,5 +1,6 @@
 package by.andruhovich.subscription.service;
 
+import by.andruhovich.subscription.dao.*;
 import by.andruhovich.subscription.dao.impl.*;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
@@ -23,12 +24,12 @@ class FillOutEntityService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
             for (Publication publication : publications) {
-                publication.setGenre(publicationDAO.findGenreByPublicationId(publication.getPublicationId()));
-                publication.setPublicationType(publicationDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
-                List<Author> authors = authorPublicationDAO.findAuthorsByPublicationId(publication.getPublicationId());
+                publication.setGenre(publicationManagerDAO.findGenreByPublicationId(publication.getPublicationId()));
+                publication.setPublicationType(publicationManagerDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
+                List<Author> authors = authorPublicationManagerDAO.findAuthorsByPublicationId(publication.getPublicationId());
                 publication.setAuthors(correctAuthorList(authors));
             }
             return publications;
@@ -46,11 +47,11 @@ class FillOutEntityService {
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
             for (Subscription subscription : subscriptions) {
-                subscription.setUser(subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId()));
-                Publication publication = publicationDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId());
+                subscription.setUser(subscriptionManagerDAO.findUserBySubscriptionId(subscription.getSubscriptionId()));
+                Publication publication = publicationManagerDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId());
                 publications.add(publication);
                 subscription.setPublication(fillOutPublicationList(publications).get(0));
                 checkSubscriptionActive(subscription);
@@ -69,15 +70,15 @@ class FillOutEntityService {
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            BlockDAO blockDAO = new BlockDAO(connection);
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            BlockManagerDAO blockManagerDAO = new BlockDAO(connection);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
             for (User user : users) {
-                user.setAccount(userDAO.findAccountByUserId(user.getUserId()));
-                user.setRole(userDAO.findRoleByUserId(user.getUserId()));
-                user.setSubscriptions(subscriptionDAO.findSubscriptionsByUserId(user.getUserId()));
-                user.setAdmin(blockDAO.findAdminByUserId(user.getUserId()));
-                user.setUsers(blockDAO.findUsersByAdminId(user.getUserId()));
+                user.setAccount(userManagerDAO.findAccountByUserId(user.getUserId()));
+                user.setRole(userManagerDAO.findRoleByUserId(user.getUserId()));
+                user.setSubscriptions(subscriptionManagerDAO.findSubscriptionsByUserId(user.getUserId()));
+                user.setAdmin(blockManagerDAO.findAdminByUserId(user.getUserId()));
+                user.setUsers(blockManagerDAO.findUsersByAdminId(user.getUserId()));
             }
             return users;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
@@ -95,9 +96,9 @@ class FillOutEntityService {
         if (date.getTime() > subscription.getEndDate().getTime()) {
             try {
                 connection = connectionFactory.getConnection();
-                SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+                SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
                 subscription.setSubscriptionIsActive(false);
-                subscriptionDAO.update(subscription);
+                subscriptionManagerDAO.update(subscription);
             } catch (DAOTechnicalException | ConnectionTechnicalException e) {
                 throw new ServiceTechnicalException(e);
             } finally {

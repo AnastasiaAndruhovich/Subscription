@@ -1,6 +1,7 @@
 package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.coder.PasswordCoder;
+import by.andruhovich.subscription.dao.*;
 import by.andruhovich.subscription.dao.impl.*;
 import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
@@ -29,8 +30,8 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            String dataBasePassword = userDAO.findPasswordById(id);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            String dataBasePassword = userManagerDAO.findPasswordById(id);
             return dataBasePassword != null && PasswordCoder.checkPassword(password, dataBasePassword);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
@@ -45,8 +46,8 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            return userDAO.findUserIdByLogin(login);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            return userManagerDAO.findUserIdByLogin(login);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -60,8 +61,8 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            return userDAO.findRoleByUserId(userId);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            return userManagerDAO.findRoleByUserId(userId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -79,14 +80,14 @@ public class UserService extends BaseService{
             if (findUserIdByLogin(login) == -1) {
                 connection = connectionFactory.getConnection();
                 connection.setAutoCommit(false);
-                UserDAO userDAO = new UserDAO(connection);
-                AccountDAO accountDAO = new AccountDAO(connection);
+                UserManagerDAO userManagerDAO = new UserDAO(connection);
+                AccountManagerDAO accountManagerDAO = new AccountDAO(connection);
                 int intPostalIndex = Integer.parseInt(postalIndex);
                 password = PasswordCoder.hashPassword(password);
-                Account account = accountDAO.createEmptyAccount();
+                Account account = accountManagerDAO.createEmptyAccount();
                 Role role = new Role(2, "user");
                 User user = new User(lastName, firstName, birthDate, address, city, intPostalIndex, login, password, role, account);
-                id =  userDAO.create(user);
+                id =  userManagerDAO.create(user);
                 connection.commit();
             }
             return id;
@@ -121,9 +122,9 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            User user = userDAO.findEntityById(intUserId);
-            User admin = userDAO.findEntityById(intAdminId);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            User user = userManagerDAO.findEntityById(intUserId);
+            User admin = userManagerDAO.findEntityById(intAdminId);
             Date date = Calendar.getInstance().getTime();
             Block block = new Block(user, admin, date);
             BlockDAO blockDAO = new BlockDAO(connection);
@@ -145,11 +146,11 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            BlockDAO blockDAO = new BlockDAO(connection);
-            User user = userDAO.findEntityById(intUserId);
-            User admin = blockDAO.findAdminByUserId(intUserId);
-            return intAdminId == admin.getUserId() && blockDAO.deleteBlockByUserId(user.getUserId());
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            BlockManagerDAO blockManagerDAO = new BlockDAO(connection);
+            User user = userManagerDAO.findEntityById(intUserId);
+            User admin = blockManagerDAO.findAdminByUserId(intUserId);
+            return intAdminId == admin.getUserId() && blockManagerDAO.deleteBlockByUserId(user.getUserId());
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -165,14 +166,14 @@ public class UserService extends BaseService{
         try {
             if (findUserIdByLogin(login) != -1) {
                 connection = connectionFactory.getConnection();
-                UserDAO userDAO = new UserDAO(connection);
+                UserManagerDAO userManagerDAO = new UserDAO(connection);
                 int id = Integer.parseInt(userId);
-                Account account = userDAO.findAccountByUserId(id);
+                Account account = userManagerDAO.findAccountByUserId(id);
                 int intPostalIndex = Integer.parseInt(postalIndex);
-                String password = userDAO.findPasswordById(id);
-                Role role = userDAO.findRoleByUserId(id);
+                String password = userManagerDAO.findPasswordById(id);
+                Role role = userManagerDAO.findRoleByUserId(id);
                 User user = new User(id, lastName, firstName, birthDate, address, city, intPostalIndex, login, password, role, account);
-                return userDAO.update(user);
+                return userManagerDAO.update(user);
             }
             return false;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
@@ -191,24 +192,9 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            List<User> users = userDAO.findAll(startIndex, endIndex);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            List<User> users = userManagerDAO.findAll(startIndex, endIndex);
             return FillOutEntityService.fillOutUserList(users);
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public User findUserByLogin(String login) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            return userDAO.findUserByLogin(login);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -222,9 +208,9 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
             int intAccountNumber = Integer.parseInt(accountNumber);
-            return userDAO.findUserByAccountNumber(intAccountNumber);
+            return userManagerDAO.findUserByAccountNumber(intAccountNumber);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -238,9 +224,9 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
             int intId = Integer.parseInt(id);
-            return subscriptionDAO.findUserBySubscriptionId(intId);
+            return subscriptionManagerDAO.findUserBySubscriptionId(intId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -254,9 +240,9 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            PaymentDAO paymentDAO = new PaymentDAO(connection);
+            PaymentManagerDAO paymentManagerDAO = new PaymentDAO(connection);
             int intPaymentNumber = Integer.parseInt(paymentNumber);
-            Subscription subscription = paymentDAO.findSubscriptionByPaymentNumber(intPaymentNumber);
+            Subscription subscription = paymentManagerDAO.findSubscriptionByPaymentNumber(intPaymentNumber);
             if (subscription != null) {
                 SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
                 return subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId());
@@ -293,8 +279,8 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            BlockDAO blockDAO = new BlockDAO(connection);
-            User admin = blockDAO.findAdminByUserId(intUserId);
+            BlockManagerDAO blockManagerDAO = new BlockDAO(connection);
+            User admin = blockManagerDAO.findAdminByUserId(intUserId);
             return admin != null;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
@@ -311,8 +297,8 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
-            return userDAO.findEntityById(id);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
+            return userManagerDAO.findEntityById(id);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
         } finally {
@@ -328,15 +314,15 @@ public class UserService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            UserDAO userDAO = new UserDAO(connection);
+            UserManagerDAO userManagerDAO = new UserDAO(connection);
             int id = Integer.parseInt(userId);
-            User user = userDAO.findEntityById(id);
+            User user = userManagerDAO.findEntityById(id);
             if (user != null) {
                 LinkedList<User> users = new LinkedList<>();
                 users.add(user);
                 user = FillOutEntityService.fillOutUserList(users).get(0);
                 user.setPassword(password);
-                return userDAO.update(user);
+                return userManagerDAO.update(user);
             }
             return false;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {

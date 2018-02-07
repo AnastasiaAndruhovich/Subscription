@@ -1,13 +1,12 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
-import by.andruhovich.subscription.dao.impl.PublicationDAO;
+import by.andruhovich.subscription.dao.PublicationTypeManagerDAO;
 import by.andruhovich.subscription.dao.impl.PublicationTypeDAO;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 
 import java.sql.Connection;
 import java.util.List;
@@ -20,8 +19,8 @@ public class PublicationTypeService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationTypeDAO publicationTypeDAO = new PublicationTypeDAO(connection);
-            return publicationTypeDAO.findIdByEntity(publicationType);
+            PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
+            return publicationTypeManagerDAO.findIdByEntity(publicationType);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -36,8 +35,8 @@ public class PublicationTypeService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationTypeDAO publicationTypeDAO = new PublicationTypeDAO(connection);
-            return publicationTypeDAO.create(publicationType);
+            PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
+            return publicationTypeManagerDAO.create(publicationType);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -52,8 +51,8 @@ public class PublicationTypeService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationTypeDAO publicationTypeDAO = new PublicationTypeDAO(connection);
-            return publicationTypeDAO.delete(intPublicationTypeId);
+            PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
+            return publicationTypeManagerDAO.delete(intPublicationTypeId);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -70,8 +69,8 @@ public class PublicationTypeService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationTypeDAO publicationTypeDAO = new PublicationTypeDAO(connection);
-            return publicationTypeDAO.update(publicationType);
+            PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
+            return publicationTypeManagerDAO.update(publicationType);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -89,28 +88,8 @@ public class PublicationTypeService extends BaseService {
 
         try {
             connection = connectionFactory.getConnection();
-            PublicationTypeDAO publicationTypeDAO = new PublicationTypeDAO(connection);
-            return  publicationTypeDAO.findAll(startIndex, endIndex);
-        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public List<Publication> findPublicationByPublicationType(String publicationTypeId, String pageNumber) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-        int intPublicationTypeId = Integer.parseInt(publicationTypeId);
-
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
-
-        try {
-            connection = connectionFactory.getConnection();
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            return publicationDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
+            PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
+            return  publicationTypeManagerDAO.findAll(startIndex, endIndex);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

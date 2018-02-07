@@ -1,36 +1,20 @@
 package by.andruhovich.subscription.service;
 
-import by.andruhovich.subscription.pool.ConnectionFactory;
+import by.andruhovich.subscription.dao.AuthorManagerDAO;
+import by.andruhovich.subscription.dao.AuthorPublicationManagerDAO;
 import by.andruhovich.subscription.dao.impl.AuthorDAO;
 import by.andruhovich.subscription.dao.impl.AuthorPublicationDAO;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
+import by.andruhovich.subscription.pool.ConnectionFactory;
 
 import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AuthorService extends BaseService{
-    private int findIdByAuthorName(String authorFirstName, String authorLastName, String publisherName)
-            throws ServiceTechnicalException {
-        Author author = new Author(publisherName, authorLastName, authorFirstName);
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            AuthorDAO authorDAO = new AuthorDAO(connection);
-            return authorDAO.findIdByEntity(author);
-        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-
-    }
-
     public int addAuthor(String authorFirstName, String authorLastName, String publisherName)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -39,28 +23,13 @@ public class AuthorService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorDAO authorDAO = new AuthorDAO(connection);
-            return authorDAO.create(author);
+            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            return authorManagerDAO.create(author);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             connectionFactory.returnConnection(connection);
         }
-    }
-
-    public List<Author> createAuthorList(List<String> authorFirstNames, List<String> authorLastNames,
-                                         String publisherName) throws ServiceTechnicalException {
-        List<Author> authors = new LinkedList<>();
-
-        for (int i = 0; i < authorFirstNames.size(); i++) {
-            int authorId = findIdByAuthorName(authorFirstNames.get(i), authorLastNames.get(i), publisherName);
-            if (authorId == -1) {
-                authorId = addAuthor(authorFirstNames.get(i), authorLastNames.get(i), publisherName);
-            }
-            Author author = new Author(authorId, publisherName, authorLastNames.get(i), authorFirstNames.get(i));
-            authors.add(author);
-        }
-        return authors;
     }
 
     public boolean updateAuthor(String id, String authorLastName, String authorFirstName, String publisherName)
@@ -72,8 +41,8 @@ public class AuthorService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorDAO authorDAO = new AuthorDAO(connection);
-            return authorDAO.update(author);
+            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            return authorManagerDAO.update(author);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -88,11 +57,11 @@ public class AuthorService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorDAO authorDAO = new AuthorDAO(connection);
-            AuthorPublicationDAO authorPublicationDAO = new AuthorPublicationDAO(connection);
+            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
             /*authorPublicationDAO = connectionFactory.createAuthorPublicationDAO();
             return authorPublicationDAO.deletePublicationsByAuthorId(intAuthorId);*/
-            return authorDAO.delete(intAuthorId);
+            return authorManagerDAO.delete(intAuthorId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
@@ -126,12 +95,45 @@ public class AuthorService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorDAO authorDAO = new AuthorDAO(connection);
+            AuthorManagerDAO authorDAO = new AuthorDAO(connection);
             return authorDAO.findAll(startIndex, endIndex);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             connectionFactory.returnConnection(connection);
         }
+    }
+
+    public List<Author> createAuthorList(List<String> authorFirstNames, List<String> authorLastNames,
+                                         String publisherName) throws ServiceTechnicalException {
+        List<Author> authors = new LinkedList<>();
+
+        for (int i = 0; i < authorFirstNames.size(); i++) {
+            int authorId = findIdByAuthorName(authorFirstNames.get(i), authorLastNames.get(i), publisherName);
+            if (authorId == -1) {
+                authorId = addAuthor(authorFirstNames.get(i), authorLastNames.get(i), publisherName);
+            }
+            Author author = new Author(authorId, publisherName, authorLastNames.get(i), authorFirstNames.get(i));
+            authors.add(author);
+        }
+        return authors;
+    }
+
+    private int findIdByAuthorName(String authorFirstName, String authorLastName, String publisherName)
+            throws ServiceTechnicalException {
+        Author author = new Author(publisherName, authorLastName, authorFirstName);
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        try {
+            connection = connectionFactory.getConnection();
+            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            return authorManagerDAO.findIdByEntity(author);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+
     }
 }
