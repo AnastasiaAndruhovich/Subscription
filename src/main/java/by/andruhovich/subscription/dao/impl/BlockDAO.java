@@ -28,12 +28,12 @@ public class BlockDAO extends BlockManagerDAO {
             "JOIN " +
             "(SELECT a.user_id admin_id, a.lastname admin_lastname, a.firstname admin_firstname, a.birthdate " +
             "admin_birthdate, a.address admin_address, a.city admin_city, a.postal_index admin_postal_index, " +
-            "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id) LIMIT ?, ?";
+            "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id) ORDER BY admin_id DESC LIMIT ?, ?";
     private static final String UPDATE_BLOCK = "UPDATE users SET user_id = ?, admin_id = ?, date = ?";
 
     private static final String SELECT_USERS_BY_ADMIN_ID = "SELECT  u.user_id, u.lastname, u.firstname, u.birthdate, " +
             "u.address, u.city, u.postal_index, u.login, u.password FROM block JOIN users u USING (user_id) " +
-            "WHERE admin_id = ?";
+            "WHERE admin_id = ? ORDER BY admin_id DESC LIMIT ?, ?";
     private static final String SELECT_ADMIN_BY_USER_ID = "SELECT  u.user_id, u.lastname, u.firstname, u.birthdate, " +
             "u.address, u.city, u.postal_index, u.login, u.password FROM block " +
             "JOIN " +
@@ -125,7 +125,7 @@ public class BlockDAO extends BlockManagerDAO {
     }
 
     @Override
-    public List<User> findUsersByAdminId(int id) throws DAOTechnicalException {
+    public List<User> findUsersByAdminId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find user by admin id");
         PreparedStatement preparedStatement = null;
         List<User> users;
@@ -133,6 +133,8 @@ public class BlockDAO extends BlockManagerDAO {
         try {
             preparedStatement = connection.prepareStatement(SELECT_USERS_BY_ADMIN_ID);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             UserMapper userMapper = new UserMapper();
             users = userMapper.mapResultSetToEntity(resultSet);
