@@ -255,7 +255,7 @@ public class ShowEntityList {
         return page;
     }
 
-    public static String findSubscriptionByUser(HttpServletRequest request, HttpServletResponse response) {
+    public static String showSubscriptionByUser(HttpServletRequest request, HttpServletResponse response) {
         SubscriptionService subscriptionService = new SubscriptionService();
 
         final String USER_ID_ATTRIBUTE = "userId";
@@ -282,6 +282,32 @@ public class ShowEntityList {
                 request.setAttribute(PAGE_COUNT, pageCount);
             }
             page = pageManager.getProperty(PUBLICATION_USER_PAGE);
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
+    public static String showUser(HttpServletRequest request, HttpServletResponse response) {
+        UserService userService = new UserService();
+
+        final String USER_ATTRIBUTE = "user";
+        final String CLIENT_ID = "clientId";
+        final String EDIT_PROFILE_PAGE = "path.page.user.editProfile";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+
+        Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID);
+
+        try {
+            User user = userService.findUserById(userId.toString());
+            request.setAttribute(USER_ATTRIBUTE, user);
+            page = pageManager.getProperty(EDIT_PROFILE_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
