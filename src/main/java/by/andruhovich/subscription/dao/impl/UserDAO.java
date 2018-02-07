@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserDAO extends UserManagerDAO {
-    private static final String SELECT_PASSWORD_BY_LOGIN = "SELECT password FROM users WHERE login = ?";
+    private static final String SELECT_PASSWORD_BY_ID = "SELECT password FROM users WHERE user_id = ?";
     private static final String SELECT_LAST_INSERT_ID = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
     private static final String SELECT_LOGIN = "SELECT user_id FROM users WHERE login = ?";
     private static final String INSERT_USER = "INSERT INTO users(role_id, firstname, lastname, birthdate, address, city," +
@@ -193,19 +193,20 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
-    public String findPasswordByLogin(String login) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find password by login");
+    @Override
+    public String findPasswordById(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find password by id");
         PreparedStatement preparedStatement = null;
         String password = null;
 
         try {
-            preparedStatement = connection.prepareStatement(SELECT_PASSWORD_BY_LOGIN);
-            preparedStatement.setString(1, login);
+            preparedStatement = connection.prepareStatement(SELECT_PASSWORD_BY_ID);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 password = resultSet.getString("password");
             }
-            LOGGER.log(Level.INFO, "Request for find password by login - succeed");
+            LOGGER.log(Level.INFO, "Request for find password by id - succeed");
             return password;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
