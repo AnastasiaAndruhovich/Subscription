@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.command.common;
 
-import by.andruhovich.subscription.command.user.ShowUserCommand;
 import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
