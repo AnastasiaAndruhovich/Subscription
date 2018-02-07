@@ -154,7 +154,7 @@ public class UserService extends BaseService{
         }
     }
 
-    public boolean updateUser(String lastName, String firstName, Date birthDate, String address, String city,
+    public boolean updateUser(String userId, String lastName, String firstName, Date birthDate, String address, String city,
                               String postalIndex, String login) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -163,11 +163,12 @@ public class UserService extends BaseService{
             if (findUserIdByLogin(login) != -1) {
                 connection = connectionFactory.getConnection();
                 UserDAO userDAO = new UserDAO(connection);
-                int userId = userDAO.findUserByLogin(login).getUserId();
-                Account account = userDAO.findAccountByUserId(userId);
+                int id = Integer.parseInt(userId);
+                Account account = userDAO.findAccountByUserId(id);
                 int intPostalIndex = Integer.parseInt(postalIndex);
                 String password = userDAO.findPasswordByLogin(login);
-                User user = new User(lastName, firstName, birthDate, address, city, intPostalIndex, login, password, account);
+                Role role = userDAO.findRoleByUserId(id);
+                User user = new User(id, lastName, firstName, birthDate, address, city, intPostalIndex, login, password, role, account);
                 return userDAO.update(user);
             }
             return false;
