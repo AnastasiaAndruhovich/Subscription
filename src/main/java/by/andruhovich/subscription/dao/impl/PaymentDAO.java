@@ -58,7 +58,7 @@ public class PaymentDAO extends PaymentManagerDAO {
             statement = connection.prepareStatement(SELECT_LAST_INSERT_ID);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                id = resultSet.getInt("payment_id");
+                id = resultSet.getInt("payment_number");
             }
             LOGGER.log(Level.INFO, "Request for create payment - succeed");
             return id;
