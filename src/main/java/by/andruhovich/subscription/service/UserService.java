@@ -15,19 +15,22 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserService extends BaseService{
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
-    public boolean confirmPassword(String login, String password) throws ServiceTechnicalException {
+    public boolean confirmPassword(String userId, String password) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+
+        int id = Integer.parseInt(userId);
 
         try {
             connection = connectionFactory.getConnection();
             UserDAO userDAO = new UserDAO(connection);
-            String dataBasePassword = userDAO.findPasswordByLogin(login);
+            String dataBasePassword = userDAO.findPasswordById(id);
             return dataBasePassword != null && PasswordCoder.checkPassword(password, dataBasePassword);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage());
@@ -166,7 +169,7 @@ public class UserService extends BaseService{
                 int id = Integer.parseInt(userId);
                 Account account = userDAO.findAccountByUserId(id);
                 int intPostalIndex = Integer.parseInt(postalIndex);
-                String password = userDAO.findPasswordByLogin(login);
+                String password = userDAO.findPasswordById(id);
                 Role role = userDAO.findRoleByUserId(id);
                 User user = new User(id, lastName, firstName, birthDate, address, city, intPostalIndex, login, password, role, account);
                 return userDAO.update(user);
@@ -316,4 +319,31 @@ public class UserService extends BaseService{
             connectionFactory.returnConnection(connection);
         }
     }
+
+    public boolean changePassword(String userId, String password) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        password = PasswordCoder.hashPassword(password);
+
+        try {
+            connection = connectionFactory.getConnection();
+            UserDAO userDAO = new UserDAO(connection);
+            int id = Integer.parseInt(userId);
+            User user = userDAO.findEntityById(id);
+            if (user != null) {
+                LinkedList<User> users = new LinkedList<>();
+                users.add(user);
+                user = FillOutEntityService.fillOutUserList(users).get(0);
+                user.setPassword(password);
+                return userDAO.update(user);
+            }
+            return false;
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
 }
