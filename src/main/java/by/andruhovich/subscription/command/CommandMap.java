@@ -60,6 +60,8 @@ public class CommandMap {
         commandMap.put(CommandType.ADD_PAYMENT, new AddPaymentCommand());
         commandMap.put(CommandType.DELETE_SUBSCRIPTION, new DeleteSubscriptionCommand());
         commandMap.put(CommandType.SHOW_SUBSCRIPTIONS, new ShowSubscriptionCommand());
+        commandMap.put(CommandType.FIND_USER, new FindUserCommand());
+        commandMap.put(CommandType.UPDATE_USER, new UpdateUserCommand());
     }
 
     private CommandMap() {}
