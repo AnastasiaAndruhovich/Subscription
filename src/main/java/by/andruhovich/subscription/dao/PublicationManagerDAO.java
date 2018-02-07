@@ -18,6 +18,7 @@ public abstract class PublicationManagerDAO extends MediatorManagerDAO<Publicati
     public abstract PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationByName(String name) throws DAOTechnicalException;
 
+    public abstract Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract int findIdByEntity(Publication publication) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationsByGenreId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationsByPublicationTypeId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
