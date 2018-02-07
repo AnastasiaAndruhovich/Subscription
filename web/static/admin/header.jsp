@@ -20,13 +20,14 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.authors" var="Authors"/>
 <fmt:message bundle="${loc}" key="button.logout" var="Logout"/>
 <fmt:message bundle="${loc}" key="button.personalAccount" var="PersonalAccount"/>
-<fmt:message bundle="${loc}" key="label.subscription" var="Subscription"/>
+<fmt:message bundle="${loc}" key="label.subscriptions" var="Subscriptions"/>
 <fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 <fmt:message bundle="${loc}" key="label.users" var="Users"/>
 <fmt:message bundle="${loc}" key="label.showUsers" var="ShowUsers"/>
 <fmt:message bundle="${loc}" key="label.blockUser" var="BlockUser"/>
 <fmt:message bundle="${loc}" key="label.unblockUser" var="UnblockUser"/>
 <fmt:message bundle="${loc}" key="label.showGenres" var="ShowGenres"/>
+<fmt:message bundle="${loc}" key="label.showSubscriptions" var="ShowSubscriptions"/>
 <fmt:message bundle="${loc}" key="label.showPublications" var="ShowPublications"/>
 <fmt:message bundle="${loc}" key="label.showPublicationTypes" var="ShowPublicationTypes"/>
 <fmt:message bundle="${loc}" key="label.showAuthors" var="ShowAuthors"/>
@@ -35,6 +36,7 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.addPublication" var="AddPublication"/>
 <fmt:message bundle="${loc}" key="label.addPublicationType" var="AddPublicationType"/>
 <fmt:message bundle="${loc}" key="label.myAccount" var="MyAccount"/>
+<fmt:message bundle="${loc}" key="label.mySubscriptions" var="MySubscriptions"/>
 
 <html lang="en">
 <head>
@@ -67,9 +69,11 @@ To change this template use File | Settings | File Templates.
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownPublications" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">${Publications}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownPublications">
-                        <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1">
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1">
                             ${ShowPublications}</a>
-                        <a class="dropdown-item" href="../../jsp/admin/addPublication.jsp">${AddPublication}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/addPublication.jsp">${AddPublication}</a>
                     </div>
                 </div>
             </li>
@@ -78,8 +82,10 @@ To change this template use File | Settings | File Templates.
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownAuthors" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">${Authors}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownAuthors">
-                        <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=1">${ShowAuthors}</a>
-                        <a class="dropdown-item" href="../../jsp/admin/addAuthor.jsp">${AddAuthor}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=1">${ShowAuthors}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/addAuthor.jsp">${AddAuthor}</a>
                     </div>
                 </div>
             </li>
@@ -88,8 +94,10 @@ To change this template use File | Settings | File Templates.
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownGenres" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">${Genres}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownGenres">
-                        <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=show_genres&pageNumber=1">${ShowGenres}</a>
-                        <a class="dropdown-item" href="../../jsp/admin/addGenre.jsp">${AddGenre}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_genres&pageNumber=1">${ShowGenres}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/addGenre.jsp">${AddGenre}</a>
                     </div>
                 </div>
             </li>
@@ -98,9 +106,11 @@ To change this template use File | Settings | File Templates.
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownPublicationTypes" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">${PublicationTypes}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownPublicationTypes">
-                        <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1">
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1">
                             ${ShowPublicationTypes}</a>
-                        <a class="dropdown-item" href="../../jsp/admin/addPublicationType.jsp">${AddPublicationType}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/addPublicationType.jsp">${AddPublicationType}</a>
                     </div>
                 </div>
             </li>
@@ -109,12 +119,20 @@ To change this template use File | Settings | File Templates.
                     <a class="nav-link dropdown-toggle" href="#" id="dropdownUsers" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">${Users}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownUsers">
-                        <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=1">${ShowUsers}</a>
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=1">${ShowUsers}</a>
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">${Subscription}</a>
+            <li>
+                <div class="dropdown open">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownSubscriptions" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">${Subscriptions}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownSubscriptions">
+                        <a class="dropdown-item"
+                           href="${pageContext.servletContext.contextPath}/controller?command=show_subscriptions&pageNumber=1">${ShowSubscriptions}</a>
+                    </div>
+                </div>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">${Feedback}</a>
@@ -123,12 +141,14 @@ To change this template use File | Settings | File Templates.
         <form class="form-inline my-2 my-lg-0">
             <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
             <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
-            <a href="${pageContext.servletContext.contextPath}/controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
+            <a href="${pageContext.servletContext.contextPath}/controller?command=logout&pageNumber=1" type="button"
+               class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
             <div class="dropdown open">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownPersonalAccount" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">${PersonalAccount}</a>
                 <div class="dropdown-menu" aria-labelledby="dropdownUsers">
-                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user_id">${MyAccount}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
                 </div>
             </div>
         </form>
@@ -136,8 +156,10 @@ To change this template use File | Settings | File Templates.
 </nav>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav ml-auto">
-        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
-        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img
+                class="lang" src="../../images/rus_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img
+                class="lang" src="../../images/gbr_flag.jpg"></a>
     </ul>
 </nav>
 
