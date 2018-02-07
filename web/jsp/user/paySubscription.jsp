@@ -58,6 +58,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
+                    ${requestScope.result}
                     <div class="row">
                         <div class="col-4">
                             <c:if test="${subscription!=null}">
@@ -87,21 +88,24 @@
                                         <p>${EndDate}: ${subscription.endDate}</p>
                                         <p>${Active}: ${subscription.subscriptionIsActive}</p>
                                         <p>${Price}: ${subscription.publication.price} ${MoneyUnit}</p>
-                                        <div class="row">
-                                            <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                <input type="hidden" name="command" value="add_payment"/>
-                                                <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
-                                                <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
-                                            </form>
-                                            <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                <input type="hidden" name="command" value="show_publications"/>
-                                                <button class="btn btn-outline-warning my-2 my-sm-0">${PayLater}</button>
-                                            </form>
-                                            <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                                <input type="hidden" name="command" value="delete_subscription"/>
-                                                <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
-                                            </form>
-                                        </div>
+                                        <c:if test="${!subscription.subscriptionIsActive}">
+                                            <div class="row">
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="add_payment"/>
+                                                    <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
+                                                    <button class="btn btn-outline-success my-2 my-sm-0">${PayNow}</button>
+                                                </form>
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="show_publications"/>
+                                                    <button class="btn btn-outline-warning my-2 my-sm-0">${PayLater}</button>
+                                                </form>
+                                                <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="delete_subscription"/>
+                                                    <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}"/>
+                                                    <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
+                                                </form>
+                                            </div>
+                                        </c:if>
                                     </c:when>
                                     <c:otherwise>
                                         <p>${InformationIsAbsent}</p>
