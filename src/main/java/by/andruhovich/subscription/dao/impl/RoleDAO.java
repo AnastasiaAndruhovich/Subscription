@@ -22,6 +22,7 @@ public class RoleDAO extends RoleManagerDAO {
     private static final String SELECT_ROLE_BY_ID = "SELECT * FROM roles WHERE role_id = ?";
     private static final String SELECT_ALL_ROLES = "SELECT * FROM roles LIMIT ?, ?";
     private static final String UPDATE_ROLE = "UPDATE roles SET name = ? WHERE role_id = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(role_id) AS count FROM roles";
 
     private static final Logger LOGGER = LogManager.getLogger(RoleDAO.class);
 
@@ -127,4 +128,9 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
+    @Override
+    public int findEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return findEntityCount(SELECT_COUNT);
+    }
 }
