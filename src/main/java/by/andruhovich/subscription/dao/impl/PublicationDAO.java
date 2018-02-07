@@ -47,6 +47,9 @@ public class PublicationDAO extends PublicationManagerDAO {
             "picture_name, picture FROM publications WHERE name = ?";
     private static final String SELECT_PICTURE_BY_PUBLICATION_ID = "SELECT picture FROM publications WHERE publication_id = ?";
     private static final String INSERT_IMAGE = "UPDATE publications SET picture = ?, picture_name = ? WHERE publication_id = ?";
+    private static final String SELECT_PUBLICATION_BY_SUBSCRIPTION_ID = "SELECT p.publication_id, p.name, p.description, " +
+            "p.price, p.picture_name, p.picture FROM subscriptions JOIN publications p USING (publication_id) " +
+            "WHERE subscription_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
 
@@ -367,5 +370,27 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    @Override
+    public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publication by subscription id");
+        PreparedStatement preparedStatement = null;
+        List<Publication> publications;
 
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_SUBSCRIPTION_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationMapper publicationMapper = new PublicationMapper();
+            publications = publicationMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find publication by subscription id - succeed");
+            if (!publications.isEmpty()) {
+                return publications.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
 }
