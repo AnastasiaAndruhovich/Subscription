@@ -36,7 +36,7 @@ public class DeleteSubscriptionCommand extends BaseCommand {
                 String errorDeleteSubscriptionMessage = localeManager.getProperty(ERROR_DELETE_SUBSCRIPTION_MESSAGE);
                 request.setAttribute(RESULT_DELETE_SUBSCRIPTION_ATTRIBUTE, errorDeleteSubscriptionMessage);
             }
-            return ShowEntityList.findSubscriptionByUser(request, response);
+            return ShowEntityList.showSubscriptionByUser(request, response);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             return ERROR_PAGE;

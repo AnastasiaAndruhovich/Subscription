@@ -10,6 +10,6 @@ public class FindSubscriptionByUserCommand extends BaseCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return ShowEntityList.findSubscriptionByUser(request, response);
+        return ShowEntityList.showSubscriptionByUser(request, response);
     }
 }
