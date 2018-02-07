@@ -67,6 +67,7 @@ class FillOutEntityService {
     static List<User> fillOutUserList(List<User> users) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+        int entityCount;
 
         try {
             connection = connectionFactory.getConnection();
@@ -76,9 +77,11 @@ class FillOutEntityService {
             for (User user : users) {
                 user.setAccount(userManagerDAO.findAccountByUserId(user.getUserId()));
                 user.setRole(userManagerDAO.findRoleByUserId(user.getUserId()));
-                user.setSubscriptions(subscriptionManagerDAO.findSubscriptionsByUserId(user.getUserId()));
+                entityCount = subscriptionManagerDAO.findEntityCount();
+                user.setSubscriptions(subscriptionManagerDAO.findSubscriptionsByUserId(user.getUserId(), 1, entityCount));
                 user.setAdmin(blockManagerDAO.findAdminByUserId(user.getUserId()));
-                user.setUsers(blockManagerDAO.findUsersByAdminId(user.getUserId()));
+                entityCount = blockManagerDAO.findEntityCount();
+                user.setUsers(blockManagerDAO.findUsersByAdminId(user.getUserId(), 1, entityCount));
             }
             return users;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {

@@ -48,13 +48,13 @@ public class GenreService extends BaseService {
     public List<Genre> showGenres(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
 
         try {
             connection = connectionFactory.getConnection();
             GenreManagerDAO genreManagerDAO = new GenreDAO(connection);
+            int entityCount = genreManagerDAO.findEntityCount();
+            int startIndex = findStartIndex(pageNumber, entityCount);
+            int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
             return genreManagerDAO.findAll(startIndex, endIndex);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
