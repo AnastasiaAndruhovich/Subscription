@@ -70,8 +70,10 @@ public class ImageServlet extends HttpServlet {
                     }
                 }
             }
-            if (publicationId == null || !publicationService.insertImage(publicationId, picture, pictureName)) {
-                response.sendRedirect(ERROR_PAGE);
+            if (!pictureName.isEmpty()) {
+                if (publicationId == null || !publicationService.insertImage(publicationId, picture, pictureName)) {
+                    response.sendRedirect(ERROR_PAGE);
+                }
             }
 
             int id = Integer.parseInt(publicationId);
