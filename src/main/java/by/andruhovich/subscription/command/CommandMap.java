@@ -62,6 +62,7 @@ public class CommandMap {
         commandMap.put(CommandType.SHOW_SUBSCRIPTIONS, new ShowSubscriptionCommand());
         commandMap.put(CommandType.FIND_USER, new FindUserCommand());
         commandMap.put(CommandType.UPDATE_USER, new UpdateUserCommand());
+        commandMap.put(CommandType.CHANGE_PASSWORD, new ChangePasswordCommand());
     }
 
     private CommandMap() {}
