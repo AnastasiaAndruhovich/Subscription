@@ -1,7 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.entity.Payment;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -15,6 +13,5 @@ public abstract class SubscriptionManagerDAO extends MediatorManagerDAO<Subscrip
     }
 
     public abstract User findUserBySubscriptionId(int id) throws DAOTechnicalException;
-    public abstract Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract List<Subscription> findSubscriptionsByUserId(int id) throws DAOTechnicalException;
 }
