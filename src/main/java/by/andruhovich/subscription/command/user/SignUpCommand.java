@@ -2,12 +2,11 @@ package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
 import by.andruhovich.subscription.command.common.ShowEntityList;
-import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
 import by.andruhovich.subscription.converter.ClientDataConverter;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.manager.LocaleManager;
+import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.UserService;
 import by.andruhovich.subscription.type.ClientType;
 import by.andruhovich.subscription.validator.ServiceValidator;
@@ -17,9 +16,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
