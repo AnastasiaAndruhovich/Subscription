@@ -5,7 +5,6 @@ import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.PublicationService;
-import by.andruhovich.subscription.service.UserService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
