@@ -2,7 +2,6 @@ package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
 import by.andruhovich.subscription.command.common.ShowEntityList;
-import by.andruhovich.subscription.command.publication.ShowPublicationCommand;
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
