@@ -5,8 +5,8 @@ import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.manager.LocaleManager;
+import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.UserService;
 import by.andruhovich.subscription.type.ClientType;
 import org.apache.logging.log4j.Level;
@@ -41,7 +41,8 @@ public class LoginCommand extends BaseCommand {
         HttpSession session = request.getSession();
 
         try {
-            if (userService.confirmPassword(login, password)) {
+            Integer id = userService.findUserIdByLogin(login);
+            if (userService.confirmPassword(id.toString(), password)) {
                 int clientId = userService.findUserIdByLogin(login);
                 session.setAttribute(CLIENT_ID, clientId);
                 Role role = userService.findRoleByUserId(clientId);
