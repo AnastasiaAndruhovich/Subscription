@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class ServiceValidator {
     private static final String REGEX_POSTAL_INDEX_ = "[0-9]{6}";
-    private static final String REGEX_LOGIN = "^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$";
+    private static final String REGEX_LOGIN = "^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,30}[a-zA-Z0-9]$";
     private static final String REGEX_PASSWORD = "(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$";
     private static final String REGEX_PRICE = "^[\\d]+?\\.[\\d]{2}$";
     private static final String REGEX_DATE = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
