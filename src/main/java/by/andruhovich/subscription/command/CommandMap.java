@@ -9,7 +9,9 @@ import by.andruhovich.subscription.command.payment.AddPaymentCommand;
 import by.andruhovich.subscription.command.publication.*;
 import by.andruhovich.subscription.command.publicationtype.*;
 import by.andruhovich.subscription.command.subscription.AddSubscriptionCommand;
+import by.andruhovich.subscription.command.subscription.DeleteSubscriptionCommand;
 import by.andruhovich.subscription.command.subscription.FindSubscriptionByUserCommand;
+import by.andruhovich.subscription.command.subscription.ShowSubscriptionCommand;
 import by.andruhovich.subscription.command.user.*;
 import by.andruhovich.subscription.exception.UndefinedCommandTechnicalException;
 
@@ -50,12 +52,14 @@ public class CommandMap {
         commandMap.put(CommandType.PARSE_PUBLICATION_TYPE, new ParsePublicationTypeCommand());
         commandMap.put(CommandType.EDIT_PUBLICATION, new EditPublicationCommand());
         commandMap.put(CommandType.PARSE_PUBLICATION, new ParsePublicationCommand());
-        commandMap.put(CommandType.FIND_ACCOUNT_BY_USER_ID, new FindAccountByUserCommand());
+        commandMap.put(CommandType.FIND_ACCOUNT_BY_USER, new FindAccountByUserCommand());
         commandMap.put(CommandType.RECHARGE, new RechargeCommand());
         commandMap.put(CommandType.TAKE_LOAN, new TakeLoanCommand());
         commandMap.put(CommandType.FIND_SUBSCRIPTION_BY_USER, new FindSubscriptionByUserCommand());
         commandMap.put(CommandType.ADD_SUBSCRIPTION, new AddSubscriptionCommand());
         commandMap.put(CommandType.ADD_PAYMENT, new AddPaymentCommand());
+        commandMap.put(CommandType.DELETE_SUBSCRIPTION, new DeleteSubscriptionCommand());
+        commandMap.put(CommandType.SHOW_SUBSCRIPTIONS, new ShowSubscriptionCommand());
     }
 
     private CommandMap() {}
