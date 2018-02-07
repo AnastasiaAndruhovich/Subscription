@@ -225,10 +225,41 @@ public class ShowEntityList {
         return page;
     }
 
+    public static String showSubscriptionList(HttpServletRequest request, HttpServletResponse response) {
+        SubscriptionService subscriptionService = new SubscriptionService();
+
+        final String SUBSCRIPTION_USER_PAGE = "path.page.user.subscriptionList";
+        final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
+
+        String page;
+        PageManager pageManager = PageManager.getInstance();
+
+        String pageNumber = request.getParameter(PAGE_NUMBER);
+        pageNumber = (pageNumber == null) ? "1" : pageNumber;
+
+        try {
+            List<Subscription> subscriptions = subscriptionService.showSubscriptions(pageNumber);
+            if (!subscriptions.isEmpty()) {
+                int pageCount = subscriptionService.findSubscriptionPageCount();
+                request.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
+                request.setAttribute(PAGE_NUMBER, pageNumber);
+                request.setAttribute(PAGE_COUNT, pageCount);
+            }
+            page = pageManager.getProperty(SUBSCRIPTION_USER_PAGE);
+        } catch (ServiceTechnicalException e) {
+            LOGGER.log(Level.ERROR, "Database error connection");
+            page = ERROR_PAGE;
+        } catch (MissingResourceTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+            page = ERROR_PAGE;
+        }
+        return page;
+    }
+
     public static String findSubscriptionByUser(HttpServletRequest request, HttpServletResponse response) {
         SubscriptionService subscriptionService = new SubscriptionService();
 
-        final String CLIENT_ID_ATTRIBUTE = "clientId";
+        final String USER_ID_ATTRIBUTE = "userId";
         final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
         final String CURRENT_DATE_ATTRIBUTE = "currentDate";
 
@@ -239,12 +270,12 @@ public class ShowEntityList {
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
-        Integer clientId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
+        String userId = request.getParameter(USER_ID_ATTRIBUTE);
         Date date = Calendar.getInstance().getTime();
         request.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
 
         try {
-            List<Subscription> subscriptions = subscriptionService.findSubscriptionByUserId(clientId.toString(), pageNumber);
+            List<Subscription> subscriptions = subscriptionService.findSubscriptionByUserId(userId, pageNumber);
             if (!subscriptions.isEmpty()) {
                 int pageCount = subscriptionService.findSubscriptionPageCount();
                 request.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
