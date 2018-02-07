@@ -2,7 +2,6 @@ package by.andruhovich.subscription.dao;
 
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.entity.Role;
-import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 
@@ -20,6 +19,6 @@ public abstract class UserManagerDAO extends MediatorManagerDAO<User> {
     public abstract Account findAccountByUserId(int id) throws DAOTechnicalException;
     public abstract List<User> findUsersByRoleId(int id) throws DAOTechnicalException;
 
-    public abstract String findPasswordByLogin(String login) throws DAOTechnicalException;
+    public abstract String findPasswordById(int id) throws DAOTechnicalException;
     public abstract int findUserIdByLogin(String login) throws DAOTechnicalException;
 }
