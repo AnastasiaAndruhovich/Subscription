@@ -73,11 +73,6 @@ public class AccountDAO extends AccountManagerDAO {
         return delete(accountNumber, DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
     }
 
-    public int findEntityCount() throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for get count");
-        return findEntityCount(SELECT_COUNT);
-    }
-
     @Override
     public Account findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -232,5 +227,10 @@ public class AccountDAO extends AccountManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int findEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return findEntityCount(SELECT_COUNT);
     }
 }

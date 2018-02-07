@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.PublicationManagerDAO;
-import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
@@ -297,11 +296,37 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    @Override
+    public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find publication by subscription id");
+        PreparedStatement preparedStatement = null;
+        List<Publication> publications;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_SUBSCRIPTION_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            PublicationMapper publicationMapper = new PublicationMapper();
+            publications = publicationMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find publication by subscription id - succeed");
+            if (!publications.isEmpty()) {
+                return publications.get(0);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);
     }
 
+    @Override
     public byte[] findPictureByPublicationId(int publicationId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find picture by publication id");
         PreparedStatement preparedStatement = null;
@@ -328,6 +353,7 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    @Override
     public String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find picture name by publication id");
         PreparedStatement preparedStatement = null;
@@ -349,6 +375,7 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    @Override
     public boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for insert image");
         PreparedStatement preparedStatement = null;
@@ -363,30 +390,6 @@ public class PublicationDAO extends PublicationManagerDAO {
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for insert image - succeed");
             return true;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
-    public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publication by subscription id");
-        PreparedStatement preparedStatement = null;
-        List<Publication> publications;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_SUBSCRIPTION_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PublicationMapper publicationMapper = new PublicationMapper();
-            publications = publicationMapper.mapResultSetToEntity(resultSet);
-            LOGGER.log(Level.INFO, "Request for find publication by subscription id - succeed");
-            if (!publications.isEmpty()) {
-                return publications.get(0);
-            }
-            return null;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {

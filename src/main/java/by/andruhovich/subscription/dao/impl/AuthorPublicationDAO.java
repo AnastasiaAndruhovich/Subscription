@@ -1,6 +1,6 @@
 package by.andruhovich.subscription.dao.impl;
 
-import by.andruhovich.subscription.dao.BaseDAO;
+import by.andruhovich.subscription.dao.AuthorPublicationManagerDAO;
 import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AuthorPublicationDAO extends BaseDAO {
+public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
     private final static String INSERT_RECORD = "INSERT INTO authors_publications(author_id, publication_id) VALUES(?, ?)";
     private final static String SELECT_AUTHOR_BY_PUBLICATION_ID = "SELECT a.author_id, a.publisher_name, a.author_lastname, " +
             "a.author_firstname FROM authors_publications RIGHT JOIN authors a USING (author_id) WHERE publication_id = ?";
@@ -32,6 +32,7 @@ public class AuthorPublicationDAO extends BaseDAO {
         super(connection);
     }
 
+    @Override
     public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request fo create record");
         PreparedStatement preparedStatement = null;

@@ -1,11 +1,17 @@
 package by.andruhovich.subscription.dao;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public abstract class BaseDAO {
     protected Connection connection;
+
+    private static final Logger LOGGER = LogManager.getLogger(BaseDAO.class);
 
     public BaseDAO(Connection connection) {
         this.connection = connection;
@@ -25,7 +31,7 @@ public abstract class BaseDAO {
                 statement.close();
             }
         } catch (SQLException e) {
-            // TODO log
+            LOGGER.log(Level.ERROR, "Error close statement");
         }
     }
 }

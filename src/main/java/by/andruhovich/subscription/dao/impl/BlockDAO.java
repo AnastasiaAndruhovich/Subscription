@@ -40,6 +40,16 @@ public class BlockDAO extends BlockManagerDAO {
             "(SELECT u.user_id, u.lastname, u.firstname, u.birthdate, u.address, u.city, u.postal_index, u.login, " +
             "u.password FROM users u) u ON (block.admin_id = u.user_id) " +
             "WHERE block.user_id = ?";
+    private static final String SELECT_BLOCK_BY_ID = "SELECT user_id, lastname, firstname, birthdate ,address, city, " +
+            "postal_index, login, admin_id, admin_lastname, admin_firstname, admin_birthdate, admin_address, " +
+            "admin_city, admin_postal_index, admin_login, date FROM block " +
+            "JOIN " +
+            "(SELECT u.user_id, u.lastname, u.firstname, u.birthdate, u.address, u.city, u.postal_index, " +
+            "u.login, u.password FROM users u) u USING (user_id) " +
+            "JOIN " +
+            "(SELECT a.user_id admin_id, a.lastname admin_lastname, a.firstname admin_firstname, a.birthdate " +
+            "admin_birthdate, a.address admin_address, a.city admin_city, a.postal_index admin_postal_index, " +
+            "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id) WHERE u.user_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(user_id) AS count FROM block";
 
     private static final Logger LOGGER = LogManager.getLogger(BlockDAO.class);
@@ -169,6 +179,26 @@ public class BlockDAO extends BlockManagerDAO {
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for delete block by user id - succeed");
             return true;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public Block findEntityById(int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find block by id");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_BLOCK_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            BlockMapper blockMapper = new BlockMapper();
+            List<Block> blocks = blockMapper.mapResultSetToEntity(resultSet);
+            LOGGER.log(Level.INFO, "Request for find block by id - succeed");
+            return blocks.get(0);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {

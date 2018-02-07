@@ -8,7 +8,7 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import java.sql.Connection;
 import java.util.List;
 
-public abstract class UserManagerDAO extends MediatorManagerDAO<User> {
+public abstract class UserManagerDAO extends ManagerDAO<User> {
     public UserManagerDAO(Connection connection) {
         super(connection);
     }

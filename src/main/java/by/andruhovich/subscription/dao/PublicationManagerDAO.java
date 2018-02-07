@@ -1,6 +1,5 @@
 package by.andruhovich.subscription.dao;
 
-import by.andruhovich.subscription.entity.Author;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.PublicationType;
@@ -9,7 +8,7 @@ import by.andruhovich.subscription.exception.DAOTechnicalException;
 import java.sql.Connection;
 import java.util.List;
 
-public abstract class PublicationManagerDAO extends MediatorManagerDAO<Publication> {
+public abstract class PublicationManagerDAO extends ManagerDAO<Publication> {
     public PublicationManagerDAO(Connection connection) {
         super(connection);
     }
@@ -17,6 +16,10 @@ public abstract class PublicationManagerDAO extends MediatorManagerDAO<Publicati
     public abstract Genre findGenreByPublicationId(int id) throws DAOTechnicalException;
     public abstract PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationByName(String name) throws DAOTechnicalException;
+    public abstract int findEntityCount() throws DAOTechnicalException;
+    public abstract byte[] findPictureByPublicationId(int publicationId) throws DAOTechnicalException;
+    public abstract String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException;
+    public abstract boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException;
 
     public abstract Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract int findIdByEntity(Publication publication) throws DAOTechnicalException;

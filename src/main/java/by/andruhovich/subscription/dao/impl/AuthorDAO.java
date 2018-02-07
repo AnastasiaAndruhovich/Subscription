@@ -2,7 +2,6 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.AuthorManagerDAO;
 import by.andruhovich.subscription.entity.Author;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.AuthorMapper;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -70,11 +69,6 @@ public class AuthorDAO extends AuthorManagerDAO {
     public boolean delete(int authorId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for author delete");
         return delete(authorId, DELETE_AUTHOR_BY_ID);
-    }
-
-    public int findEntityCount() throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for get count");
-        return findEntityCount(SELECT_COUNT);
     }
 
     @Override
@@ -165,6 +159,11 @@ public class AuthorDAO extends AuthorManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    public int findEntityCount() throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count");
+        return findEntityCount(SELECT_COUNT);
     }
 
 }

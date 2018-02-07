@@ -2,7 +2,6 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.RoleManagerDAO;
 import by.andruhovich.subscription.entity.Role;
-import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.RoleMapper;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class RoleDAO extends RoleManagerDAO {
-    private static final String SELECT_ID_BY_NAME = "SELECT role_id FROM roles WHERE name = ?";
     private static final String SELECT_LAST_INSERT_ID = "SELECT role_id FROM roles ORDER BY role_id DESC LIMIT 1";
     private static final String INSERT_ROLE= "INSERT INTO roles(name) VALUE (?)";
     private static final String DELETE_ROLE_BY_ID = "DELETE FROM roles WHERE role_id = ?";

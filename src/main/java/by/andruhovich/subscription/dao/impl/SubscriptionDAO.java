@@ -1,12 +1,9 @@
 package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.SubscriptionManagerDAO;
-import by.andruhovich.subscription.entity.Payment;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.entity.Subscription;
 import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.mapper.PublicationMapper;
 import by.andruhovich.subscription.mapper.SubscriptionMapper;
 import by.andruhovich.subscription.mapper.UserMapper;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -36,9 +33,6 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
 
     private static final String SELECT_USER_BY_SUBSCRIPTION_ID = "SELECT u.user_id, u.lastname, u.firstname, " +
             "u.birthdate, u.address, u.city, u.postal_index, u.login, u.password FROM subscriptions JOIN users u USING (user_id) " +
-            "WHERE subscription_id = ?";
-    private static final String SELECT_PUBLICATION_BY_SUBSCRIPTION_ID = "SELECT p.publication_id, p.name, p.description, " +
-            "p.price, p.picture_name, p.picture FROM subscriptions JOIN publications p USING (publication_id) " +
             "WHERE subscription_id = ?";
     private static final String SELECT_SUBSCRIPTIONS_BY_USER_ID = "SELECT subscription_id, start_date, end_date, " +
             "subscription_is_active FROM subscriptions WHERE user_id = ?";
