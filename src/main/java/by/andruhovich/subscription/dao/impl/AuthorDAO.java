@@ -22,7 +22,7 @@ public class AuthorDAO extends AuthorManagerDAO {
     private static final String DELETE_AUTHOR_BY_ID = "DELETE FROM authors WHERE author_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(author_id) AS count FROM authors";
     private static final String SELECT_AUTHOR_BY_ID = "SELECT * FROM authors WHERE author_id = ?";
-    private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors LIMIT ?, ?";
+    private static final String SELECT_ALL_AUTHORS = "SELECT * FROM authors ORDER BY author_id DESC LIMIT ?, ?";
     private static final String UPDATE_AUTHOR = "UPDATE authors SET publisher_name = ?, author_lastname = ?, " +
             "author_firstname = ? WHERE author_id = ?";
 
