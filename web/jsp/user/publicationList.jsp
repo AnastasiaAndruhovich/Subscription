@@ -102,8 +102,8 @@
 </div>
 
 <%--Declare variable for current page and count of contacts --%>
-<c:set var="currentPage" value="${(pageNumber==null) ? 1 : pageNumber}"/>
-<c:set var="lastPage" value="${(pageCount==null) ? 1 : pageCount}"/>
+<c:set var="currentPage" value="${(requestScope.pageNumber==null) ? 1 : requestScope.pageNumber}"/>
+<c:set var="lastPage" value="${(requestScope.pageCount==null) ? 1 : requestScope.pageCount}"/>
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
@@ -126,7 +126,7 @@
             </c:otherwise>
         </c:choose>
         <%--For displaying all available pages--%>
-        <c:forEach begin="${currentPage}" end="${(currentPage+3>pageCount) ? pageCount : currentPage+3}" var="i">
+        <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
             <c:choose>
                 <c:when test="${currentPage eq i}">
                     <li class="page-item active">
