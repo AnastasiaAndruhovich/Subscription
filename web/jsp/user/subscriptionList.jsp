@@ -17,6 +17,7 @@
 <fmt:setBundle basename="locale.locale" var="loc"/>
 <fmt:message bundle="${loc}" key="label.subscriptions" var="Title"/>
 <fmt:message bundle="${loc}" key="label.subscriptionId" var="SubscriptionId"/>
+<fmt:message bundle="${loc}" key="label.user" var="User"/>
 <fmt:message bundle="${loc}" key="label.active" var="Active"/>
 <fmt:message bundle="${loc}" key="label.publicationType" var="Type"/>
 <fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
@@ -63,6 +64,7 @@
                             <thead>
                             <tr>
                                 <th>${SubscriptionId}</th>
+                                <td>${User}</td>
                                 <td>${Name}</td>
                                 <td>${Type}</td>
                                 <td>${Genre}</td>
@@ -79,6 +81,7 @@
                             <c:forEach var="subscription" items="${requestScope.subscriptions}">
                                 <tr>
                                     <th>${subscription.subscriptionId}</th>
+                                    <td>${subscription.user.login}</td>
                                     <td>${subscription.publication.name}</td>
                                     <td>${subscription.publication.publicationType.name}</td>
                                     <td>${subscription.publication.genre.name}</td>
@@ -100,7 +103,7 @@
                                     <td>${subscription.subscriptionIsActive}</td>
                                     <td>
                                         <div class="row">
-                                            <c:if test="${!subscription.subscriptionIsActive}">
+                                            <c:if test="${!subscription.subscriptionIsActive && subscription.user.userId eq sessionScope.clientId}">
                                                 <c:if test="${requestScope.currentDate.getTime()<subscription.startDate.getTime()}">
                                                     <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                         <input type="hidden" name="command" value="add_payment"/>
