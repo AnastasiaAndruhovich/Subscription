@@ -22,6 +22,7 @@ public abstract class ManagerDAO <T extends Entity> extends BaseDAO {
     public abstract List<T> findAll(int startIndex, int endIndex) throws DAOTechnicalException;
     public abstract boolean update(T entity) throws DAOTechnicalException;
     public abstract T findEntityById(int id) throws DAOTechnicalException;
+    public abstract int findEntityCount() throws DAOTechnicalException;
 
     private static final Logger LOGGER = LogManager.getLogger(ManagerDAO.class);
 
