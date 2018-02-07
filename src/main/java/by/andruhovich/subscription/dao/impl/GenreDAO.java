@@ -2,7 +2,6 @@ package by.andruhovich.subscription.dao.impl;
 
 import by.andruhovich.subscription.dao.GenreManagerDAO;
 import by.andruhovich.subscription.entity.Genre;
-import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.GenreMapper;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -22,7 +21,7 @@ public class GenreDAO extends GenreManagerDAO {
     private static final String DELETE_GENRE_BY_ID = "DELETE FROM genres WHERE genre_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(genre_id) AS count FROM genres";
     private static final String SELECT_GENRE_BY_ID = "SELECT * FROM genres WHERE genre_id = ?";
-    private static final String SELECT_ALL_GENRES = "SELECT * FROM genres LIMIT ?, ?";
+    private static final String SELECT_ALL_GENRES = "SELECT * FROM genres ORDER BY genre_id DESC LIMIT ?, ?";
     private static final String UPDATE_GENRE = "UPDATE genres SET name = ?, description = ? WHERE genre_id = ?";
 
     private static final String SELECT_GENRE_ID_BY_GENRE_FIELDS = "SELECT genre_id FROM genres WHERE name = ?";
