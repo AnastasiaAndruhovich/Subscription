@@ -37,6 +37,7 @@ To change this template use File | Settings | File Templates.
 <fmt:message bundle="${loc}" key="label.addPublicationType" var="AddPublicationType"/>
 <fmt:message bundle="${loc}" key="label.myProfile" var="MyProfile"/>
 <fmt:message bundle="${loc}" key="label.myAccount" var="MyAccount"/>
+<fmt:message bundle="${loc}" key="label.myPayments" var="MyPayments"/>
 <fmt:message bundle="${loc}" key="label.mySubscriptions" var="MySubscriptions"/>
 
 <html lang="en">
@@ -149,6 +150,7 @@ To change this template use File | Settings | File Templates.
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_user">${MyProfile}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user">${MyPayments}</a>
                 </div>
             </div>
         </form>
