@@ -45,7 +45,7 @@
             <div class="col-10">
                 <div class="login card">
                     <h1 class="title" id="loginTitle">${LoginToYourAccount}</h1>
-                    <p>${requestScope.errorLogin}</p>
+                    <p>${requestScope.message}</p>
                     <div class="row">
                         <div class="col-12">
                             <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">

@@ -52,7 +52,7 @@
             <div class="col-10">
                 <c:choose>
                     <c:when test="${user!=null}">
-                        ${requestScope.result}
+                        ${requestScope.message}
                         <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                             <input type="hidden" name="command" value="update_user"/>
 

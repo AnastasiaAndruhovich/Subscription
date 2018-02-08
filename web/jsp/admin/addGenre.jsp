@@ -47,7 +47,7 @@
                     <form name="addForm" method="POST"
                           action="${pageContext.servletContext.contextPath}/controller?command=add_genre">
                         <input type="hidden" name="command" value="add_genre"/>
-                        <p>${requestScope.result}</p>
+                        <p>${requestScope.message}</p>
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 col-form-label">${Genre}</label>
                             <div class="col-sm-10">

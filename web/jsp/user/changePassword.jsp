@@ -45,7 +45,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    ${requestScope.result}
+                    ${requestScope.message}
                     <form name="changePasswordForm" method="POST"
                           action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="change_password"/>

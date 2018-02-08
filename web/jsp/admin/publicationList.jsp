@@ -51,7 +51,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
-                    ${requestScope.errorSubscribe}
+                    ${requestScope.message}
                     <c:choose>
                         <c:when test="${requestScope.publications!=null}">
                             <c:forEach var="publication" items="${requestScope.publications}">

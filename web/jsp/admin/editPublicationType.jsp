@@ -48,7 +48,7 @@
                             <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_publication_type"/>
                                 <input type="hidden" name="publicationTypeId" value="${publicationType.publicationTypeId}">
-                                <p>${requestScope.result}</p>
+                                <p>${requestScope.message}</p>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">${Name}</label>
                                     <div class="col-sm-10">

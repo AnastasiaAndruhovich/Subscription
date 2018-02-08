@@ -51,7 +51,7 @@
             <div class="col-10">
                 <div class="sign-up card">
                     <h1 class="title" id="registerTitle">${RegisterForm}</h1>
-                    <div class="error-sign-up">${requestScope.errorSignUp}</div>
+                    <div class="error-sign-up">${requestScope.message}</div>
                     <div class="row">
                         <div class="col-12">
                             <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">

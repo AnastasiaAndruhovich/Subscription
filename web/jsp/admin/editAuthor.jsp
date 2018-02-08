@@ -51,7 +51,7 @@
                                   action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_author"/>
                                 <input type="hidden" name="authorId" value="${author.authorId}">
-                                <p>${requestScope.result}</p>
+                                <p>${requestScope.message}</p>
                                 <div class="form-group row">
                                     <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                                     <div class="col-sm-10">

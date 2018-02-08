@@ -30,7 +30,7 @@
             <div class="col-2"></div>
             <div class="col-8">
                 <c:choose>
-                    <c:when test="${payments!=null}">
+                    <c:when test="${requestScope.payments!=null}">
                         <table class="table table-bordered">
                             <thead>
                             <tr>
@@ -42,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="payment" items="${paymetns}">
+                                <c:forEach var="payment" items="${requestScope.paymetns}">
                                     <tr>
                                         <td>${payment.paymentNumber}</td>
                                         <td>
@@ -57,7 +57,7 @@
                         </table>
                     </c:when>
                     <c:otherwise>
-                        <p>${infromationIsAbsent}</p>
+                        <p>${InformationIsAbsent}</p>
                     </c:otherwise>
                 </c:choose>
             </div>

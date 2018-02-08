@@ -67,7 +67,7 @@
                             <div class="publication card">
                                 <c:choose>
                                     <c:when test="${publication!=null}">
-                                        <p>${requestScope.successfulAddPublication}</p>
+                                        <p>${requestScope.message}</p>
                                         <p>${Name}: ${publication.name}</p>
                                         <p>${Type}: ${publication.publicationType.name}</p>
                                         <p>${Genre}: ${publication.genre.name}</p>
