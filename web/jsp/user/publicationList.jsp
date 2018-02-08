@@ -24,7 +24,7 @@
 <fmt:message bundle="${loc}" key="label.moneyUnit" var="MoneyUnit"/>
 <fmt:message bundle="${loc}" key="label.description" var="Description"/>
 <fmt:message bundle="${loc}" key="label.name" var="Name"/>
-<fmt:message bundle="${loc}" key="label.subscribe" var="Subscribe"/>
+<fmt:message bundle="${loc}" key="button.subscribe" var="Subscribe"/>
 <fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">

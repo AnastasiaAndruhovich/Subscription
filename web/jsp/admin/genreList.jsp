@@ -49,7 +49,7 @@
                             <c:forEach var="genre" items="${requestScope.genres}">
                                 <div class="container">
                                     <p>
-                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
+                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
                                     </p>
                                     <p>
                                         ${Description}: ${genre.description}

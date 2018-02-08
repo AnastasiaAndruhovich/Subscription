@@ -43,7 +43,7 @@
                         <c:when test="${requestScope.publicationTypes!=null}">
                             <c:forEach var="publicationType" items="${requestScope.publicationTypes}">
                                 <div class="container">
-                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                 </div>
                             </c:forEach>
                         </c:when>

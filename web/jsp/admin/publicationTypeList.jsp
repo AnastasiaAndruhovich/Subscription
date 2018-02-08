@@ -17,8 +17,8 @@
 <fmt:setBundle basename="locale.locale" var="loc"/>
 <fmt:message bundle="${loc}" key="label.publicationTypes" var="Title"/>
 <fmt:message bundle="${loc}" key="label.publicationType" var="Name"/>
-<fmt:message bundle="${loc}" key="label.edit" var="Edit"/>
-<fmt:message bundle="${loc}" key="label.delete" var="Delete"/>
+<fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
+<fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
 <fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
@@ -45,7 +45,7 @@
                         <c:when test="${requestScope.publicationTypes!=null}">
                             <c:forEach var="publicationType" items="${requestScope.publicationTypes}">
                                 <div class="container">
-                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                     <div class="row">
                                         <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                             <input type="hidden" name="command" value="parse_publication_type"/>

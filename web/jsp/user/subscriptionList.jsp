@@ -37,7 +37,7 @@
 
 <html lang="en">
 <head>
-    <title>Subscriptions</title>
+    <title>${Title}</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +48,6 @@
 
     <style><%@include file="../../css/style.css"%></style>
     <style><%@include file="../../css/tableStyle.css"%></style>
-    <%@ page import="java.util.Date" %>
 </head>
 <body>
 <ctg:role/>

@@ -42,7 +42,7 @@
                         <c:when test="${requestScope.authors!=null}">
                             <c:forEach var="author" items="${requestScope.authors}">
                                 <p>
-                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publications_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>
                                 </p>
                             </c:forEach>
                         </c:when>
