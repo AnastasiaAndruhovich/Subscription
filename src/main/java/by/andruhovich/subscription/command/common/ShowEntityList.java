@@ -259,6 +259,7 @@ public class ShowEntityList {
         SubscriptionService subscriptionService = new SubscriptionService();
 
         final String USER_ID_ATTRIBUTE = "userId";
+        final String CLIENT_ID = "clientId";
         final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
         final String CURRENT_DATE_ATTRIBUTE = "currentDate";
 
@@ -270,6 +271,9 @@ public class ShowEntityList {
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
         String userId = request.getParameter(USER_ID_ATTRIBUTE);
+        if (userId == null) {
+            userId = ((Integer) request.getSession().getAttribute(CLIENT_ID)).toString();
+        }
         Date date = Calendar.getInstance().getTime();
         request.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
 

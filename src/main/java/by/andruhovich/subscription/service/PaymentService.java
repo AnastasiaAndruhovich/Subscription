@@ -17,7 +17,6 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionFactory;
 
 import java.sql.Connection;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class PaymentService extends BaseService {
 
         int intSubscriptionId = Integer.parseInt(subscriptionId);
         int intUserId = Integer.parseInt(userId);
-        Date date = Calendar.getInstance().getTime();
+        Date date = new Date();
 
         try {
             connection = connectionFactory.getConnection();
@@ -53,6 +52,44 @@ public class PaymentService extends BaseService {
             }
             return payment;
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public List<Payment> findPaymentByUserId(String userId, String pageNumber) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int intUserId = Integer.parseInt(userId);
+
+        int number = Integer.parseInt(pageNumber);
+        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+
+        try {
+            connection = connectionFactory.getConnection();
+            PaymentManagerDAO paymentManagerDAO = new PaymentDAO(connection);
+            List<Payment> payments = paymentManagerDAO.findPaymentsByUserId(intUserId, startIndex, endIndex);
+            return FillOutEntityService.fillOutPaymentList(payments);
+        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+
+    }
+
+    public int findPaymentPageCount() throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        try {
+            connection = connectionFactory.getConnection();
+            PaymentDAO paymentDAO = new PaymentDAO(connection);
+            int count = paymentDAO.findEntityCount();
+            return (int)Math.ceil((double)(count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             connectionFactory.returnConnection(connection);

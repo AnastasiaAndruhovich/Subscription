@@ -2,10 +2,7 @@ package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.dao.*;
 import by.andruhovich.subscription.dao.impl.*;
-import by.andruhovich.subscription.entity.Author;
-import by.andruhovich.subscription.entity.Publication;
-import by.andruhovich.subscription.entity.Subscription;
-import by.andruhovich.subscription.entity.User;
+import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -91,7 +88,29 @@ class FillOutEntityService {
         }
     }
 
-    private static Subscription checkSubscriptionActive(Subscription subscription) throws ServiceTechnicalException {
+    static List<Payment> fillOutPaymentList(List<Payment> payments) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+
+        try {
+            connection = connectionFactory.getConnection();
+            PaymentManagerDAO paymentManagerDAO = new PaymentDAO(connection);
+            for (Payment payment : payments) {
+                Subscription subscription = paymentManagerDAO.findSubscriptionByPaymentNumber(payment.getPaymentNumber());
+                LinkedList<Subscription> subscriptions = new LinkedList<>();
+                subscriptions.add(subscription);
+                subscription = fillOutSubscriptionList(subscriptions).get(0);
+                payment.setSubscription(subscription);
+            }
+            return payments;
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    private static void checkSubscriptionActive(Subscription subscription) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         Date date = Calendar.getInstance().getTime();
@@ -108,7 +127,6 @@ class FillOutEntityService {
                 connectionFactory.returnConnection(connection);
             }
         }
-        return subscription;
     }
 
     private static List<Author> correctAuthorList(List<Author> authors) {

@@ -6,6 +6,7 @@ import by.andruhovich.subscription.command.account.TakeLoanCommand;
 import by.andruhovich.subscription.command.author.*;
 import by.andruhovich.subscription.command.genre.*;
 import by.andruhovich.subscription.command.payment.AddPaymentCommand;
+import by.andruhovich.subscription.command.payment.FindPaymentByUserCommand;
 import by.andruhovich.subscription.command.publication.*;
 import by.andruhovich.subscription.command.publicationtype.*;
 import by.andruhovich.subscription.command.subscription.AddSubscriptionCommand;
@@ -63,6 +64,7 @@ public class CommandMap {
         commandMap.put(CommandType.FIND_USER, new FindUserCommand());
         commandMap.put(CommandType.UPDATE_USER, new UpdateUserCommand());
         commandMap.put(CommandType.CHANGE_PASSWORD, new ChangePasswordCommand());
+        commandMap.put(CommandType.FIND_PAYMENT_BY_USER, new FindPaymentByUserCommand());
     }
 
     private CommandMap() {}

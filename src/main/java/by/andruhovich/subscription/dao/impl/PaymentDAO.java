@@ -23,7 +23,7 @@ public class PaymentDAO extends PaymentManagerDAO {
     private static final String SELECT_LAST_INSERT_ID = "SELECT payment_number FROM payments ORDER BY payment_number " +
             "DESC LIMIT 1";
     private static final String DELETE_PAYMENT_BY_ID = "DELETE FROM payments WHERE payment_number = ?";
-    private static final String SELECT_COUNT = "SELECT COUNT(payment_id) AS count FROM payments";
+    private static final String SELECT_COUNT = "SELECT COUNT(payment_number) AS count FROM payments";
     private static final String SELECT_PAYMENT_BY_ID = "SELECT payment_number, sum, date, statement FROM payments " +
             "WHERE payment_number = ?";
     private static final String SELECT_ALL_PAYMENTS = "SELECT payment_number, sum, date, statement FROM payments " +
@@ -36,6 +36,9 @@ public class PaymentDAO extends PaymentManagerDAO {
             "WHERE payment_number = ?";
     private static final String SELECT_PAYMENTS_BY_SUBSCRIPTION_ID = "SELECT payment_number, sum, date, statement " +
             "FROM payments WHERE subscription_id = ? ORDER BY subscription_id DESC LIMIT ?, ?";
+    private static final String SELECT_PAYMENTS_BY_USER_ID = "SELECT p.payment_number, p.sum, p.date, p.statement " +
+            "FROM payments p JOIN subscriptions s ON p.subscription_id = s.subscription_id WHERE s.user_id = ? " +
+            "ORDER BY p.payment_number DESC LIMIT ?, ?";
 
     private static final Logger LOGGER = LogManager.getLogger(PaymentDAO.class);
 
@@ -180,6 +183,27 @@ public class PaymentDAO extends PaymentManagerDAO {
             preparedStatement.setInt(3, endIndex);
             ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.log(Level.INFO, "Request for find payments by subscription id - succeed");
+            PaymentMapper paymentMapper = new PaymentMapper();
+            return paymentMapper.mapResultSetToEntity(resultSet);
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
+    @Override
+    public List<Payment> findPaymentsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find payments by user id");
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PAYMENTS_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, startIndex);
+            preparedStatement.setInt(3, endIndex);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            LOGGER.log(Level.INFO, "Request for find payments by user id - succeed");
             PaymentMapper paymentMapper = new PaymentMapper();
             return paymentMapper.mapResultSetToEntity(resultSet);
         } catch (SQLException e) {

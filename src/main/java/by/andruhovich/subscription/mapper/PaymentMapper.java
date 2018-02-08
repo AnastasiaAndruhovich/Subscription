@@ -23,7 +23,7 @@ public class PaymentMapper implements EntityMapper<Payment> {
                 int paymentNumber = resultSet.getInt("payment_number");
                 BigDecimal sum = resultSet.getBigDecimal("sum");
                 java.util.Date date = new java.util.Date(resultSet.getDate("date").getTime());
-                boolean statement = typeConverter.convertStringToBoolean(resultSet.getString("subscription_is_active"));
+                boolean statement = typeConverter.convertStringToBoolean(resultSet.getString("statement"));
                 payment = new Payment(paymentNumber, sum, date, statement);
                 subscriptions.add(payment);
             }
