@@ -140,8 +140,6 @@ To change this template use File | Settings | File Templates.
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
             <a href="${pageContext.servletContext.contextPath}/controller?command=logout&pageNumber=1" type="button"
                class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>
             <div class="dropdown open">

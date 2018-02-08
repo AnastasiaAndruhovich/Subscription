@@ -47,17 +47,17 @@ To change this template use File | Settings | File Templates.
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a href="controller?command=show_publications&pageNumber=1" class="nav-link">${Publications}</a>
+            <li class="nav-item">
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1" class="nav-link">${Publications}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_authors&pageNumber=1" class="nav-link">${Authors}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=1" class="nav-link">${Authors}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_genres&pageNumber=1" class="nav-link">${Genres}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_genres&pageNumber=1" class="nav-link">${Genres}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">${Subscription}</a>
@@ -67,10 +67,8 @@ To change this template use File | Settings | File Templates.
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
-            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Searсh</button>
-            <a href="../../jsp/user/login.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${Login}</a>
-            <a href="../../jsp/user/signUp.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${SignUp}</a>
+            <a href="${pageContext.servletContext.contextPath}/jsp/user/login.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${Login}</a>
+            <a href="${pageContext.servletContext.contextPath}/jsp/user/signUp.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${SignUp}</a>
         </form>
     </div>
 </nav>
