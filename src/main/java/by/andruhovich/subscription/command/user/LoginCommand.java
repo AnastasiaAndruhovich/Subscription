@@ -25,7 +25,6 @@ public class LoginCommand extends BaseCommand {
     private static final String PASSWORD = "password";
 
     private static final String ERROR_LOGIN_MESSAGE = "message.errorLogin";
-    private static final String ERROR_LOGIN_ATTRIBUTE = "errorLogin";
 
     private static final String LOGIN_PAGE = "path.page.user.login";
 
@@ -50,7 +49,7 @@ public class LoginCommand extends BaseCommand {
                 page = ShowEntityList.showPublicationList(request, response);
             } else {
                 String errorLoginMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
-                request.setAttribute(ERROR_LOGIN_ATTRIBUTE, errorLoginMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorLoginMessage);
                 page = pageManager.getProperty(LOGIN_PAGE);
             }
         } catch (ServiceTechnicalException e) {

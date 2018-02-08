@@ -21,7 +21,6 @@ public class AddGenreCommand extends BaseCommand {
 
     private static final String NAME_ATTRIBUTE = "name";
     private static final String DESCRIPTION_ATTRIBUTE = "description";
-    private static final String RESULT_ADD_GENRE_ATTRIBUTE = "result";
 
     private static final String SUCCESSFUL_ADD_GENRE_MESSAGE = "message.successfulAddGenre";
     private static final String ERROR_ADD_GENRE_MESSAGE = "message.errorAddGenre";
@@ -42,10 +41,10 @@ public class AddGenreCommand extends BaseCommand {
             int genreId = genreService.addGenre(name, description);
             if (genreId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_GENRE_MESSAGE);
-                request.setAttribute(RESULT_ADD_GENRE_ATTRIBUTE, successfulAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_GENRE_MESSAGE);
-                request.setAttribute(RESULT_ADD_GENRE_ATTRIBUTE, errorAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
             }
             page = pageManager.getProperty(ADD_GENRE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

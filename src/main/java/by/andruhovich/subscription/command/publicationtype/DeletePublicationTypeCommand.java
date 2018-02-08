@@ -19,7 +19,6 @@ public class DeletePublicationTypeCommand extends BaseCommand {
     private PublicationTypeService publicationTypeService = new PublicationTypeService();
 
     private static final String PUBLICATION_TYPE_ID_ATTRIBUTE = "publicationTypeId";
-    private static final String RESULT_DELETE_PUBLICATION_TYPE_ATTRIBUTE = "result";
 
     private static final String ERROR_DELETE_PUBLICATION_TYPE_MESSAGE = "message.errorDeletePublicationType";
 
@@ -35,7 +34,7 @@ public class DeletePublicationTypeCommand extends BaseCommand {
         try {
             if (!publicationTypeService.deletePublicationType(genreId)) {
                 String errorDeleteAuthorMessage = localeManager.getProperty(ERROR_DELETE_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(RESULT_DELETE_PUBLICATION_TYPE_ATTRIBUTE, errorDeleteAuthorMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
             }
             return ShowEntityList.showPublicationTypeList(request, response);
         } catch (ServiceTechnicalException e) {

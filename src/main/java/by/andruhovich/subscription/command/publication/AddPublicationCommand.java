@@ -4,8 +4,8 @@ import by.andruhovich.subscription.command.BaseCommand;
 import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.manager.LocaleManager;
+import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.PublicationService;
 import by.andruhovich.subscription.validator.ServiceValidator;
 import org.apache.logging.log4j.Level;
@@ -33,8 +33,6 @@ public class AddPublicationCommand extends BaseCommand {
     private static final String DESCRIPTION_ATTRIBUTE = "description";
     private static final String PRICE_ATTRIBUTE = "price";
     private static final String PUBLICATION_ATTRIBUTE = "publication";
-    private static final String SUCCESSFUL_ADD_PUBLICATION_ATTRIBUTE = "successfulAddPublication";
-    private static final String ERROR_ADD_PUBLICATION_ATTRIBUTE = "errorAddPublication";
 
     private static final String SUCCESSFUL_ADD_PUBLICATION_MESSAGE = "message.successfulAddPublication";
     private static final String ERROR_ADD_PUBLICATION_MESSAGE = "message.errorAddPublication";
@@ -66,7 +64,7 @@ public class AddPublicationCommand extends BaseCommand {
         try {
             if (!ServiceValidator.verifyPrice(price)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(ERROR_ADD_PUBLICATION_ATTRIBUTE, incorrectPriceMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
                 return page;
             }
@@ -75,13 +73,13 @@ public class AddPublicationCommand extends BaseCommand {
                     genre, description, price);
             if (publicationId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_PUBLICATION_MESSAGE);
-                request.setAttribute(SUCCESSFUL_ADD_PUBLICATION_ATTRIBUTE, successfulAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
                 Publication publication = publicationService.findPublicationById(publicationId);
                 request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
                 page = pageManager.getProperty(ADD_PUBLICATION_PICTURE_ADMIN_PAGE);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_PUBLICATION_MESSAGE);
-                request.setAttribute(ERROR_ADD_PUBLICATION_ATTRIBUTE, errorAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
                 page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
             }
 

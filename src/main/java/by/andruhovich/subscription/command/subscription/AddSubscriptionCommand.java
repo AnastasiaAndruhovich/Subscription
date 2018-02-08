@@ -29,7 +29,6 @@ public class AddSubscriptionCommand extends BaseCommand {
     private static final String CLIENT_ID_ATTRIBUTE = "clientId";
     private static final String PUBLICATION_ID_ATTRIBUTE = "publicationId";
     private static final String SUBSCRIPTION_ATTRIBUTE = "subscription";
-    private static final String ERROR_SUBSCRIBE_ATTRIBUTE = "errorSubscribe";
 
     private static final String ERROR_SUBSCRIBE_MESSAGE = "message.errorNoRights";
     private static final String ERROR_BLOCK_MESSAGE = "message.errorBlockedUser";
@@ -50,12 +49,12 @@ public class AddSubscriptionCommand extends BaseCommand {
         try {
             if (clientType.equals(ClientType.GUEST)) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_SUBSCRIBE_MESSAGE);
-                request.setAttribute(ERROR_SUBSCRIBE_ATTRIBUTE, errorSubscribeMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
                 return ShowEntityList.showPublicationList(request, response);
             }
             if (userService.isUserBlocked(clientId.toString())) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
-                request.setAttribute(ERROR_SUBSCRIBE_ATTRIBUTE, errorSubscribeMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
                 return ShowEntityList.showPublicationList(request, response);
             }
 

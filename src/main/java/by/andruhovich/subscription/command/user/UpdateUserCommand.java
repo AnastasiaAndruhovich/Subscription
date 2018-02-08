@@ -30,7 +30,6 @@ public class UpdateUserCommand extends BaseCommand {
     private static final String ADDRESS_ATTRIBUTE = "address";
     private static final String CITY_ATTRIBUTE = "city";
     private static final String POSTAL_INDEX_ATTRIBUTE = "postalIndex";
-    private static final String ERROR_UPDATE_USER_ATTRIBUTE = "result";
 
     private static final String ERROR_UPDATE_USER_MESSAGE = "message.errorUpdateUser";
     private static final String ERROR_LOGIN_MESSAGE = "message.errorLogin";
@@ -65,20 +64,20 @@ public class UpdateUserCommand extends BaseCommand {
             if (!ServiceValidator.verifyLogin(login)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
-                request.setAttribute(ERROR_UPDATE_USER_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
 
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_BIRTH_DATE_MESSAGE);
-                request.setAttribute(ERROR_UPDATE_USER_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_POSTAL_INDEX_MESSAGE);
-                request.setAttribute(ERROR_UPDATE_USER_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
 
@@ -86,7 +85,7 @@ public class UpdateUserCommand extends BaseCommand {
 
             if (!userService.updateUser(id.toString(), lastName, firstName, date, address, city, postalIndex, login)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_UPDATE_USER_MESSAGE);
-                request.setAttribute(ERROR_UPDATE_USER_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
             page = ShowEntityList.showUser(request, response);
         } catch (ServiceTechnicalException e) {

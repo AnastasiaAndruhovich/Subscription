@@ -18,7 +18,6 @@ public class DeleteGenreCommand extends BaseCommand {
     private GenreService genreService = new GenreService();
 
     private static final String GENRE_ID_ATTRIBUTE = "genreId";
-    private static final String RESULT_DELETE_GENRE_ATTRIBUTE = "result";
 
     private static final String ERROR_DELETE_GENRE_MESSAGE = "message.errorDeleteGenre";
 
@@ -34,7 +33,7 @@ public class DeleteGenreCommand extends BaseCommand {
         try {
             if (!genreService.deleteGenre(genreId)) {
                 String errorDeleteAuthorMessage = localeManager.getProperty(ERROR_DELETE_GENRE_MESSAGE);
-                request.setAttribute(RESULT_DELETE_GENRE_ATTRIBUTE, errorDeleteAuthorMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
             }
             return ShowEntityList.showGenreList(request, response);
         } catch (ServiceTechnicalException e) {

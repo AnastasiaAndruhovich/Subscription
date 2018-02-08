@@ -21,7 +21,6 @@ public class TakeLoanCommand extends BaseCommand{
 
     private static final String LOAN_SUM_ATTRIBUTE = "loanSum";
     private static final String ACCOUNT_ATTRIBUTE = "account";
-    private static final String ERROR_SUM_ATTRIBUTE = "errorSum";
 
     private static final String TOO_BIG_LOAN_SUM_MESSAGE = "message.tooBigLoanSum";
     private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectMoneyFormat";
@@ -43,7 +42,7 @@ public class TakeLoanCommand extends BaseCommand{
         try {
             if (!ServiceValidator.verifyPrice(rechargeSum)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(ERROR_SUM_ATTRIBUTE, incorrectPriceMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
                 request.setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
@@ -53,7 +52,7 @@ public class TakeLoanCommand extends BaseCommand{
             Account account = accountService.takeLoan(userId.toString(), rechargeSum);
             if (account == null) {
                 String tooBigLoanSumMessage = localeManager.getProperty(TOO_BIG_LOAN_SUM_MESSAGE);
-                request.setAttribute(ERROR_SUM_ATTRIBUTE, tooBigLoanSumMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, tooBigLoanSumMessage);
                 account = accountService.findAccountByUserId(userId.toString());
             }
             request.setAttribute(ACCOUNT_ATTRIBUTE, account);

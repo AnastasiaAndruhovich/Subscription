@@ -19,7 +19,6 @@ public class BlockUserCommand extends BaseCommand {
 
     private static final String CLIENT_ID_ATTRIBUTE = "clientId";
     private static final String USER_ID_ATTRIBUTE = "userId";
-    private static final String RESULT_BLOCK_USER_ATTRIBUTE = "result";
 
     private static final String ERROR_BLOCK_MESSAGE = "message.errorBlockUser";
 
@@ -37,7 +36,7 @@ public class BlockUserCommand extends BaseCommand {
         try {
             if (!userService.blockUser(userId, adminId.toString())) {
                 String errorBlockUserMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
-                request.setAttribute(RESULT_BLOCK_USER_ATTRIBUTE, errorBlockUserMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorBlockUserMessage);
             }
             return ShowEntityList.showUserList(request, response);
         } catch (ServiceTechnicalException e) {

@@ -5,7 +5,6 @@ import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
-import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.AuthorService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +18,6 @@ public class DeleteAuthorCommand extends BaseCommand {
     private AuthorService authorService = new AuthorService();
 
     private static final String AUTHOR_ID_ATTRIBUTE = "authorId";
-    private static final String RESULT_DELETE_AUTHOR_ATTRIBUTE = "result";
 
     private static final String ERROR_DELETE_AUTHOR_MESSAGE = "message.errorDeleteAuthor";
 
@@ -35,7 +33,7 @@ public class DeleteAuthorCommand extends BaseCommand {
         try {
             if (!authorService.deleteAuthor(authorId)) {
                 String errorDeleteAuthorMessage = localeManager.getProperty(ERROR_DELETE_AUTHOR_MESSAGE);
-                request.setAttribute(RESULT_DELETE_AUTHOR_ATTRIBUTE, errorDeleteAuthorMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
             }
             return ShowEntityList.showAuthorList(request, response);
         } catch (ServiceTechnicalException e) {

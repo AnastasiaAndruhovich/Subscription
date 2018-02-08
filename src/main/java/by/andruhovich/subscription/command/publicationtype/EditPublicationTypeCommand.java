@@ -22,7 +22,6 @@ public class EditPublicationTypeCommand extends BaseCommand {
 
     private static final String PUBLICATION_TYPE_ID_ATTRIBUTE = "publicationTypeId";
     private static final String NAME_ATTRIBUTE = "name";
-    private static final String RESULT_EDIT_PUBLICATION_TYPE_ATTRIBUTE = "result";
     private static final String PUBLICATION_TYPE_ATTRIBUTE = "publicationType";
 
     private static final String SUCCESSFUL_EDIT_PUBLICATION_TYPE_MESSAGE = "message.successfulEditPublicationType";
@@ -47,10 +46,10 @@ public class EditPublicationTypeCommand extends BaseCommand {
         try {
             if (publicationTypeService.updatePublicationType(publicationTypeId, name)) {
                 String successfulEditPublicationTypeMessage = localeManager.getProperty(SUCCESSFUL_EDIT_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(RESULT_EDIT_PUBLICATION_TYPE_ATTRIBUTE, successfulEditPublicationTypeMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulEditPublicationTypeMessage);
             } else {
                 String errorEditPublicationTypeMessage = localeManager.getProperty(ERROR_EDIT_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(RESULT_EDIT_PUBLICATION_TYPE_ATTRIBUTE, errorEditPublicationTypeMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorEditPublicationTypeMessage);
             }
             page = pageManager.getProperty(EDIT_PUBLICATION_TYPE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

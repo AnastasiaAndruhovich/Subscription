@@ -21,7 +21,6 @@ public class RechargeCommand extends BaseCommand {
 
     private static final String RECHARGE_SUM_ATTRIBUTE = "rechargeSum";
     private static final String ACCOUNT_ATTRIBUTE = "account";
-    private static final String ERROR_SUM = "errorSum";
 
     private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectMoneyFormat";
 
@@ -42,7 +41,7 @@ public class RechargeCommand extends BaseCommand {
         try {
             if (!ServiceValidator.verifyPrice(rechargeSum)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(ERROR_SUM, incorrectPriceMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
                 request.setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);

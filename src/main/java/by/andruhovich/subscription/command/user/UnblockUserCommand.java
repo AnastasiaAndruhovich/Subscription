@@ -19,7 +19,6 @@ public class UnblockUserCommand extends BaseCommand {
 
     private static final String CLIENT_ID_ATTRIBUTE = "clientId";
     private static final String USER_ID_ATTRIBUTE = "userId";
-    private static final String RESULT_UNBLOCK_USER_ATTRIBUTE = "result";
 
     private static final String ERROR_UNBLOCK_MESSAGE = "message.errorUnblockUser";
 
@@ -37,7 +36,7 @@ public class UnblockUserCommand extends BaseCommand {
         try {
             if (!userService.unblockUser(userId, adminId.toString())) {
                 String errorUnblockUserMessage = localeManager.getProperty(ERROR_UNBLOCK_MESSAGE);
-                request.setAttribute(RESULT_UNBLOCK_USER_ATTRIBUTE, errorUnblockUserMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorUnblockUserMessage);
             }
             return ShowEntityList.showUserList(request, response);
         } catch (ServiceTechnicalException e) {

@@ -25,7 +25,6 @@ public class AddPaymentCommand extends BaseCommand {
 
     private static final String SUBSCRIPTION_ID_ATTRIBUTE = "subscriptionId";
     private static final String SUBSCRIPTION_ATTRIBUTE = "subscription";
-    private static final String RESULT_PAY_SUBSCRIPTION_ATTRIBUTE = "result";
 
     private static final String SUCCESSFUL_PAY_SUBSCRIPTION_MESSAGE = "message.successfulPaySubscription";
     private static final String ERROR_PAY_SUBSCRIPTION_MESSAGE = "message.errorPaySubscription";
@@ -46,11 +45,11 @@ public class AddPaymentCommand extends BaseCommand {
             Payment payment = paymentService.addPayment(clientId.toString(), subscriptionId);
             if (payment.isStatement()) {
                 String successfulPaySubscriptionMessage = localeManager.getProperty(SUCCESSFUL_PAY_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(RESULT_PAY_SUBSCRIPTION_ATTRIBUTE, successfulPaySubscriptionMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulPaySubscriptionMessage);
             }
             else {
                 String errorPaySubscriptionMessage = localeManager.getProperty(ERROR_PAY_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(RESULT_PAY_SUBSCRIPTION_ATTRIBUTE, errorPaySubscriptionMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorPaySubscriptionMessage);
             }
             Subscription subscription = subscriptionService.findSubscriptionById(subscriptionId);
             request.setAttribute(SUBSCRIPTION_ATTRIBUTE, subscription);

@@ -31,7 +31,6 @@ public class SignUpCommand extends BaseCommand {
     private static final String ADDRESS_ATTRIBUTE = "address";
     private static final String CITY_ATTRIBUTE = "city";
     private static final String POSTAL_INDEX_ATTRIBUTE = "postalIndex";
-    private static final String ERROR_SIGN_UP_ATTRIBUTE = "errorSignUp";
 
     private static final String ERROR_SIGN_UP_MESSAGE = "message.errorSignUp";
     private static final String ERROR_SIGN_UP_LOGIN_MESSAGE = "message.errorSignUpLogin";
@@ -66,31 +65,31 @@ public class SignUpCommand extends BaseCommand {
             if (!ServiceValidator.verifyLogin(login)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_LOGIN_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
             if (!ServiceValidator.verifyPassword(password)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_PASSWORD_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
             if (!ServiceValidator.confirmPassword(password, confirmPassword)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_CONFIRM_PASSWORD_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_BIRTH_DATE_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_POSTAL_INDEX_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
 
@@ -104,7 +103,7 @@ public class SignUpCommand extends BaseCommand {
             } else {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_MESSAGE);
-                request.setAttribute(ERROR_SIGN_UP_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
 
         } catch (ServiceTechnicalException e) {

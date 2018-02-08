@@ -21,7 +21,6 @@ public class ChangePasswordCommand extends BaseCommand {
     private static final String OLD_PASSWORD_ATTRIBUTE = "oldPassword";
     private static final String NEW_PASSWORD_ATTRIBUTE = "newPassword";
     private static final String REPEAT_PASSWORD_ATTRIBUTE = "repeatPassword";
-    private static final String CHANGE_PASSWORD_RESULT_ATTRIBUTE = "result";
 
     private static final String ERROR_OLD_PASSWORD_MESSAGE = "message.errorOldPassword";
     private static final String ERROR_NEW_PASSWORD_MESSAGE = "message.errorPassword";
@@ -49,24 +48,24 @@ public class ChangePasswordCommand extends BaseCommand {
             page = pageManager.getProperty(CHANGE_PASSWORD_PAGE);
             if (!userService.confirmPassword(id.toString(), oldPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_OLD_PASSWORD_MESSAGE);
-                request.setAttribute(CHANGE_PASSWORD_RESULT_ATTRIBUTE, errorChangePasswordMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
                 return page;
             }
 
             if (!ServiceValidator.verifyPassword(newPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_NEW_PASSWORD_MESSAGE);
-                request.setAttribute(CHANGE_PASSWORD_RESULT_ATTRIBUTE, errorChangePasswordMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
                 return page;
             }
             if (!ServiceValidator.confirmPassword(newPassword, repeatPassword)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_CONFIRM_PASSWORD_MESSAGE);
-                request.setAttribute(CHANGE_PASSWORD_RESULT_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return page;
             }
 
             if (!userService.changePassword(id.toString(), newPassword)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_CHANGE_PASSWORD_MESSAGE);
-                request.setAttribute(CHANGE_PASSWORD_RESULT_ATTRIBUTE, errorSignUpMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

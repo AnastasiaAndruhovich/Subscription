@@ -25,7 +25,6 @@ public class EditAuthorCommand extends BaseCommand {
     private static final String FIRST_NAME_ATTRIBUTE = "firstName";
     private static final String PUBLISHER_NAME_ATTRIBUTE = "publisherName";
     private static final String AUTHOR_ATTRIBUTE = "author";
-    private static final String RESULT_EDIT_AUTHOR_ATTRIBUTE = "result";
 
     private static final String SUCCESSFUL_EDIT_AUTHOR_MESSAGE = "message.successfulEditAuthor";
     private static final String ERROR_EDIT_AUTHOR_MESSAGE = "message.errorEditAuthor";
@@ -51,10 +50,10 @@ public class EditAuthorCommand extends BaseCommand {
         try {
             if (authorService.updateAuthor(authorId, lastName, firstName, publisherName)) {
                 String successfulEditPublicationMessage = localeManager.getProperty(SUCCESSFUL_EDIT_AUTHOR_MESSAGE);
-                request.setAttribute(RESULT_EDIT_AUTHOR_ATTRIBUTE, successfulEditPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulEditPublicationMessage);
             } else {
                 String errorEditPublicationMessage = localeManager.getProperty(ERROR_EDIT_AUTHOR_MESSAGE);
-                request.setAttribute(RESULT_EDIT_AUTHOR_ATTRIBUTE, errorEditPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorEditPublicationMessage);
             }
             page = pageManager.getProperty(EDIT_AUTHOR_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

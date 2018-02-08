@@ -18,7 +18,6 @@ public class DeleteSubscriptionCommand extends BaseCommand {
     private SubscriptionService subscriptionService = new SubscriptionService();
 
     private static final String SUBSCRIPTION_ID_ATTRIBUTE = "subscriptionId";
-    private static final String RESULT_DELETE_SUBSCRIPTION_ATTRIBUTE = "result";
 
     private static final String ERROR_DELETE_SUBSCRIPTION_MESSAGE = "message.errorDeleteSubscription";
 
@@ -34,7 +33,7 @@ public class DeleteSubscriptionCommand extends BaseCommand {
         try {
             if (!subscriptionService.deleteSubscription(subscriptionId)) {
                 String errorDeleteSubscriptionMessage = localeManager.getProperty(ERROR_DELETE_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(RESULT_DELETE_SUBSCRIPTION_ATTRIBUTE, errorDeleteSubscriptionMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteSubscriptionMessage);
             }
             return ShowEntityList.showSubscriptionByUser(request, response);
         } catch (ServiceTechnicalException e) {

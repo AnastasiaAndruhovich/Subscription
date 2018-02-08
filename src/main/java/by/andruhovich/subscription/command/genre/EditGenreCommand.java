@@ -23,7 +23,6 @@ public class EditGenreCommand extends BaseCommand {
     private static final String GENRE_ID_ATTRIBUTE = "genreId";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String DESCRIPTION_ATTRIBUTE = "description";
-    private static final String RESULT_EDIT_GENRE_ATTRIBUTE = "result";
     private static final String GENRE_ATTRIBUTE = "genre";
 
     private static final String SUCCESSFUL_EDIT_GENRE_MESSAGE = "message.successfulEditGenre";
@@ -49,10 +48,10 @@ public class EditGenreCommand extends BaseCommand {
         try {
             if (genreService.updateGenre(genreId, name, description)) {
                 String successfulEditGenreMessage = localeManager.getProperty(SUCCESSFUL_EDIT_GENRE_MESSAGE);
-                request.setAttribute(RESULT_EDIT_GENRE_ATTRIBUTE, successfulEditGenreMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulEditGenreMessage);
             } else {
                 String errorEditGenreMessage = localeManager.getProperty(ERROR_EDIT_GENRE_MESSAGE);
-                request.setAttribute(RESULT_EDIT_GENRE_ATTRIBUTE, errorEditGenreMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorEditGenreMessage);
             }
             page = pageManager.getProperty(EDIT_GENRE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

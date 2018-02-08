@@ -10,5 +10,7 @@ public abstract class BaseCommand {
     protected static final String CLIENT_ID = "clientId";
     protected static final String LOCALE = "locale";
 
+    protected static final String MESSAGE_ATTRIBUTE = "message";
+
     public abstract String execute(HttpServletRequest request, HttpServletResponse response);
 }

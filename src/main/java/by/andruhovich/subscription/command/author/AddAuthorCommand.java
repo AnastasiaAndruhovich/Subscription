@@ -1,7 +1,6 @@
 package by.andruhovich.subscription.command.author;
 
 import by.andruhovich.subscription.command.BaseCommand;
-import by.andruhovich.subscription.command.genre.AddGenreCommand;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
@@ -23,7 +22,6 @@ public class AddAuthorCommand extends BaseCommand {
     private static final String LAST_NAME_ATTRIBUTE = "lastName";
     private static final String FIRST_NAME_ATTRIBUTE = "firstName";
     private static final String PUBLISHER_NAME_ATTRIBUTE = "publisherName";
-    private static final String RESULT_ADD_AUTHOR_ATTRIBUTE = "result";
 
     private static final String SUCCESSFUL_ADD_AUTHOR_MESSAGE = "message.successfulAddAuthor";
     private static final String ERROR_ADD_AUTHOR_MESSAGE = "message.errorAddAuthor";
@@ -45,10 +43,10 @@ public class AddAuthorCommand extends BaseCommand {
             int authorId = authorService.addAuthor(firstName, lastName, publisherName);
             if (authorId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_AUTHOR_MESSAGE);
-                request.setAttribute(RESULT_ADD_AUTHOR_ATTRIBUTE, successfulAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_AUTHOR_MESSAGE);
-                request.setAttribute(RESULT_ADD_AUTHOR_ATTRIBUTE, errorAddedPublicationMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
             }
             page = pageManager.getProperty(ADD_AUTHOR_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {
