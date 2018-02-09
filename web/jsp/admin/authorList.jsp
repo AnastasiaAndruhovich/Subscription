@@ -40,9 +40,9 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    ${sessionScope.message}
                     <c:choose>
                         <c:when test="${sessionScope.authors!=null}">
+                            ${sessionScope.message}
                             <c:forEach var="author" items="${sessionScope.authors}">
                                 <p>
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName} ${author.publisherName}</a>

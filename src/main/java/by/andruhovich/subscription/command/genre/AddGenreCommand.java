@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class AddGenreCommand extends BaseCommand {
@@ -35,6 +36,8 @@ public class AddGenreCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String name = request.getParameter(NAME_ATTRIBUTE);
         String description = request.getParameter(DESCRIPTION_ATTRIBUTE);
@@ -43,10 +46,10 @@ public class AddGenreCommand extends BaseCommand {
             int genreId = genreService.addGenre(name, description);
             if (genreId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_GENRE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_GENRE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
             }
             page = pageManager.getProperty(ADD_GENRE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

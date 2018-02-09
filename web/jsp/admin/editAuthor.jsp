@@ -45,9 +45,9 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    ${sessionScope.message}
                     <c:choose>
                         <c:when test="${author!=null}">
+                            ${sessionScope.message}
                             <form name="addForm" method="POST"
                                   action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_author"/>

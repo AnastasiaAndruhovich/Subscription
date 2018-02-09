@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="genre" scope="request" type="by.andruhovich.subscription.entity.Genre"/>
+    <jsp:useBean id="genre" scope="session" type="by.andruhovich.subscription.entity.Genre"/>
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
@@ -46,10 +46,10 @@
                 <div class="genre card">
                     <c:choose>
                         <c:when test="${genre!=null}">
+                            ${sessionScope.message}
                             <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_genre"/>
                                 <input type="hidden" name="genreId" value="${genre.genreId}">
-                                <p>${requestScope.message}</p>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">${Name}</label>
                                     <div class="col-sm-10">

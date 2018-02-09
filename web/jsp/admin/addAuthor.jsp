@@ -43,9 +43,9 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
+                    ${sessionScope.message}
                     <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="add_author"/>
-                        <p>${sessionScope.message}</p>
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">

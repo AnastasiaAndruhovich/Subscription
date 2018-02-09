@@ -45,8 +45,9 @@
             <div class="col-10">
                 <div class="genre card">
                     <c:choose>
-                        <c:when test="${requestScope.genres!=null}">
-                            <c:forEach var="genre" items="${requestScope.genres}">
+                        <c:when test="${sessionScope.genres!=null}">
+                            ${sessionScope.message}
+                            <c:forEach var="genre" items="${sessionScope.genres}">
                                 <div class="container">
                                     <p>
                                         <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>

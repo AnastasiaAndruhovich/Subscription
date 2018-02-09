@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class EditGenreCommand extends BaseCommand {
@@ -38,6 +39,8 @@ public class EditGenreCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String genreId = request.getParameter(GENRE_ID_ATTRIBUTE);
         String name = request.getParameter(NAME_ATTRIBUTE);
@@ -45,15 +48,15 @@ public class EditGenreCommand extends BaseCommand {
 
         int id = Integer.parseInt(genreId);
         Genre genre = new Genre(id, name, description);
-        request.setAttribute(GENRE_ATTRIBUTE, genre);
+        session.setAttribute(GENRE_ATTRIBUTE, genre);
 
         try {
             if (genreService.updateGenre(genreId, name, description)) {
                 String successfulEditGenreMessage = localeManager.getProperty(SUCCESSFUL_EDIT_GENRE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulEditGenreMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulEditGenreMessage);
             } else {
                 String errorEditGenreMessage = localeManager.getProperty(ERROR_EDIT_GENRE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorEditGenreMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorEditGenreMessage);
             }
             page = pageManager.getProperty(EDIT_GENRE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

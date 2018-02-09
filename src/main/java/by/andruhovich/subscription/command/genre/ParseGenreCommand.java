@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ParseGenreCommand extends BaseCommand {
     private static final String EDIT_GENRE_ADMIN_PAGE = "path.page.admin.editGenre";
@@ -27,6 +28,7 @@ public class ParseGenreCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String genreId = request.getParameter(GENRE_ID_ATTRIBUTE);
         String name = request.getParameter(NAME_ATTRIBUTE);
@@ -34,7 +36,7 @@ public class ParseGenreCommand extends BaseCommand {
 
         int id = Integer.parseInt(genreId);
         Genre genre = new Genre(id, name, description);
-        request.setAttribute(GENRE_ATTRIBUTE, genre);
+        session.setAttribute(GENRE_ATTRIBUTE, genre);
 
         try {
             page = pageManager.getProperty(EDIT_GENRE_ADMIN_PAGE);
