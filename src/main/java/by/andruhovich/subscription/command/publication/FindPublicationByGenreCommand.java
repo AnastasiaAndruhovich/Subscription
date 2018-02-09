@@ -26,8 +26,8 @@ public class FindPublicationByGenreCommand extends BaseCommand{
     private static final String GENRE_ID_ATTRIBUTE = "genreId";
     private static final String PUBLICATION_LIST_ATTRIBUTE = "publications";
 
-    private static final String PUBLICATION_USER_PAGE = "path.page.user.publicationList";
-    private static final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationList";
+    private static final String PUBLICATION_USER_PAGE = "path.page.user.publicationByGenre";
+    private static final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationByGenre";
 
     private static final Logger LOGGER = LogManager.getLogger(FindPublicationByGenreCommand.class);
 
@@ -41,11 +41,12 @@ public class FindPublicationByGenreCommand extends BaseCommand{
         String pageNumber = request.getParameter(PAGE_NUMBER_ATTRIBUTE);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
         String genreId = request.getParameter(GENRE_ID_ATTRIBUTE);
+        session.setAttribute(GENRE_ID_ATTRIBUTE, genreId);
 
         try {
             List<Publication> publications = publicationService.findPublicationByGenreId(genreId, pageNumber);
             if (!publications.isEmpty()) {
-                int pageCount = publicationService.findPublicationPageCount();
+                int pageCount = publicationService.findPublicationByGenreIdPageCount(genreId);
                 session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
                 session.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
                 session.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
