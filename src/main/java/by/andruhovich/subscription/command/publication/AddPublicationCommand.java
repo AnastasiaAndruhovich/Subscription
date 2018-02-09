@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +49,8 @@ public class AddPublicationCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String name = request.getParameter(NAME_ATTRIBUTE);
         String publicationType = request.getParameter(PUBLICATION_TYPE_ATTRIBUTE);
@@ -66,22 +69,22 @@ public class AddPublicationCommand extends BaseCommand {
         try {
             if (!ServiceValidator.verifyPrice(price)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
-                return new CommandResult(TransitionType.REDIRECT, page);
+                return new CommandResult(TransitionType.FORWARD, page);
             }
 
             int publicationId = publicationService.addPublication(name, firstNames, lastNames, publisherName, publicationType,
                     genre, description, price);
             if (publicationId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_PUBLICATION_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
                 Publication publication = publicationService.findPublicationById(publicationId);
-                request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
+                session.setAttribute(PUBLICATION_ATTRIBUTE, publication);
                 page = pageManager.getProperty(ADD_PUBLICATION_PICTURE_ADMIN_PAGE);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_PUBLICATION_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
                 page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
             }
 

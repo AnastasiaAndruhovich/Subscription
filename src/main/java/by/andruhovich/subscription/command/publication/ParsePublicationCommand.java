@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ParsePublicationCommand extends BaseCommand{
     private PublicationService publicationService = new PublicationService();
@@ -28,13 +29,15 @@ public class ParsePublicationCommand extends BaseCommand{
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
 
         try {
             int id = Integer.parseInt(publicationId);
             Publication publication = publicationService.findPublicationById(id);
-            request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
+            session.setAttribute(PUBLICATION_ATTRIBUTE, publication);
             page = pageManager.getProperty(EDIT_PUBLICATION_ADMIN_PAGE);
         } catch (MissingResourceTechnicalException e) {
             LOGGER.log(Level.ERROR, e.getMessage());

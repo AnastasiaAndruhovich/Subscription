@@ -35,6 +35,8 @@ public class FindPublicationByPublicationTypeCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String pageNumber = request.getParameter(PAGE_NUMBER_ATTRIBUTE);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -44,12 +46,11 @@ public class FindPublicationByPublicationTypeCommand extends BaseCommand {
             List<Publication> publications = publicationService.findPublicationByPublicationTypeId(publicationTypeId, pageNumber);
             if (!publications.isEmpty()) {
                 int pageCount = publicationService.findPublicationPageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
-                request.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
-                request.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
+                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
+                session.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
+                session.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
             }
 
-            HttpSession session = request.getSession();
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
                 page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
