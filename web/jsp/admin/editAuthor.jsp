@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="author" scope="request" type="by.andruhovich.subscription.entity.Author"/>
+    <jsp:useBean id="author" scope="session" type="by.andruhovich.subscription.entity.Author"/>
     <style><%@include file="../../css/style.css" %></style>
 </head>
 <body>
@@ -45,13 +45,13 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
+                    ${sessionScope.message}
                     <c:choose>
                         <c:when test="${author!=null}">
                             <form name="addForm" method="POST"
                                   action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="edit_author"/>
                                 <input type="hidden" name="authorId" value="${author.authorId}">
-                                <p>${requestScope.message}</p>
                                 <div class="form-group row">
                                     <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                                     <div class="col-sm-10">

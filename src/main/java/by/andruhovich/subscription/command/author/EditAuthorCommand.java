@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class EditAuthorCommand extends BaseCommand {
@@ -39,6 +40,8 @@ public class EditAuthorCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String authorId = request.getParameter(AUTHOR_ID_ATTRIBUTE);
         String lastName = request.getParameter(LAST_NAME_ATTRIBUTE);
@@ -47,15 +50,15 @@ public class EditAuthorCommand extends BaseCommand {
 
         int id = Integer.parseInt(authorId);
         Author author = new Author(id, publisherName, lastName, firstName);
-        request.setAttribute(AUTHOR_ATTRIBUTE, author);
+        session.setAttribute(AUTHOR_ATTRIBUTE, author);
 
         try {
             if (authorService.updateAuthor(authorId, lastName, firstName, publisherName)) {
                 String successfulEditPublicationMessage = localeManager.getProperty(SUCCESSFUL_EDIT_AUTHOR_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulEditPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulEditPublicationMessage);
             } else {
                 String errorEditPublicationMessage = localeManager.getProperty(ERROR_EDIT_AUTHOR_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorEditPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorEditPublicationMessage);
             }
             page = pageManager.getProperty(EDIT_AUTHOR_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {

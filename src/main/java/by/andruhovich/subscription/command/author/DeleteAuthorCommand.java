@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class DeleteAuthorCommand extends BaseCommand {
@@ -29,13 +30,15 @@ public class DeleteAuthorCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String authorId = request.getParameter(AUTHOR_ID_ATTRIBUTE);
 
         try {
             if (!authorService.deleteAuthor(authorId)) {
                 String errorDeleteAuthorMessage = localeManager.getProperty(ERROR_DELETE_AUTHOR_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
             }
             return new CommandResult(TransitionType.REDIRECT, ShowEntityList.showAuthorList(request, response));
         } catch (ServiceTechnicalException e) {

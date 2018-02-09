@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ParseAuthorCommand extends BaseCommand {
     private static final String EDIT_AUTHOR_ADMIN_PAGE = "path.page.admin.editAuthor";
@@ -28,6 +29,8 @@ public class ParseAuthorCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String authorId = request.getParameter(AUTHOR_ID_ATTRIBUTE);
         String lastName = request.getParameter(LAST_NAME_ATTRIBUTE);
@@ -36,7 +39,7 @@ public class ParseAuthorCommand extends BaseCommand {
 
         int id = Integer.parseInt(authorId);
         Author author = new Author(id, publisherName, lastName, firstName);
-        request.setAttribute(AUTHOR_ATTRIBUTE, author);
+        session.setAttribute(AUTHOR_ATTRIBUTE, author);
 
         try {
             page = pageManager.getProperty(EDIT_AUTHOR_ADMIN_PAGE);
