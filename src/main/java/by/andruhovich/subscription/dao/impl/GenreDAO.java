@@ -127,6 +127,9 @@ public class GenreDAO extends GenreManagerDAO {
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update genre - succeed");
             return true;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Genre is already exist");
+            return false;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {

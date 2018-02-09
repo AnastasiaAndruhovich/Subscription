@@ -130,6 +130,9 @@ public class AuthorDAO extends AuthorManagerDAO {
             preparedStatement.executeUpdate();
             LOGGER.log(Level.INFO, "Request for update author - succeed");
             return true;
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            LOGGER.log(Level.INFO, "Author is already exist");
+            return false;
         } catch (SQLException e) {
             throw new DAOTechnicalException("Execute statement error. ", e);
         } finally {
