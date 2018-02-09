@@ -68,10 +68,12 @@
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
-                                                        ${Authors}:
-                                                        <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
-                                                        </c:forEach>
+                                                        <p>
+                                                            ${Authors}:
+                                                            <c:forEach var="author" items="${publication.authors}">
+                                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            </c:forEach>
+                                                        </p>
                                                     </div>
                                                     <p>
                                                         ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>

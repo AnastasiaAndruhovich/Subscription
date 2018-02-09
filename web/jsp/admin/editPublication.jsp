@@ -8,7 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="customtag"%>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -41,7 +41,9 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <jsp:useBean id="publication" scope="session" type="by.andruhovich.subscription.entity.Publication"/>
-    <style><%@include file="../../css/style.css"%></style>
+    <style>
+        <%@include file="../../css/style.css" %>
+    </style>
 </head>
 <body>
 <ctg:role/>
@@ -55,49 +57,76 @@
                     <c:choose>
                         <c:when test="${publication!=null}">
                             <div class="publication card">
-                                <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                <form name="editForm" method="POST"
+                                      action="${pageContext.servletContext.contextPath}/controller">
                                     <input type="hidden" name="command" value="edit_publication"/>
                                     <input type="hidden" name="publicationId" value="${publication.publicationId}"/>
                                     <p>${sessionScope.message}</p>
                                     <div class="form-group row">
                                         <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="name" id="name" required="" value="${publication.name}"/>
+                                            <input type="text" class="form-control" name="name" id="name" required=""
+                                                   value="${publication.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   title="Publication name must be between 1 and 30 characters, contain only
+                                                   alphabetic characters."/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="publicationType" class="col-sm-3 col-form-label">${Type}</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" name="publicationType"
-                                                   id="publicationType" required="" value="${publication.publicationType.name}"/>
+                                                   id="publicationType" required=""
+                                                   value="${publication.publicationType.name}"
+                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   title="Publication type must be between 1 and 30 characters, contain only
+                                                   alphabetic characters."/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="genre" class="col-sm-3 col-form-label">${Genre}</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="genre" id="genre" required="" value="${publication.genre.name}"/>
+                                            <input type="text" class="form-control" name="genre" id="genre" required=""
+                                                   value="${publication.genre.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   title="Genre must be between 1 and 30 characters, contain only
+                                                   alphabetic characters."/>
                                         </div>
                                     </div>
                                     <c:choose>
                                         <c:when test="${publication.authors!=null}">
                                             <c:forEach var="author" items="${publication.authors}">
                                                 <div class="form-group row">
-                                                    <label for="lastName" class="col-sm-3 col-form-label">${AuthorLastName}</label>
+                                                    <label for="lastName"
+                                                           class="col-sm-3 col-form-label">${AuthorLastName}</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="lastName" id="lastName" value="${author.authorLastName}"/>
+                                                        <input type="text" class="form-control" name="lastName"
+                                                               id="lastName" value="${author.authorLastName}"
+                                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                               title="Last name must be between 1 and 30 characters,
+                                                               contain only alphabetic characters."/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="firstName" class="col-sm-3 col-form-label">${AuthorFirstName}</label>
+                                                    <label for="firstName"
+                                                           class="col-sm-3 col-form-label">${AuthorFirstName}</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="firstName" id="firstName" value="${author.authorFirstName}"/>
+                                                        <input type="text" class="form-control" name="firstName"
+                                                               id="firstName" value="${author.authorFirstName}"
+                                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                               title="First name must be between 1 and 30 characters,
+                                                               contain only alphabetic characters."/>
                                                     </div>
                                                 </div>
                                             </c:forEach>
                                             <div class="form-group row">
-                                                <label for="publisherName" class="col-sm-3 col-form-label">${Publisher}</label>
+                                                <label for="publisherName"
+                                                       class="col-sm-3 col-form-label">${Publisher}</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="publisherName" id="publisherName" value="${publication.authors[0].publisherName}"/>
+                                                    <input type="text" class="form-control" name="publisherName"
+                                                           id="publisherName"
+                                                           value="${publication.authors[0].publisherName}"
+                                                           pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                           title="Publisher name must be between 1 and 30 characters,
+                                                           contain only alphabetic characters."/>
                                                 </div>
                                             </div>
                                         </c:when>
@@ -106,13 +135,17 @@
                                         <label for="description" class="col-sm-3 col-form-label">${Description}</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" name="description" id="description"
-                                                   required="" value="${publication.description}"/>
+                                                   required="" value="${publication.description}"
+                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   title="Description must be between 1 and 30 characters, contain only
+                                                   alphabetic characters."/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="price" class="col-sm-3 col-form-label">${Price} ${MoneyUnit}</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="price" id="price" required="" value="${publication.price}"
+                                            <input type="text" class="form-control" name="price" id="price" required=""
+                                                   value="${publication.price}"
                                                    pattern="^[\d]+?\.[\d]{2}$" placeholder="0.00"/>
                                         </div>
                                     </div>

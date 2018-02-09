@@ -62,8 +62,8 @@
                             <div class="col-sm-10">
                                 <input id="newPassword" name="newPassword" type="password" placeholder="New password"
                                        class="form-control input-md" required=""
-                                       pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$"
-                                       title="Password must be between 8 and 10 characters, contain at least
+                                       pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,18})$"
+                                       title="Password must be between 6 and 18 characters, contain at least
                                                one digit and one alphabetic character, and must not contain special
                                                characters.">
                             </div>

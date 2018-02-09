@@ -48,7 +48,9 @@
                             <label for="update" class="col-sm-2 col-form-label">${Name}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" id="update" placeholder="Name"
-                                       required=""/>
+                                       required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                       title="Publication type must be between 1 and 30 characters, contain only alphabetic
+                                       characters."/>
                             </div>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>

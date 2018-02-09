@@ -56,21 +56,27 @@
                                     <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="lastName" id="lastName"
-                                               value="${author.authorLastName}"/>
+                                               value="${author.authorLastName}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Last name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="firstName" id="firstName"
-                                               value="${author.authorFirstName}"/>
+                                               value="${author.authorFirstName}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="First name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="publisherName" class="col-sm-2 col-form-label">${Publisher}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="publisherName" id="publisherName"
-                                               value="${author.publisherName}" required=""/>
+                                               value="${author.publisherName}" required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Publisher name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>

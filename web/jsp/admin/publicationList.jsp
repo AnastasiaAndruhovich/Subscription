@@ -76,7 +76,9 @@
                                                             <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
                                                         </c:forEach>
                                                     </div>
-                                                    <p>${Publisher}: ${publication.authors[0].publisherName}</p>
+                                                    <p>
+                                                        ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>
+                                                    </p>
                                                 </c:when>
                                             </c:choose>
                                             <p>${Description}: ${publication.description}</p>

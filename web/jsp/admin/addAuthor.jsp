@@ -8,7 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ctg" uri="customtag"%>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -32,7 +32,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/style.css"%></style>
+    <style>
+        <%@include file="../../css/style.css" %>
+    </style>
 </head>
 <body>
 <ctg:role/>
@@ -49,20 +51,28 @@
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">${AuthorLastName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name"/>
+                                <input type="text" class="form-control" name="lastName" id="lastName"
+                                       placeholder="Last name" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                       title="Last name must be between 1 and 30 characters, contain only alphabetic
+                                       characters."/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="firstName" class="col-sm-2 col-form-label">${AuthorFirstName}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name"/>
+                                <input type="text" class="form-control" name="firstName" id="firstName"
+                                       placeholder="First name" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                       title="First name must be between 1 and 30 characters, contain only alphabetic
+                                       characters."/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="publisherName" class="col-sm-2 col-form-label">${Publisher}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="publisherName" id="publisherName"
-                                       placeholder="Publisher name" required=""/>
+                                       placeholder="Publisher name" required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                       title="Publisher name name must be between 1 and 30 characters, contain only alphabetic
+                                       characters."/>
                             </div>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0">${Add}</button>

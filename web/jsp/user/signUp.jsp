@@ -62,14 +62,19 @@
                                     <label class="col-sm-3 control-label" for="lastName">${LastName}</label>
                                     <div class="col-sm-9">
                                         <input id="lastName" name="lastName" type="text" placeholder="LastName"
-                                               class="form-control input-md" required="">
+                                               class="form-control input-md" required=""
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Last name must be between 1 and 30 characters, contain only
+                                               alphabetic characters.">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 control-label" for="firstName">${FirstName}</label>
                                     <div class="col-sm-9">
                                         <input id="firstName" name="firstName" type="text" placeholder="FirstName"
-                                               class="form-control input-md" required="">
+                                               class="form-control input-md" required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="First name must be between 1 and 30 characters, contain only
+                                               alphabetic characters.">
                                     </div>
                                 </div>
 
@@ -130,7 +135,10 @@
                                     <label class="col-sm-3 control-label" for="city">${City}</label>
                                     <div class="col-sm-9">
                                         <input id="city" name="city" type="text" placeholder="City"
-                                               class="form-control input-md" required="">
+                                               class="form-control input-md" required=""
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="City name must be between 1 and 30 characters, contain only
+                                               alphabetic characters.">
                                     </div>
                                 </div>
 

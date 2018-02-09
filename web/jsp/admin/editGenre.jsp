@@ -54,12 +54,16 @@
                                     <label for="name" class="col-sm-2 col-form-label">${Name}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="name" id="name"
-                                               value="${genre.name}"/>
+                                               value="${genre.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Genre must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                     <label for="description" class="col-sm-2 col-form-label">${Description}</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="description" id="description"
-                                               value="${genre.description}"/>
+                                               value="${genre.description}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,1000}"
+                                               title="Description must be between 1 and 1000 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>

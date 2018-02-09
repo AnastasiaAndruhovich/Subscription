@@ -60,46 +60,64 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="name" id="name" required=""/>
+                                        <input type="text" class="form-control" name="name" id="name" required=""
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Publication name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="publicationType" class="col-sm-3 col-form-label">${Type}</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="publicationType"
-                                               id="publicationType" required=""/>
+                                               id="publicationType" required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Publication type must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="genre" class="col-sm-3 col-form-label">${Genre}</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="genre" id="genre" required=""/>
+                                        <input type="text" class="form-control" name="genre" id="genre" required=""
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Genre must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="lastName" class="col-sm-3 col-form-label">${AuthorLastName}</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="lastName" id="lastName"/>
+                                        <input type="text" class="form-control" name="lastName" id="lastName"
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Last name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="firstName" class="col-sm-3 col-form-label">${AuthorFirstName}</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="firstName" id="firstName"/>
+                                        <input type="text" class="form-control" name="firstName" id="firstName"
+                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="First name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="publisherName" class="col-sm-3 col-form-label">${Publisher}</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="publisherName" id="publisherName"
-                                               required=""/>
+                                               required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Publisher name must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="description" class="col-sm-3 col-form-label">${Description}</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="description" id="description"
-                                               required=""/>
+                                               required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,1000}"
+                                               title="Description must be between 1 and 1000 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
