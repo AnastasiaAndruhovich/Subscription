@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class BlockUserCommand extends BaseCommand {
@@ -31,6 +32,8 @@ public class BlockUserCommand extends BaseCommand {
         String page;
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String userId = request.getParameter(USER_ID_ATTRIBUTE);
         Integer adminId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
@@ -38,7 +41,7 @@ public class BlockUserCommand extends BaseCommand {
         try {
             if (!userService.blockUser(userId, adminId.toString())) {
                 String errorBlockUserMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorBlockUserMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorBlockUserMessage);
             }
             page = ShowEntityList.showUserList(request, response);
         } catch (ServiceTechnicalException e) {

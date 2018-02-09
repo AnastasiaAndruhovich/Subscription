@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,6 +52,8 @@ public class SignUpCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String login = request.getParameter(LOGIN_ATTRIBUTE);
         String password = request.getParameter(PASSWORD_ATTRIBUTE);
@@ -67,31 +70,31 @@ public class SignUpCommand extends BaseCommand {
             if (!ServiceValidator.verifyLogin(login)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_LOGIN_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPassword(password)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.confirmPassword(password, confirmPassword)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_CONFIRM_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_BIRTH_DATE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_POSTAL_INDEX_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
 
@@ -99,13 +102,13 @@ public class SignUpCommand extends BaseCommand {
 
             int result = userService.signUp(lastName, firstName, date, address, city, postalIndex, login, password);
             if (result != -1) {
-                request.getSession().setAttribute(CLIENT_TYPE, ClientType.USER);
-                request.getSession().setAttribute(CLIENT_ID, result);
+                session.setAttribute(CLIENT_TYPE, ClientType.USER);
+                session.setAttribute(CLIENT_ID, result);
                 page = ShowEntityList.showPublicationList(request, response);
             } else {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
 
         } catch (ServiceTechnicalException e) {

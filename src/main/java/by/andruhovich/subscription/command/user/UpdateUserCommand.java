@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Locale;
 
@@ -48,6 +49,8 @@ public class UpdateUserCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String login = request.getParameter(LOGIN_ATTRIBUTE);
         String lastName = request.getParameter(LAST_NAME_ATTRIBUTE);
@@ -57,36 +60,36 @@ public class UpdateUserCommand extends BaseCommand {
         String city = request.getParameter(CITY_ATTRIBUTE);
         String postalIndex = request.getParameter(POSTAL_INDEX_ATTRIBUTE);
 
-        Integer id = (Integer) request.getSession().getAttribute(CLIENT_ID);
+        Integer id = (Integer) session.getAttribute(CLIENT_ID);
 
         try {
             User user = userService.findUserById(id.toString());
-            request.setAttribute(USER_ATTRIBUTE, user);
+            session.setAttribute(USER_ATTRIBUTE, user);
 
             if (!ServiceValidator.verifyLogin(login)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_BIRTH_DATE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_POSTAL_INDEX_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             Date date = ClientDataConverter.convertStringToDate(birthDate);
 
             if (!userService.updateUser(id.toString(), lastName, firstName, date, address, city, postalIndex, login)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_UPDATE_USER_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
             page = ShowEntityList.showUser(request, response);
         } catch (ServiceTechnicalException e) {

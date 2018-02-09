@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class ChangePasswordCommand extends BaseCommand {
@@ -28,6 +29,7 @@ public class ChangePasswordCommand extends BaseCommand {
     private static final String ERROR_NEW_PASSWORD_MESSAGE = "message.errorPassword";
     private static final String ERROR_CONFIRM_PASSWORD_MESSAGE = "message.errorConfirmPassword";
     private static final String ERROR_CHANGE_PASSWORD_MESSAGE = "message.errorChangePassword";
+    private static final String SUCCESSFUL_CHANGE_PASSWORD_MESSAGE = "message.successfulChangePassword";
 
     private static final String CHANGE_PASSWORD_PAGE = "path.page.user.changePassword";
 
@@ -39,35 +41,41 @@ public class ChangePasswordCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String oldPassword = request.getParameter(OLD_PASSWORD_ATTRIBUTE);
         String newPassword = request.getParameter(NEW_PASSWORD_ATTRIBUTE);
         String repeatPassword = request.getParameter(REPEAT_PASSWORD_ATTRIBUTE);
 
-        Integer id = (Integer) request.getSession().getAttribute(CLIENT_ID);
+        Integer id = (Integer) session.getAttribute(CLIENT_ID);
 
         try {
             page = pageManager.getProperty(CHANGE_PASSWORD_PAGE);
             if (!userService.confirmPassword(id.toString(), oldPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_OLD_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!ServiceValidator.verifyPassword(newPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_NEW_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.confirmPassword(newPassword, repeatPassword)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_CONFIRM_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!userService.changePassword(id.toString(), newPassword)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_CHANGE_PASSWORD_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
+            }
+            else {
+                String errorSignUpMessage = localeManager.getProperty(SUCCESSFUL_CHANGE_PASSWORD_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
             }
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

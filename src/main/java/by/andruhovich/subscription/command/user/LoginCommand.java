@@ -40,6 +40,7 @@ public class LoginCommand extends BaseCommand {
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
         HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         try {
             Integer id = userService.findUserIdByLogin(login);
@@ -51,7 +52,7 @@ public class LoginCommand extends BaseCommand {
                 page = ShowEntityList.showPublicationList(request, response);
             } else {
                 String errorLoginMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorLoginMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorLoginMessage);
                 page = pageManager.getProperty(LOGIN_PAGE);
             }
         } catch (ServiceTechnicalException e) {

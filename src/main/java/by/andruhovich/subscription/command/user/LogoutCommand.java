@@ -14,6 +14,7 @@ public class LogoutCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         int clientId = -1;
         HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         request.setAttribute(CLIENT_ID, clientId);
         session.setAttribute(CLIENT_TYPE, ClientType.GUEST);

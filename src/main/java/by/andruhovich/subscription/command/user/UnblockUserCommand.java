@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class UnblockUserCommand extends BaseCommand {
@@ -31,14 +32,16 @@ public class UnblockUserCommand extends BaseCommand {
         String page;
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String userId = request.getParameter(USER_ID_ATTRIBUTE);
-        Integer adminId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
+        Integer adminId = (Integer) session.getAttribute(CLIENT_ID_ATTRIBUTE);
 
         try {
             if (!userService.unblockUser(userId, adminId.toString())) {
                 String errorUnblockUserMessage = localeManager.getProperty(ERROR_UNBLOCK_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorUnblockUserMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorUnblockUserMessage);
             }
             page = ShowEntityList.showUserList(request, response);
         } catch (ServiceTechnicalException e) {
