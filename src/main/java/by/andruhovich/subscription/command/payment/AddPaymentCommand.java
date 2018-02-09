@@ -24,7 +24,7 @@ public class AddPaymentCommand extends BaseCommand {
     private PaymentService paymentService = new PaymentService();
     private SubscriptionService subscriptionService = new SubscriptionService();
 
-    private static final String SUBSCRIBE_PAGE = "path.page.user.paySubscription";
+    private static final String SUBSCRIBE_PAGE = "path.page.user.addPayment";
 
     private static final String SUBSCRIPTION_ID_ATTRIBUTE = "subscriptionId";
     private static final String SUBSCRIPTION_ATTRIBUTE = "subscription";
