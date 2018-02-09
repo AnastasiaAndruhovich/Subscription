@@ -28,12 +28,12 @@ public class SubscriptionService extends BaseService {
     public List<Subscription> showSubscriptions(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
-            int entityCount = subscriptionManagerDAO.findEntityCount();
-            int startIndex = findStartIndex(pageNumber, entityCount);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
             int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
             List<Subscription> subscriptions = subscriptionManagerDAO.findAll(startIndex, endIndex);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions);
@@ -131,14 +131,13 @@ public class SubscriptionService extends BaseService {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         int id = Integer.parseInt(userId);
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
-            int entityCount = subscriptionManagerDAO.findEntityCount();
-            int startIndex = findStartIndex(pageNumber, entityCount);
-            int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
-            List<Subscription> subscriptions = subscriptionManagerDAO.findSubscriptionsByUserId(id, startIndex ,endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<Subscription> subscriptions = subscriptionManagerDAO.findSubscriptionsByUserId(id, startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutSubscriptionList(subscriptions);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);

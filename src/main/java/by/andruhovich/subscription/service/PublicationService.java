@@ -28,15 +28,13 @@ public class PublicationService extends BaseService {
     public List<Publication> showPublications(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
-
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationManagerDAO.findAll(startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<Publication> publications = publicationManagerDAO.findAll(startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -195,15 +193,13 @@ public class PublicationService extends BaseService {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         int intAuthorId = Integer.parseInt(authorId);
-
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
-            List<Publication> publications = authorPublicationManagerDAO.findPublicationsByAuthorId(intAuthorId, startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<Publication> publications = authorPublicationManagerDAO.findPublicationsByAuthorId(intAuthorId, startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -216,15 +212,13 @@ public class PublicationService extends BaseService {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         int intGenreId = Integer.parseInt(genreId);
-
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             PublicationManagerDAO publicationDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationDAO.findPublicationsByGenreId(intGenreId, startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<Publication> publications = publicationDAO.findPublicationsByGenreId(intGenreId, startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -238,15 +232,13 @@ public class PublicationService extends BaseService {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         int intPublicationTypeId = Integer.parseInt(publicationTypeId);
-
-        int number = Integer.parseInt(pageNumber);
-        int startIndex = (number - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
-        int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
-            List<Publication> publications = publicationManagerDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<Publication> publications = publicationManagerDAO.findPublicationsByPublicationTypeId(intPublicationTypeId, startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutPublicationList(publications);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
@@ -263,6 +255,57 @@ public class PublicationService extends BaseService {
             connection = connectionFactory.getConnection();
             PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
             int count = publicationManagerDAO.findEntityCount();
+            return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public int findPublicationByAuthorIdPageCount(String authorId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int id = Integer.parseInt(authorId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            int count = publicationManagerDAO.findPublicationCountByAuthorId(id);
+            return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public int findPublicationByGenreIdPageCount(String genreId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int id = Integer.parseInt(genreId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            int count = publicationManagerDAO.findPublicationCountByGenreId(id);
+            return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
+    public int findPublicationByPublicationTypeIdPageCount(String publicationTypeId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int id = Integer.parseInt(publicationTypeId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
+            int count = publicationManagerDAO.findPublicationCountByPublicationTypeId(id);
             return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);

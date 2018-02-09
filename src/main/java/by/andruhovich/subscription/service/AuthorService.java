@@ -88,14 +88,13 @@ public class AuthorService extends BaseService{
     public List<Author> showAuthors(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
-            int entityCount = authorManagerDAO.findEntityCount();
-            int startIndex = findStartIndex(pageNumber, entityCount);
-            int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
-            return authorManagerDAO.findAll(startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            return authorManagerDAO.findAll(startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {

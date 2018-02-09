@@ -186,14 +186,13 @@ public class UserService extends BaseService{
     public List<User> showUsers(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             UserManagerDAO userManagerDAO = new UserDAO(connection);
-            int entityCount = userManagerDAO.findEntityCount();
-            int startIndex = findStartIndex(pageNumber, entityCount);
-            int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
-            List<User> users = userManagerDAO.findAll(startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<User> users = userManagerDAO.findAll(startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutUserList(users);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);

@@ -81,14 +81,13 @@ public class PublicationTypeService extends BaseService {
     public List<PublicationType> showPublicationTypes(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
+        int page = Integer.parseInt(pageNumber);
 
         try {
             connection = connectionFactory.getConnection();
             PublicationTypeManagerDAO publicationTypeManagerDAO = new PublicationTypeDAO(connection);
-            int entityCount = publicationTypeManagerDAO.findEntityCount();
-            int startIndex = findStartIndex(pageNumber, entityCount);
-            int endIndex = startIndex + ENTITY_COUNT_FOR_ONE_PAGE;
-            return  publicationTypeManagerDAO.findAll(startIndex, endIndex);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            return  publicationTypeManagerDAO.findAll(startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
