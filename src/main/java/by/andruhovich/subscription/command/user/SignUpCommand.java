@@ -66,6 +66,13 @@ public class SignUpCommand extends BaseCommand {
         String postalIndex = request.getParameter(POSTAL_INDEX_ATTRIBUTE);
 
         try {
+            if (!ServiceValidator.verifyName(lastName) || !ServiceValidator.verifyName(firstName) ||
+                    !ServiceValidator.verifyName(city)) {
+                page = pageManager.getProperty(SIGN_UP_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
 
             if (!ServiceValidator.verifyLogin(login)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);

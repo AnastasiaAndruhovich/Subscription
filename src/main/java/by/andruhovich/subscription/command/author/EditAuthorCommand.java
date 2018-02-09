@@ -9,6 +9,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.AuthorService;
+import by.andruhovich.subscription.validator.ServiceValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +54,13 @@ public class EditAuthorCommand extends BaseCommand {
         session.setAttribute(AUTHOR_ATTRIBUTE, author);
 
         try {
+            if (!ServiceValidator.verifyName(publisherName)) {
+                page = pageManager.getProperty(EDIT_AUTHOR_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             if (authorService.updateAuthor(authorId, lastName, firstName, publisherName)) {
                 String successfulEditPublicationMessage = localeManager.getProperty(SUCCESSFUL_EDIT_AUTHOR_MESSAGE);
                 session.setAttribute(MESSAGE_ATTRIBUTE, successfulEditPublicationMessage);

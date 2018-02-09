@@ -8,6 +8,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.PublicationTypeService;
+import by.andruhovich.subscription.validator.ServiceValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +42,13 @@ public class AddPublicationTypeCommand extends BaseCommand {
         String name = request.getParameter(NAME_ATTRIBUTE);
 
         try {
+            if (!ServiceValidator.verifyName(name)) {
+                page = pageManager.getProperty(ADD_PUBLICATION_TYPE_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             int publicationTypeId = publicationTypeService.addPublicationType(name);
             if (publicationTypeId != -1) {
                 String successfulAddedPublicationTypeMessage = localeManager.getProperty(SUCCESSFUL_ADD_PUBLICATION_TYPE_MESSAGE);

@@ -47,7 +47,7 @@ public class AddPublicationCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
+        Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
         HttpSession session = request.getSession();
         session.removeAttribute(MESSAGE_ATTRIBUTE);
@@ -67,6 +67,13 @@ public class AddPublicationCommand extends BaseCommand {
         firstNames.add(firstName);
 
         try {
+            if (!ServiceValidator.verifyName(name) || !ServiceValidator.verifyName(publisherName)) {
+                page = pageManager.getProperty(ADD_PUBLICATION_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             if (!ServiceValidator.verifyPrice(price)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
                 session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);

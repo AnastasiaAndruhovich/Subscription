@@ -3,7 +3,6 @@ package by.andruhovich.subscription.command.common;
 import by.andruhovich.subscription.entity.*;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
-import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.*;
 import by.andruhovich.subscription.type.ClientType;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ShowEntityList {
     private static final String ERROR_PAGE = "/jsp/error/error.jsp";
@@ -39,6 +37,7 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -47,12 +46,11 @@ public class ShowEntityList {
             List<Author> authors = authorService.showAuthors(pageNumber);
             if (!authors.isEmpty()) {
                 int pageCount = authorService.findAuthorPageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, authors);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, authors);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
 
-            HttpSession session = request.getSession();
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
                 page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
@@ -79,6 +77,7 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -87,12 +86,11 @@ public class ShowEntityList {
             List<Publication> publications = publicationService.showPublications(pageNumber);
             if (!publications.isEmpty()) {
                 int pageCount = publicationService.findPublicationPageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
 
-            HttpSession session = request.getSession();
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
                 page = pageManager.getProperty(PUBLICATION_ADMIN_PAGE);
@@ -118,6 +116,7 @@ public class ShowEntityList {
         final String PUBLICATION_LIST_ATTRIBUTE = "genres";
 
         String page;
+        HttpSession session = request.getSession();
         PageManager pageManager = PageManager.getInstance();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
@@ -127,12 +126,11 @@ public class ShowEntityList {
             List<Genre> genres = genreService.showGenres(pageNumber);
             if (!genres.isEmpty()) {
                 int pageCount = genreService.findGenrePageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, genres);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, genres);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
 
-            HttpSession session = request.getSession();
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
                 page = pageManager.getProperty(GENRE_ADMIN_PAGE);
@@ -159,8 +157,7 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
-        Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
-        LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -169,12 +166,11 @@ public class ShowEntityList {
             List<PublicationType> publicationTypes = publicationTypeService.showPublicationTypes(pageNumber);
             if (!publicationTypes.isEmpty()) {
                 int pageCount = publicationTypeService.findPublicationTypePageCount();
-                request.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publicationTypes);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publicationTypes);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
 
-            HttpSession session = request.getSession();
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
                 page = pageManager.getProperty(PUBLICATION_TYPE_ADMIN_PAGE);
@@ -200,6 +196,7 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -208,9 +205,9 @@ public class ShowEntityList {
             List<User> users = userService.showUsers(pageNumber);
             if (!users.isEmpty()) {
                 int pageCount = userService.findUserPageCount();
-                request.setAttribute(USER_LIST_ATTRIBUTE, users);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(USER_LIST_ATTRIBUTE, users);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
             page = pageManager.getProperty(USER_ADMIN_PAGE);
 
@@ -267,6 +264,7 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
@@ -275,15 +273,15 @@ public class ShowEntityList {
             userId = ((Integer) request.getSession().getAttribute(CLIENT_ID)).toString();
         }
         Date date = Calendar.getInstance().getTime();
-        request.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
+        session.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
 
         try {
             List<Subscription> subscriptions = subscriptionService.findSubscriptionByUserId(userId, pageNumber);
             if (!subscriptions.isEmpty()) {
                 int pageCount = subscriptionService.findSubscriptionPageCount();
-                request.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
-                request.setAttribute(PAGE_NUMBER, pageNumber);
-                request.setAttribute(PAGE_COUNT, pageCount);
+                session.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
+                session.setAttribute(PAGE_NUMBER, pageNumber);
+                session.setAttribute(PAGE_COUNT, pageCount);
             }
             page = pageManager.getProperty(PUBLICATION_USER_PAGE);
         } catch (ServiceTechnicalException e) {
@@ -305,12 +303,13 @@ public class ShowEntityList {
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
-        Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID);
+        Integer userId = (Integer) session.getAttribute(CLIENT_ID);
 
         try {
             User user = userService.findUserById(userId.toString());
-            request.setAttribute(USER_ATTRIBUTE, user);
+            session.setAttribute(USER_ATTRIBUTE, user);
             page = pageManager.getProperty(EDIT_PROFILE_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

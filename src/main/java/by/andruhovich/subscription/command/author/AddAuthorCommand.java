@@ -8,6 +8,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.AuthorService;
+import by.andruhovich.subscription.validator.ServiceValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +46,13 @@ public class AddAuthorCommand extends BaseCommand {
         session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         try {
+            if (!ServiceValidator.verifyName(publisherName)) {
+                page = pageManager.getProperty(ADD_AUTHOR_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             int authorId = authorService.addAuthor(firstName, lastName, publisherName);
             if (authorId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_AUTHOR_MESSAGE);

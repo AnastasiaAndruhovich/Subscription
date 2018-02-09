@@ -69,6 +69,13 @@ public class EditPublicationCommand extends BaseCommand {
         firstNames.add(firstName);
 
         try {
+            if (!ServiceValidator.verifyName(name) || !ServiceValidator.verifyName(publisherName)){
+                page = pageManager.getProperty(EDIT_PUBLICATION_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             if (!ServiceValidator.verifyPrice(price)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
                 session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);

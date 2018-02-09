@@ -11,6 +11,7 @@ public abstract class BaseCommand {
     protected static final String LOCALE = "locale";
 
     protected static final String MESSAGE_ATTRIBUTE = "message";
+    protected static final String ERROR_NAME_MESSAGE = "message.errorNameFormat";
 
     public abstract CommandResult execute(HttpServletRequest request, HttpServletResponse response);
 }

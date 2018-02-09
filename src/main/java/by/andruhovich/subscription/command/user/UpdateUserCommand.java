@@ -63,6 +63,14 @@ public class UpdateUserCommand extends BaseCommand {
         Integer id = (Integer) session.getAttribute(CLIENT_ID);
 
         try {
+            if (!ServiceValidator.verifyName(lastName) || !ServiceValidator.verifyName(firstName) ||
+                    !ServiceValidator.verifyName(city)) {
+                page = pageManager.getProperty(EDIT_PROFILE_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             User user = userService.findUserById(id.toString());
             session.setAttribute(USER_ATTRIBUTE, user);
 

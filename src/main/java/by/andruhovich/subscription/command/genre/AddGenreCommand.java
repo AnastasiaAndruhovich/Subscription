@@ -8,6 +8,7 @@ import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.service.GenreService;
+import by.andruhovich.subscription.validator.ServiceValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +44,13 @@ public class AddGenreCommand extends BaseCommand {
         String description = request.getParameter(DESCRIPTION_ATTRIBUTE);
 
         try {
+            if (!ServiceValidator.verifyName(name)) {
+                page = pageManager.getProperty(ADD_GENRE_ADMIN_PAGE);
+                String errorNameMessage = localeManager.getProperty(ERROR_NAME_MESSAGE);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorNameMessage);
+                return new CommandResult(TransitionType.REDIRECT, page);
+            }
+
             int genreId = genreService.addGenre(name, description);
             if (genreId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_GENRE_MESSAGE);
