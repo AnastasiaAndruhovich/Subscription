@@ -77,7 +77,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="subscription" items="${requestScope.subscriptions}">
+                            <c:forEach var="subscription" items="${sessionScope.subscriptions}">
                                 <tr>
                                     <th>${subscription.subscriptionId}</th>
                                     <td>${subscription.user.login}</td>
@@ -103,7 +103,7 @@
                                     <td>
                                         <div class="row">
                                             <c:if test="${!subscription.subscriptionIsActive && subscription.user.userId eq sessionScope.clientId}">
-                                                <c:if test="${requestScope.currentDate.getTime()<subscription.startDate.getTime()}">
+                                                <c:if test="${sessionScope.currentDate.getTime()<subscription.startDate.getTime()}">
                                                     <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                                         <input type="hidden" name="command" value="add_payment"/>
                                                         <input type="hidden" name="subscriptionId" value="${subscription.subscriptionId}">
