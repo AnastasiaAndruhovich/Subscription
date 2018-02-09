@@ -53,16 +53,16 @@ scope="session"/>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="controller?command=show_publications&pageNumber=1" class="nav-link">${Publications}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1" class="nav-link">${Publications}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_authors&pageNumber=1" class="nav-link">${Authors}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=1" class="nav-link">${Authors}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_genres&pageNumber=1" class="nav-link">${Genres}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_genres&pageNumber=1" class="nav-link">${Genres}</a>
             </li>
             <li class="nav-item">
-                <a href="controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">${Subscription}</a>
