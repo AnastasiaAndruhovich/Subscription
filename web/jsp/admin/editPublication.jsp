@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="publication" scope="request" type="by.andruhovich.subscription.entity.Publication"/>
+    <jsp:useBean id="publication" scope="session" type="by.andruhovich.subscription.entity.Publication"/>
     <style><%@include file="../../css/style.css"%></style>
 </head>
 <body>
@@ -58,7 +58,7 @@
                                 <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                     <input type="hidden" name="command" value="edit_publication"/>
                                     <input type="hidden" name="publicationId" value="${publication.publicationId}"/>
-                                    <p>${requestScope.message}</p>
+                                    <p>${sessionScope.message}</p>
                                     <div class="form-group row">
                                         <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                         <div class="col-sm-9">

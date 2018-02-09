@@ -56,36 +56,11 @@
                                         <input type="hidden" name="firstName" value="${author.authorFirstName}">
                                         <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
                                     </form>
-                                    <button class="btn btn-outline-danger my-2 my-sm-0" data-target="#authorModal"
-                                            data-toggle="modal">${Delete}
-                                    </button>
-                                    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="authorModal" aria-hidden="true">
-                                        <div class="modal-dialog modal-sm" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button class="close" type="button" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="container-fluid">
-                                                        <p>WARNING!</p>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <form method="POST"
-                                                          action="${pageContext.servletContext.contextPath}/controller">
-                                                        <input type="hidden" name="command" value="delete_author"/>
-                                                        <input type="hidden" name="authorId" value="${author.authorId}">
-                                                        <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                        <input type="hidden" name="command" value="delete_author"/>
+                                        <input type="hidden" name="authorId" value="${author.authorId}">
+                                        <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
+                                    </form>
                                 </div>
                             </c:forEach>
                         </c:when>

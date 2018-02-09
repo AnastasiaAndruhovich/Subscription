@@ -56,7 +56,7 @@
                         <div class="col-12">
                             <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                                 <input type="hidden" name="command" value="add_publication"/>
-                                <p>${requestScope.message}</p>
+                                <p>${sessionScope.message}</p>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                     <div class="col-sm-9">

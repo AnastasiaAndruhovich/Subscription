@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="publication" scope="request" type="by.andruhovich.subscription.entity.Publication"/>
+    <jsp:useBean id="publication" scope="session" type="by.andruhovich.subscription.entity.Publication"/>
     <style><%@include file="../../css/style.css"%></style>
 
 </head>
@@ -67,7 +67,7 @@
                             <div class="publication card">
                                 <c:choose>
                                     <c:when test="${publication!=null}">
-                                        <p>${requestScope.message}</p>
+                                        <p>${sessionScope.message}</p>
                                         <p>${Name}: ${publication.name}</p>
                                         <p>${Type}: ${publication.publicationType.name}</p>
                                         <p>${Genre}: ${publication.genre.name}</p>
