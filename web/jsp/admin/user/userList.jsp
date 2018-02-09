@@ -46,8 +46,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/style.css"%></style>
-    <style><%@include file="../../css/tableStyle.css"%></style>
+    <style><%@include file="../../../css/style.css"%></style>
+    <style><%@include file="../../../css/tableStyle.css"%></style>
 </head>
 <body>
 <ctg:role/>
@@ -147,7 +147,7 @@
     </div>
 </div>
 
-<%@include file="../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

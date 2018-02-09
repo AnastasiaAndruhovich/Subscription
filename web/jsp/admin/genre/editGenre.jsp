@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: nastya
   Date: 26.01.2018
-  Time: 16:01
+  Time: 17:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -15,11 +15,10 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="label.genres" var="Title"/>
-<fmt:message bundle="${loc}" key="label.genre" var="Genre"/>
+<fmt:message bundle="${loc}" key="label.editGenre" var="Title"/>
+<fmt:message bundle="${loc}" key="label.genre" var="Name"/>
 <fmt:message bundle="${loc}" key="label.description" var="Description"/>
 <fmt:message bundle="${loc}" key="button.edit" var="Edit"/>
-<fmt:message bundle="${loc}" key="button.delete" var="Delete"/>
 <fmt:message bundle="${loc}" key="message.informationIsAbsent" var="InformationIsAbsent"/>
 
 <html lang="en">
@@ -33,7 +32,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../css/style.css"%></style>
+    <jsp:useBean id="genre" scope="session" type="by.andruhovich.subscription.entity.Genre"/>
+    <style><%@include file="../../../css/style.css"%></style>
 </head>
 <body>
 <ctg:role/>
@@ -45,32 +45,29 @@
             <div class="col-10">
                 <div class="genre card">
                     <c:choose>
-                        <c:when test="${sessionScope.genres!=null}">
+                        <c:when test="${genre!=null}">
                             ${sessionScope.message}
-                            <c:forEach var="genre" items="${sessionScope.genres}">
-                                <div class="container">
-                                    <p>
-                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${genre.genreId}"> ${genre.name}</a>
-                                    </p>
-                                    <p>
-                                        ${Description}: ${genre.description}
-                                    </p>
-                                    <div class="row">
-                                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                            <input type="hidden" name="command" value="parse_genre"/>
-                                            <input type="hidden" name="genreId" value="${genre.genreId}">
-                                            <input type="hidden" name="name" value="${genre.name}">
-                                            <input type="hidden" name="description" value="${genre.description}">
-                                            <button class="btn btn-outline-warning my-2 my-sm-0">${Edit}</button>
-                                        </form>
-                                        <form method="POST" action="${pageContext.servletContext.contextPath}/controller">
-                                            <input type="hidden" name="command" value="delete_genre"/>
-                                            <input type="hidden" name="genreId" value="${genre.genreId}">
-                                            <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
-                                        </form>
+                            <form name="editForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
+                                <input type="hidden" name="command" value="edit_genre"/>
+                                <input type="hidden" name="genreId" value="${genre.genreId}">
+                                <div class="form-group row">
+                                    <label for="name" class="col-sm-2 col-form-label">${Name}</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" id="name"
+                                               value="${genre.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                               title="Genre must be between 1 and 30 characters, contain only
+                                               alphabetic characters."/>
+                                    </div>
+                                    <label for="description" class="col-sm-2 col-form-label">${Description}</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="description" id="description"
+                                               value="${genre.description}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,1000}"
+                                               title="Description must be between 1 and 1000 characters, contain only
+                                               alphabetic characters."/>
                                     </div>
                                 </div>
-                            </c:forEach>
+                                <button class="btn btn-outline-success my-2 my-sm-0">${Edit}</button>
+                            </form>
                         </c:when>
                         <c:otherwise>
                             <p>${InformationIsAbsent}</p>
@@ -83,7 +80,7 @@
     </div>
 </div>
 
-<%@include file="../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

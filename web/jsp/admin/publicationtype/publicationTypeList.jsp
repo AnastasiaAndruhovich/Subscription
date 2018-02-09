@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<%@include file="../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
