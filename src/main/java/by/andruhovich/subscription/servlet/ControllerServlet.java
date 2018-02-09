@@ -2,8 +2,9 @@ package by.andruhovich.subscription.servlet;
 
 import by.andruhovich.subscription.command.BaseCommand;
 import by.andruhovich.subscription.command.CommandFactory;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
-import by.andruhovich.subscription.manager.PageManager;
 import by.andruhovich.subscription.manager.LocaleManager;
 import by.andruhovich.subscription.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +38,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        CommandResult commandResult;
         String page;
         final String ERROR_PAGE = "/jsp/error/error.jsp";
 
@@ -56,10 +57,15 @@ public class ControllerServlet extends HttpServlet {
 
         try {
             if (command != null) {
-                page = command.execute(request, response);
+                commandResult = command.execute(request, response);
+                page = commandResult.getPage();
                 if (page != null) {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-                    dispatcher.forward(request, response);
+                    if (TransitionType.REDIRECT.equals(commandResult.getTransitionType())) {
+                        response.sendRedirect(page);
+                    } else {
+                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                        dispatcher.forward(request, response);
+                    }
                 } else {
                     page = ERROR_PAGE;
                     request.getSession().setAttribute(NULL_PAGE_ATTRIBUTE, localeManager.getProperty(NULL_PAGE_MESSAGE));
