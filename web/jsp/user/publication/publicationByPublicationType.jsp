@@ -50,7 +50,7 @@
                 <div class="publication card">
                     ${sessionScope.message}
                     <c:choose>
-                        <c:when test="${sessionScope.publications!=null}">
+                        <c:when test="${sessionScope.publications!=null && !sessionScope.publications.isEmpty()}">
                             <c:forEach var="publication" items="${sessionScope.publications}">
                                 <div class="container">
                                     <div class="row">
@@ -107,62 +107,63 @@
 <c:set var="currentPage" value="${(sessionScope.pageNumber==null) ? 1 : sessionScope.pageNumber}"/>
 <c:set var="lastPage" value="${(sessionScope.pageCount==null) ? 1 : sessionScope.pageCount}"/>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <c:choose>
-            <c:when test="${currentPage==1}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${currentPage-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            </c:otherwise>
-        </c:choose>
-        <%--For displaying all available pages--%>
-        <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
+<c:if test="${sessionScope.publications!=null && !sessionScope.publications.isEmpty()}">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
             <c:choose>
-                <c:when test="${currentPage eq i}">
-                    <li class="page-item active">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${i}">${i}</a>
+                <c:when test="${currentPage==1}">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${i}">${i}</a>
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${currentPage-1}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 </c:otherwise>
             </c:choose>
-        </c:forEach>
-        <c:choose>
-            <c:when test="${currentPage eq lastPage}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${currentPage+1}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </c:otherwise>
-        </c:choose>
-
-    </ul>
-</nav>
+                <%--For displaying all available pages--%>
+            <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <li class="page-item active">
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${i}">${i}</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${i}">${i}</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${currentPage eq lastPage}">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${sessionScope.publicationTypeId}&pageNumber=${currentPage+1}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </nav>
+</c:if>
 
 <%@include file="../../../static/common/footer.html" %>
 
