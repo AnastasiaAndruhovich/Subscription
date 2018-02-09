@@ -54,7 +54,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <c:choose>
-                    <c:when test="${requestScope.payments!=null||!requestScope.payments.isEmpty()}">
+                    <c:when test="${sessionScope.payments!=null||!sessionScope.payments.isEmpty()}">
                         <div class="scrolling outer">
                             <div class="inner">
                                 <table class="table table-striped table-hover table-condensed table-bordered">
@@ -72,7 +72,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="payment" items="${requestScope.payments}">
+                                    <c:forEach var="payment" items="${sessionScope.payments}">
                                         <tr>
                                             <th>${payment.paymentNumber}</th>
                                             <td>${payment.subscription.user.login}</td>

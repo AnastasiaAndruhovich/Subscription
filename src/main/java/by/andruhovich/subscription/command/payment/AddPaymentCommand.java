@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class AddPaymentCommand extends BaseCommand {
@@ -39,6 +40,8 @@ public class AddPaymentCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String subscriptionId = request.getParameter(SUBSCRIPTION_ID_ATTRIBUTE);
         Integer clientId = (Integer) request.getSession().getAttribute(CLIENT_ID);
@@ -47,14 +50,14 @@ public class AddPaymentCommand extends BaseCommand {
             Payment payment = paymentService.addPayment(clientId.toString(), subscriptionId);
             if (payment.isStatement()) {
                 String successfulPaySubscriptionMessage = localeManager.getProperty(SUCCESSFUL_PAY_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulPaySubscriptionMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulPaySubscriptionMessage);
             }
             else {
                 String errorPaySubscriptionMessage = localeManager.getProperty(ERROR_PAY_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorPaySubscriptionMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorPaySubscriptionMessage);
             }
             Subscription subscription = subscriptionService.findSubscriptionById(subscriptionId);
-            request.setAttribute(SUBSCRIPTION_ATTRIBUTE, subscription);
+            session.setAttribute(SUBSCRIPTION_ATTRIBUTE, subscription);
             page = pageManager.getProperty(SUBSCRIBE_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

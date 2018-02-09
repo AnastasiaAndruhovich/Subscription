@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="subscription" scope="request" type="by.andruhovich.subscription.entity.Subscription"/>
+    <jsp:useBean id="subscription" scope="session" type="by.andruhovich.subscription.entity.Subscription"/>
     <style><%@include file="../../css/style.css"%></style>
 
 </head>
@@ -58,7 +58,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
-                    ${requestScope.message}
+                    ${sessionScope.message}
                     <div class="row">
                         <div class="col-4">
                             <c:if test="${subscription!=null}">

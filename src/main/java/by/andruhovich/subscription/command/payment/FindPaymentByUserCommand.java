@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class FindPaymentByUserCommand extends BaseCommand {
@@ -32,21 +33,23 @@ public class FindPaymentByUserCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String pageNumber = request.getParameter(PAGE_NUMBER_ATTRIBUTE);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
         String userId = request.getParameter(USER_ID);
         if (userId == null) {
-            userId = ((Integer) request.getSession().getAttribute(CLIENT_ID)).toString();
+            userId = ((Integer) session.getAttribute(CLIENT_ID)).toString();
         }
 
         try {
             List<Payment> payments = paymentService.findPaymentByUserId(userId, pageNumber);
             if (!payments.isEmpty()) {
                 int pageCount = paymentService.findPaymentPageCount();
-                request.setAttribute(PAYMENT_LIST_ATTRIBUTE, payments);
-                request.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
-                request.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
+                session.setAttribute(PAYMENT_LIST_ATTRIBUTE, payments);
+                session.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
+                session.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
             }
             page = pageManager.getProperty(PUBLICATION_USER_PAGE);
         } catch (ServiceTechnicalException e) {
