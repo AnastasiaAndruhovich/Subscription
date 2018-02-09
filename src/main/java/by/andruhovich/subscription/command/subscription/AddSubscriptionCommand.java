@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class AddSubscriptionCommand extends BaseCommand {
@@ -43,6 +44,8 @@ public class AddSubscriptionCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         ClientType clientType = (ClientType) request.getSession().getAttribute(CLIENT_TYPE_ATTRIBUTE);
         Integer clientId = (Integer) request.getSession().getAttribute(CLIENT_ID_ATTRIBUTE);
@@ -51,17 +54,17 @@ public class AddSubscriptionCommand extends BaseCommand {
         try {
             if (clientType.equals(ClientType.GUEST)) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_SUBSCRIBE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
                 return new CommandResult(TransitionType.REDIRECT, ShowEntityList.showPublicationList(request, response));
             }
             if (userService.isUserBlocked(clientId.toString())) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
                 return new CommandResult(TransitionType.REDIRECT, ShowEntityList.showPublicationList(request, response));
             }
 
             Subscription subscription = subscriptionService.addSubscription(clientId.toString(), publicationId);
-            request.setAttribute(SUBSCRIPTION_ATTRIBUTE, subscription);
+            session.setAttribute(SUBSCRIPTION_ATTRIBUTE, subscription);
             page = pageManager.getProperty(SUBSCRIBE_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

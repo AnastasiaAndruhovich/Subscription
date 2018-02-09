@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class DeleteSubscriptionCommand extends BaseCommand {
@@ -30,13 +31,15 @@ public class DeleteSubscriptionCommand extends BaseCommand {
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
         String page;
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String subscriptionId = request.getParameter(SUBSCRIPTION_ID_ATTRIBUTE);
 
         try {
             if (!subscriptionService.deleteSubscription(subscriptionId)) {
                 String errorDeleteSubscriptionMessage = localeManager.getProperty(ERROR_DELETE_SUBSCRIPTION_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteSubscriptionMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteSubscriptionMessage);
             }
             page = ShowEntityList.showSubscriptionByUser(request, response);
         } catch (ServiceTechnicalException e) {
