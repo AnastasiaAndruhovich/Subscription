@@ -146,6 +146,23 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    public int findSubscriptionByUserPageCount(String userId) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int id = Integer.parseInt(userId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
+            int count = subscriptionManagerDAO.findSubscriptionCountByUserId(id);
+            return (int) Math.ceil((double) (count) / ENTITY_COUNT_FOR_ONE_PAGE);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
     private Date defineStartDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
