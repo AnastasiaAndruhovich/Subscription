@@ -43,11 +43,11 @@ public class RechargeCommand extends BaseCommand {
         try {
             if (!ServiceValidator.verifyPrice(rechargeSum)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.getSession().setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
+                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
                 request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
-                return new CommandResult(TransitionType.REDIRECT, page);
+                return new CommandResult(TransitionType.FORWARD, page);
             }
 
             Account account = accountService.recharge(userId.toString(), rechargeSum);

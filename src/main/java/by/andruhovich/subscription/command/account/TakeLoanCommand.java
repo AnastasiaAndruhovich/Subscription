@@ -46,7 +46,7 @@ public class TakeLoanCommand extends BaseCommand{
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
-                request.setAttribute(ACCOUNT_ATTRIBUTE, account);
+                request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
@@ -57,7 +57,7 @@ public class TakeLoanCommand extends BaseCommand{
                 request.setAttribute(MESSAGE_ATTRIBUTE, tooBigLoanSumMessage);
                 account = accountService.findAccountByUserId(userId.toString());
             }
-            request.setAttribute(ACCOUNT_ATTRIBUTE, account);
+            request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
             page = pageManager.getProperty(ACCOUNT_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

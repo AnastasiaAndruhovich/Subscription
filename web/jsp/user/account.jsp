@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="account" scope="request" type="by.andruhovich.subscription.entity.Account"/>
+    <jsp:useBean id="account" scope="session" type="by.andruhovich.subscription.entity.Account"/>
     <style>
         <%@include file="../../css/style.css" %>
     </style>
