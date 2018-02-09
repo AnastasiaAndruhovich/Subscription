@@ -45,11 +45,11 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="author card">
-                    ${requestScope.message}
+                    ${sessionScope.message}
                     <form name="changePasswordForm" method="POST"
                           action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="change_password"/>
-                        <p>${requestScope.result}</p>
+                        <p>${sessionScope.result}</p>
                         <div class="form-group row">
                             <label for="oldPassword" class="col-sm-2 col-form-label">${OldPassword}</label>
                             <div class="col-sm-10">

@@ -80,8 +80,8 @@
                         </thead>
                         <tbody>
                             <c:choose>
-                                <c:when test="${requestScope.users!=null}">
-                                    <c:forEach var="user" items="${requestScope.users}">
+                                <c:when test="${sessionScope.users!=null}">
+                                    <c:forEach var="user" items="${sessionScope.users}">
                                         ${requestScope.result}
                                         <tr>
                                             <th>1</th>

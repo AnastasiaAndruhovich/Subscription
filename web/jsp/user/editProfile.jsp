@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <jsp:useBean id="user" scope="request" type="by.andruhovich.subscription.entity.User"/>
+    <jsp:useBean id="user" scope="session" type="by.andruhovich.subscription.entity.User"/>
 </head>
 <body>
 <ctg:role/>
@@ -52,7 +52,7 @@
             <div class="col-10">
                 <c:choose>
                     <c:when test="${user!=null}">
-                        ${requestScope.message}
+                        ${sessionScope.message}
                         <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                             <input type="hidden" name="command" value="update_user"/>
 
