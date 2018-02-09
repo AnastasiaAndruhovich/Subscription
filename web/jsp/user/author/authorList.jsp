@@ -57,7 +57,68 @@
     </div>
 </div>
 
-<%@include file="../../static/common/footer.html" %>
+<%--Declare variable for current page and count of contacts --%>
+<c:set var="currentPage" value="${(sessionScope.pageNumber==null) ? 1 : sessionScope.pageNumber}"/>
+<c:set var="lastPage" value="${(sessionScope.pageCount==null) ? 1 : sessionScope.pageCount}"/>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <c:choose>
+            <c:when test="${currentPage==1}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=${currentPage-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+        <%--For displaying all available pages--%>
+        <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
+            <c:choose>
+                <c:when test="${currentPage eq i}">
+                    <li class="page-item active">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=${i}">${i}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=${i}">${i}</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:choose>
+            <c:when test="${currentPage eq lastPage}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item">
+                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=${currentPage+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+
+    </ul>
+</nav>
+
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
