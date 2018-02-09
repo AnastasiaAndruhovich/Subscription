@@ -28,7 +28,7 @@ public class TakeLoanCommand extends BaseCommand{
     private static final String TOO_BIG_LOAN_SUM_MESSAGE = "message.tooBigLoanSum";
     private static final String INCORRECT_PRICE_MESSAGE = "message.incorrectMoneyFormat";
 
-    private static final String ACCOUNT_USER_PAGE = "path.page.user.account";
+    private static final String ACCOUNT_BY_USER_PAGE = "path.page.user.accountByUser";
 
     private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
@@ -50,7 +50,7 @@ public class TakeLoanCommand extends BaseCommand{
                 session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
                 session.setAttribute(ACCOUNT_ATTRIBUTE, account);
-                page = pageManager.getProperty(ACCOUNT_USER_PAGE);
+                page = pageManager.getProperty(ACCOUNT_BY_USER_PAGE);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
 
@@ -61,7 +61,7 @@ public class TakeLoanCommand extends BaseCommand{
                 account = accountService.findAccountByUserId(userId.toString());
             }
             session.setAttribute(ACCOUNT_ATTRIBUTE, account);
-            page = pageManager.getProperty(ACCOUNT_USER_PAGE);
+            page = pageManager.getProperty(ACCOUNT_BY_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;

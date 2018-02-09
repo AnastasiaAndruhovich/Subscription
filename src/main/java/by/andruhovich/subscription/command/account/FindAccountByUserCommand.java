@@ -20,7 +20,7 @@ public class FindAccountByUserCommand extends BaseCommand {
 
     private static final String ACCOUNT_ATTRIBUTE = "account";
 
-    private static final String ACCOUNT_USER_PAGE = "path.page.user.account";
+    private static final String ACCOUNT_BY_USER_PAGE = "path.page.user.accountByUser";
 
     private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
@@ -33,7 +33,7 @@ public class FindAccountByUserCommand extends BaseCommand {
         try {
             Account account = accountService.findAccountByUserId(userId.toString());
             request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
-            page = pageManager.getProperty(ACCOUNT_USER_PAGE);
+            page = pageManager.getProperty(ACCOUNT_BY_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
