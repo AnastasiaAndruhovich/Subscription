@@ -26,8 +26,8 @@ public class FindPublicationByAuthorCommand extends BaseCommand{
     private static final String AUTHOR_ID = "authorId";
     private static final String PUBLICATION_LIST_ATTRIBUTE = "publications";
 
-    private static final String PUBLICATION_USER_PAGE = "path.page.user.publicationList";
-    private static final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationList";
+    private static final String PUBLICATION_USER_PAGE = "path.page.user.publicationByAuthor";
+    private static final String PUBLICATION_ADMIN_PAGE = "path.page.admin.publicationByAuthor";
 
     private static final Logger LOGGER = LogManager.getLogger(FindPublicationByAuthorCommand.class);
 
@@ -41,11 +41,12 @@ public class FindPublicationByAuthorCommand extends BaseCommand{
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
         String authorId = request.getParameter(AUTHOR_ID);
+        session.setAttribute(AUTHOR_ID, authorId);
 
         try {
             List<Publication> publications = publicationService.findPublicationByAuthorId(authorId, pageNumber);
             if (!publications.isEmpty()) {
-                int pageCount = publicationService.findPublicationPageCount();
+                int pageCount = publicationService.findPublicationByAuthorIdPageCount(authorId);
                 session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
                 session.setAttribute(PAGE_NUMBER, pageNumber);
                 session.setAttribute(PAGE_COUNT, pageCount);
