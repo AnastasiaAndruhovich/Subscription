@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class DeletePublicationTypeCommand extends BaseCommand {
@@ -31,13 +32,15 @@ public class DeletePublicationTypeCommand extends BaseCommand {
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
         String page;
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String genreId = request.getParameter(PUBLICATION_TYPE_ID_ATTRIBUTE);
 
         try {
             if (!publicationTypeService.deletePublicationType(genreId)) {
                 String errorDeleteAuthorMessage = localeManager.getProperty(ERROR_DELETE_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorDeleteAuthorMessage);
             }
             page = ShowEntityList.showPublicationTypeList(request, response);
         } catch (ServiceTechnicalException e) {

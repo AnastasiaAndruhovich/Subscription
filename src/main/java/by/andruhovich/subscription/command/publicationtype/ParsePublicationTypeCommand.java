@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ParsePublicationTypeCommand extends BaseCommand {
     private static final String EDIT_PUBLICATION_TYPE_ADMIN_PAGE = "path.page.admin.editPublicationType";
@@ -26,13 +27,14 @@ public class ParsePublicationTypeCommand extends BaseCommand {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String genreId = request.getParameter(PUBLICATION_TYPE_ID_ATTRIBUTE);
         String name = request.getParameter(NAME_ATTRIBUTE);
 
         int id = Integer.parseInt(genreId);
         PublicationType publicationType = new PublicationType(id, name);
-        request.setAttribute(PUBLICATION_TYPE_ATTRIBUTE, publicationType);
+        session.setAttribute(PUBLICATION_TYPE_ATTRIBUTE, publicationType);
 
         try {
             page = pageManager.getProperty(EDIT_PUBLICATION_TYPE_ADMIN_PAGE);

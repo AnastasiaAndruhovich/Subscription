@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class AddPublicationTypeCommand extends BaseCommand {
@@ -34,6 +35,8 @@ public class AddPublicationTypeCommand extends BaseCommand {
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         String name = request.getParameter(NAME_ATTRIBUTE);
 
@@ -41,10 +44,10 @@ public class AddPublicationTypeCommand extends BaseCommand {
             int publicationTypeId = publicationTypeService.addPublicationType(name);
             if (publicationTypeId != -1) {
                 String successfulAddedPublicationTypeMessage = localeManager.getProperty(SUCCESSFUL_ADD_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationTypeMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationTypeMessage);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_PUBLICATION_TYPE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
             }
             page = pageManager.getProperty(ADD_PUBLICATION_TYPE_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {
