@@ -104,8 +104,8 @@
 </div>
 
 <%--Declare variable for current page and count of contacts --%>
-<c:set var="currentPage" value="${(requestScope.pageNumber==null) ? 1 : requestScope.pageNumber}"/>
-<c:set var="lastPage" value="${(requestScope.pageCount==null) ? 1 : requestScope.pageCount}"/>
+<c:set var="currentPage" value="${(sessionScope.pageNumber==null) ? 1 : sessionScope.pageNumber}"/>
+<c:set var="lastPage" value="${(sessionScope.pageCount==null) ? 1 : sessionScope.pageCount}"/>
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
@@ -164,7 +164,7 @@
     </ul>
 </nav>
 
-<%@include file="../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
