@@ -45,12 +45,10 @@ public class FindPublicationByGenreCommand extends BaseCommand{
 
         try {
             List<Publication> publications = publicationService.findPublicationByGenreId(genreId, pageNumber);
-            if (!publications.isEmpty()) {
-                int pageCount = publicationService.findPublicationByGenreIdPageCount(genreId);
-                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
-                session.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
-                session.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
-            }
+            int pageCount = publicationService.findPublicationByGenreIdPageCount(genreId);
+            session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, publications);
+            session.setAttribute(PAGE_NUMBER_ATTRIBUTE, pageNumber);
+            session.setAttribute(PAGE_COUNT_ATTRIBUTE, pageCount);
 
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
