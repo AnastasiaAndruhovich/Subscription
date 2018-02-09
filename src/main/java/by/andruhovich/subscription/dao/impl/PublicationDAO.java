@@ -22,8 +22,6 @@ public class PublicationDAO extends PublicationManagerDAO {
             "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT publication_id FROM publications ORDER BY publication_id " +
             "DESC LIMIT 1";
-    private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
-    private static final String SELECT_COUNT = "SELECT COUNT(publication_id) AS count FROM publications";
     private static final String SELECT_PUBLICATION_BY_ID = "SELECT publication_id, name, description, price, " +
             "picture_name, picture FROM publications WHERE publication_id = ?";
     private static final String SELECT_ALL_PUBLICATIONS = "SELECT publication_id, name, description, price, " +
@@ -50,6 +48,13 @@ public class PublicationDAO extends PublicationManagerDAO {
     private static final String SELECT_PUBLICATION_BY_SUBSCRIPTION_ID = "SELECT p.publication_id, p.name, p.description, " +
             "p.price, p.picture_name, p.picture FROM subscriptions JOIN publications p USING (publication_id) " +
             "WHERE subscription_id = ?";
+
+    private static final String DELETE_PUBLICATION_BY_ID = "DELETE FROM publications WHERE publication_id = ?";
+    private static final String SELECT_COUNT = "SELECT COUNT(publication_id) AS count FROM publications";
+    private static final String SELECT_COUNT_BY_AUTHOR_ID = "SELECT COUNT(publication_id) AS count FROM authors_publications WHERE author_id = ?";
+    private static final String SELECT_COUNT_BY_GENRE_ID = "SELECT COUNT(publication_id) AS count FROM publications WHERE genre_id = ?";
+    private static final String SELECT_COUNT_BY_PUBLICATION_TYPE_ID = "SELECT COUNT(publication_id) AS count FROM publications WHERE publication_type_id = ?";
+
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
 
@@ -396,5 +401,23 @@ public class PublicationDAO extends PublicationManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public int findPublicationCountByAuthorId(int authorId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count by author id");
+        return findEntityCountById(SELECT_COUNT_BY_AUTHOR_ID, authorId);
+    }
+
+    @Override
+    public int findPublicationCountByGenreId(int genreId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count by genre id");
+        return findEntityCountById(SELECT_COUNT_BY_GENRE_ID, genreId);
+    }
+
+    @Override
+    public int findPublicationCountByPublicationTypeId(int publicationTypeId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for get count by publication type id");
+        return findEntityCountById(SELECT_COUNT_BY_PUBLICATION_TYPE_ID, publicationTypeId);
     }
 }

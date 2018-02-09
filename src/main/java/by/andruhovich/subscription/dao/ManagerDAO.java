@@ -46,6 +46,27 @@ public abstract class ManagerDAO <T extends Entity> extends BaseDAO {
         }
     }
 
+    protected int findEntityCountById(String mysqlQuery, int id) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find entity count by id");
+        PreparedStatement preparedStatement = null;
+        int count = -1;
+
+        try {
+            preparedStatement = connection.prepareStatement(mysqlQuery);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+            LOGGER.log(Level.INFO, "Request for find entity count bu id - succeed");
+            return count;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Execute statement error. ", e);
+        } finally {
+            close(preparedStatement);
+        }
+    }
+
     protected boolean delete(int id, String mysqlQuery) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete entity");
         PreparedStatement preparedStatement = null;

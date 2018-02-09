@@ -37,6 +37,8 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String SELECT_SUBSCRIPTIONS_BY_USER_ID = "SELECT subscription_id, start_date, end_date, " +
             "subscription_is_active FROM subscriptions WHERE user_id = ? ORDER BY user_id DESC LIMIT ?, ?";
 
+    private static final String SELECT_COUNT_BY_USER_ID = "SELECT COUNT(subscription_id) AS count FROM subscriptions WHERE user_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(SubscriptionDAO.class);
 
     public SubscriptionDAO(Connection connection) {
@@ -188,6 +190,12 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public int findSubscriptionCountByUserId(int userId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find subscription count by user id");
+        return findEntityCountById(SELECT_COUNT_BY_USER_ID, userId);
     }
 
     public int findEntityCount() throws DAOTechnicalException {

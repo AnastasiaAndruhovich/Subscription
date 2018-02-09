@@ -21,6 +21,10 @@ public abstract class PublicationManagerDAO extends ManagerDAO<Publication> {
     public abstract String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException;
     public abstract boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException;
 
+    public abstract int findPublicationCountByAuthorId(int authorId) throws DAOTechnicalException;
+    public abstract int findPublicationCountByGenreId(int genreId) throws DAOTechnicalException;
+    public abstract int findPublicationCountByPublicationTypeId(int publicationTypeId) throws DAOTechnicalException;
+
     public abstract Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException;
     public abstract int findIdByEntity(Publication publication) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationsByGenreId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
