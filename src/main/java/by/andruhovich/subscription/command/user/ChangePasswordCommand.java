@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.manager.LocaleManager;
@@ -32,7 +34,7 @@ public class ChangePasswordCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(ChangePasswordCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
@@ -49,18 +51,18 @@ public class ChangePasswordCommand extends BaseCommand {
             if (!userService.confirmPassword(id.toString(), oldPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_OLD_PASSWORD_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!ServiceValidator.verifyPassword(newPassword)) {
                 String errorChangePasswordMessage = localeManager.getProperty(ERROR_NEW_PASSWORD_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorChangePasswordMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.confirmPassword(newPassword, repeatPassword)) {
                 String errorSignUpMessage = localeManager.getProperty(ERROR_CONFIRM_PASSWORD_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!userService.changePassword(id.toString(), newPassword)) {
@@ -74,6 +76,6 @@ public class ChangePasswordCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

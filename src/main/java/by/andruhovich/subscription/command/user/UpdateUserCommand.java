@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.converter.ClientDataConverter;
 import by.andruhovich.subscription.entity.User;
@@ -41,7 +43,7 @@ public class UpdateUserCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(SignUpCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
@@ -65,22 +67,21 @@ public class UpdateUserCommand extends BaseCommand {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_LOGIN_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_BIRTH_DATE_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(EDIT_PROFILE_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_POSTAL_INDEX_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
-
             Date date = ClientDataConverter.convertStringToDate(birthDate);
 
             if (!userService.updateUser(id.toString(), lastName, firstName, date, address, city, postalIndex, login)) {
@@ -95,6 +96,6 @@ public class UpdateUserCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

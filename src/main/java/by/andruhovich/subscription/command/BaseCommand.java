@@ -12,5 +12,5 @@ public abstract class BaseCommand {
 
     protected static final String MESSAGE_ATTRIBUTE = "message";
 
-    public abstract String execute(HttpServletRequest request, HttpServletResponse response);
+    public abstract CommandResult execute(HttpServletRequest request, HttpServletResponse response);
 }

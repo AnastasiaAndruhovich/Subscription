@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -25,7 +27,7 @@ public class BlockUserCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(BlockUserCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
@@ -38,7 +40,7 @@ public class BlockUserCommand extends BaseCommand {
                 String errorBlockUserMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorBlockUserMessage);
             }
-            return ShowEntityList.showUserList(request, response);
+            page = ShowEntityList.showUserList(request, response);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
@@ -46,6 +48,6 @@ public class BlockUserCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

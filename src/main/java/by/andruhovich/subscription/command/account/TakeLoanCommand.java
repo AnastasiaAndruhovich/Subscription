@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.account;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.entity.Account;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -30,7 +32,7 @@ public class TakeLoanCommand extends BaseCommand{
     private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
@@ -46,7 +48,7 @@ public class TakeLoanCommand extends BaseCommand{
                 Account account = accountService.findAccountByUserId(userId.toString());
                 request.setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             Account account = accountService.takeLoan(userId.toString(), rechargeSum);
@@ -64,6 +66,6 @@ public class TakeLoanCommand extends BaseCommand{
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

@@ -1,8 +1,8 @@
 package by.andruhovich.subscription.command.genre;
 
 import by.andruhovich.subscription.command.BaseCommand;
-import by.andruhovich.subscription.command.author.EditAuthorCommand;
-import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.entity.Genre;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.manager.PageManager;
@@ -24,7 +24,7 @@ public class ParseGenreCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(EditGenreCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
 
@@ -42,6 +42,6 @@ public class ParseGenreCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.FORWARD, page);
     }
 }

@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.publication;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -24,9 +26,10 @@ public class DeletePublicationCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(DeletePublicationCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);
         LocaleManager localeManager = new LocaleManager(locale);
+        String page;
 
         String publicationId = request.getParameter(PUBLICATION_ID_ATTRIBUTE);
 
@@ -35,13 +38,14 @@ public class DeletePublicationCommand extends BaseCommand {
                 String errorDeletePublicationMessage = localeManager.getProperty(ERROR_DELETE_PUBLICATION_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorDeletePublicationMessage);
             }
-            return ShowEntityList.showPublicationList(request, response);
+            page = ShowEntityList.showPublicationList(request, response);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
-            return ERROR_PAGE;
+            page = ERROR_PAGE;
         } catch (MissingResourceTechnicalException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
-            return ERROR_PAGE;
+            page = ERROR_PAGE;
         }
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

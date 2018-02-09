@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.subscription;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.command.publication.AddPublicationCommand;
 import by.andruhovich.subscription.entity.Subscription;
@@ -36,7 +38,7 @@ public class AddSubscriptionCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(AddPublicationCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
@@ -50,12 +52,12 @@ public class AddSubscriptionCommand extends BaseCommand {
             if (clientType.equals(ClientType.GUEST)) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_SUBSCRIBE_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
-                return ShowEntityList.showPublicationList(request, response);
+                return new CommandResult(TransitionType.REDIRECT, ShowEntityList.showPublicationList(request, response));
             }
             if (userService.isUserBlocked(clientId.toString())) {
                 String errorSubscribeMessage = localeManager.getProperty(ERROR_BLOCK_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSubscribeMessage);
-                return ShowEntityList.showPublicationList(request, response);
+                return new CommandResult(TransitionType.REDIRECT, ShowEntityList.showPublicationList(request, response));
             }
 
             Subscription subscription = subscriptionService.addSubscription(clientId.toString(), publicationId);
@@ -68,6 +70,6 @@ public class AddSubscriptionCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }

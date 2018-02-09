@@ -1,6 +1,8 @@
 package by.andruhovich.subscription.command.user;
 
 import by.andruhovich.subscription.command.BaseCommand;
+import by.andruhovich.subscription.command.CommandResult;
+import by.andruhovich.subscription.command.TransitionType;
 import by.andruhovich.subscription.command.common.ShowEntityList;
 import by.andruhovich.subscription.converter.ClientDataConverter;
 import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
@@ -44,7 +46,7 @@ public class SignUpCommand extends BaseCommand {
     private static final Logger LOGGER = LogManager.getLogger(SignUpCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;
         PageManager pageManager = PageManager.getInstance();
         Locale locale = (Locale)request.getSession().getAttribute(LOCALE);
@@ -66,31 +68,31 @@ public class SignUpCommand extends BaseCommand {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_LOGIN_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPassword(password)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_PASSWORD_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.confirmPassword(password, confirmPassword)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_CONFIRM_PASSWORD_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyDate(birthDate)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_BIRTH_DATE_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
             if (!ServiceValidator.verifyPostalIndex(postalIndex)) {
                 page = pageManager.getProperty(SIGN_UP_PAGE);
                 String errorSignUpMessage = localeManager.getProperty(ERROR_SIGN_UP_POSTAL_INDEX_MESSAGE);
                 request.setAttribute(MESSAGE_ATTRIBUTE, errorSignUpMessage);
-                return page;
+                return new CommandResult(TransitionType.REDIRECT, page);
             }
 
             Date date = ClientDataConverter.convertStringToDate(birthDate);
@@ -113,6 +115,6 @@ public class SignUpCommand extends BaseCommand {
             LOGGER.log(Level.ERROR, e.getMessage());
             page = ERROR_PAGE;
         }
-        return page;
+        return new CommandResult(TransitionType.REDIRECT, page);
     }
 }
