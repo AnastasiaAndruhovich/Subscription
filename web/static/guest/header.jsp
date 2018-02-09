@@ -67,8 +67,8 @@ To change this template use File | Settings | File Templates.
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <a href="${pageContext.servletContext.contextPath}/jsp/user/login.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${Login}</a>
-            <a href="${pageContext.servletContext.contextPath}/jsp/user/signUp.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${SignUp}</a>
+            <a href="${pageContext.servletContext.contextPath}/jsp/user/user/login.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${Login}</a>
+            <a href="${pageContext.servletContext.contextPath}/jsp/user/user/signUp.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${SignUp}</a>
         </form>
     </div>
 </nav>

@@ -75,7 +75,7 @@ To change this template use File | Settings | File Templates.
                            href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1">
                             ${ShowPublications}</a>
                         <a class="dropdown-item"
-                           href="${pageContext.servletContext.contextPath}/jsp/admin/addPublication.jsp">${AddPublication}</a>
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/publication/addPublication.jsp">${AddPublication}</a>
                     </div>
                 </div>
             </li>
@@ -87,7 +87,7 @@ To change this template use File | Settings | File Templates.
                         <a class="dropdown-item"
                            href="${pageContext.servletContext.contextPath}/controller?command=show_authors&pageNumber=1">${ShowAuthors}</a>
                         <a class="dropdown-item"
-                           href="${pageContext.servletContext.contextPath}/jsp/admin/addAuthor.jsp">${AddAuthor}</a>
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/author/addAuthor.jsp">${AddAuthor}</a>
                     </div>
                 </div>
             </li>
@@ -99,7 +99,7 @@ To change this template use File | Settings | File Templates.
                         <a class="dropdown-item"
                            href="${pageContext.servletContext.contextPath}/controller?command=show_genres&pageNumber=1">${ShowGenres}</a>
                         <a class="dropdown-item"
-                           href="${pageContext.servletContext.contextPath}/jsp/admin/addGenre.jsp">${AddGenre}</a>
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/genre/addGenre.jsp">${AddGenre}</a>
                     </div>
                 </div>
             </li>
@@ -112,7 +112,7 @@ To change this template use File | Settings | File Templates.
                            href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1">
                             ${ShowPublicationTypes}</a>
                         <a class="dropdown-item"
-                           href="${pageContext.servletContext.contextPath}/jsp/admin/addPublicationType.jsp">${AddPublicationType}</a>
+                           href="${pageContext.servletContext.contextPath}/jsp/admin/publicationtype/addPublicationType.jsp">${AddPublicationType}</a>
                     </div>
                 </div>
             </li>
@@ -149,8 +149,8 @@ To change this template use File | Settings | File Templates.
                 <div class="dropdown-menu" aria-labelledby="dropdownUsers">
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_user">${MyProfile}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
-                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
-                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user">${MyPayments}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user&userId=${sessionScope.clientId}">${MySubscriptions}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}">${MyPayments}</a>
                 </div>
             </div>
         </form>
@@ -159,9 +159,9 @@ To change this template use File | Settings | File Templates.
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav ml-auto">
         <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img
-                class="lang" src="../../images/rus_flag.jpg"></a>
+                class="lang" src="${pageContext.servletContext.contextPath}/images/rus_flag.jpg"></a>
         <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img
-                class="lang" src="../../images/gbr_flag.jpg"></a>
+                class="lang" src="${pageContext.servletContext.contextPath}/images/gbr_flag.jpg"></a>
     </ul>
 </nav>
 

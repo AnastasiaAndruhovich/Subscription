@@ -79,8 +79,8 @@ scope="session"/>
                 <div class="dropdown-menu" aria-labelledby="dropdownUsers">
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_user">${MyProfile}</a>
                     <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_account_by_user">${MyAccount}</a>
-                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user">${MySubscriptions}</a>
-                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user">${MyPayments}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_subscription_by_user&userId=${sessionScope.clientId}">${MySubscriptions}</a>
+                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}">${MyPayments}</a>
                 </div>
             </div>
         </form>
@@ -88,8 +88,8 @@ scope="session"/>
 </nav>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <ul class="navbar-nav ml-auto">
-        <a href="controller?command=show_publications&language=ru_RU"> <img class="lang" src="../../images/rus_flag.jpg"></a>
-        <a href="controller?command=show_publications&language=en_US"> <img class="lang" src="../../images/gbr_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img class="lang" src="${pageContext.servletContext.contextPath}/images/rus_flag.jpg"></a>
+        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img class="lang" src="${pageContext.servletContext.contextPath}/images/gbr_flag.jpg"></a>
     </ul>
 </nav>
 
