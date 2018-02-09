@@ -48,10 +48,10 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="publication card">
-                    ${requestScope.message}
+                    ${sessionScope.message}
                     <c:choose>
-                        <c:when test="${requestScope.publications!=null}">
-                            <c:forEach var="publication" items="${requestScope.publications}">
+                        <c:when test="${sessionScope.publications!=null}">
+                            <c:forEach var="publication" items="${sessionScope.publications}">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4">

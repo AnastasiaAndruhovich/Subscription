@@ -40,8 +40,8 @@
             <div class="col-8">
                 <div class="publication type card">
                     <c:choose>
-                        <c:when test="${requestScope.publicationTypes!=null}">
-                            <c:forEach var="publicationType" items="${requestScope.publicationTypes}">
+                        <c:when test="${sessionScope.publicationTypes!=null}">
+                            <c:forEach var="publicationType" items="${sessionScope.publicationTypes}">
                                 <div class="container">
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publicationType.publicationTypeId}"> ${publicationType.name}</a>
                                 </div>

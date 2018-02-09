@@ -43,7 +43,7 @@
                 <div class="publication type card">
                     <form name="addForm" method="POST" action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="add_publication_type"/>
-                        <p>${requestScope.message}</p>
+                        <p>${sessionScope.message}</p>
                         <div class="form-group row">
                             <label for="update" class="col-sm-2 col-form-label">${Name}</label>
                             <div class="col-sm-10">
