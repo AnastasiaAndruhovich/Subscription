@@ -130,7 +130,7 @@
 
                             <button class="btn btn-primary">${Edit}</button>
                         </form>
-                        <a href="${pageContext.servletContext.contextPath}/jsp/user/changePassword.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${ChangePassword}</a>
+                        <a href="${pageContext.servletContext.contextPath}/jsp/user/user/changePassword.jspd.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${ChangePassword}</a>
                     </c:when>
                 </c:choose>
             </div>
@@ -139,7 +139,7 @@
     </div>
 </div>
 
-<%@include file="../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.html" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
