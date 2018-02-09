@@ -8,6 +8,7 @@ public class ServiceValidator {
     private static final String REGEX_PASSWORD = "(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$";
     private static final String REGEX_PRICE = "^[\\d]+?\\.[\\d]{2}$";
     private static final String REGEX_DATE = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
+    private static final String REGEX_NAME = "([а-яёА-ЯЁ]|[a-zA-Z]){1,30}";
 
     public static boolean verifyPostalIndex(String postalIndex) {
         return postalIndex != null && Pattern.matches(REGEX_POSTAL_INDEX_, postalIndex);
@@ -32,5 +33,8 @@ public class ServiceValidator {
     public static boolean verifyDate(String date) {
         return date != null && Pattern.matches(REGEX_DATE, date);
     }
+
+    public static boolean verifyName(String name) { return name != null && Pattern.matches(REGEX_NAME, name); }
+
 }
 
