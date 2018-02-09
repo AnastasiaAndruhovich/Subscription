@@ -4,10 +4,8 @@ import by.andruhovich.subscription.type.ClientType;
 
 import javax.servlet.ServletException;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
-import java.util.Locale;
 
 public class HeaderTag extends TagSupport {
     private static final String CLIENT_TYPE = "clientType";
@@ -18,11 +16,11 @@ public class HeaderTag extends TagSupport {
         String header;
 
         if (type.equals(ClientType.ADMIN)) {
-            header = "../../static/admin/header.jsp";
+            header = "../../../static/admin/header.jsp";
         } else if (type.equals(ClientType.USER)) {
-            header = "../../static/user/header.jsp";
+            header = "../../../static/user/header.jsp";
         } else {
-            header = "../../static/guest/header.jsp";
+            header = "../../../static/guest/header.jsp";
         }
 
         try {
