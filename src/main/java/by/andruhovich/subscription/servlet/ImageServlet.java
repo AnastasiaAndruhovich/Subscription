@@ -14,8 +14,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,7 +68,7 @@ public class ImageServlet extends HttpServlet {
                     }
                 }
             }
-            if (!pictureName.isEmpty()) {
+            if (pictureName != null && !pictureName.isEmpty()) {
                 if (publicationId == null || !publicationService.insertImage(publicationId, picture, pictureName)) {
                     response.sendRedirect(ERROR_PAGE);
                 }
@@ -78,17 +76,16 @@ public class ImageServlet extends HttpServlet {
 
             int id = Integer.parseInt(publicationId);
             Publication publication = publicationService.findPublicationById(id);
-            request.setAttribute(PUBLICATION_ATTRIBUTE, publication);
+            request.getSession().setAttribute(PUBLICATION_ATTRIBUTE, publication);
             String page = pageManager.getProperty(ADD_PUBLICATION_PICTURE_ADMIN_PAGE);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
+            response.sendRedirect(page);
         } catch (FileUploadException e) {
             LOGGER.log(Level.ERROR, "Error image uploading");
             response.sendRedirect(ERROR_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             response.sendRedirect(ERROR_PAGE);
-        } catch (MissingResourceTechnicalException | ServletException e) {
+        } catch (MissingResourceTechnicalException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
             response.sendRedirect(ERROR_PAGE);
         }
