@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class TakeLoanCommand extends BaseCommand{
@@ -40,13 +41,15 @@ public class TakeLoanCommand extends BaseCommand{
 
         Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID);
         String rechargeSum = request.getParameter(LOAN_SUM_ATTRIBUTE);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         try {
             if (!ServiceValidator.verifyPrice(rechargeSum)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
-                request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
+                session.setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
                 return new CommandResult(TransitionType.REDIRECT, page);
             }
@@ -54,10 +57,10 @@ public class TakeLoanCommand extends BaseCommand{
             Account account = accountService.takeLoan(userId.toString(), rechargeSum);
             if (account == null) {
                 String tooBigLoanSumMessage = localeManager.getProperty(TOO_BIG_LOAN_SUM_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, tooBigLoanSumMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, tooBigLoanSumMessage);
                 account = accountService.findAccountByUserId(userId.toString());
             }
-            request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
+            session.setAttribute(ACCOUNT_ATTRIBUTE, account);
             page = pageManager.getProperty(ACCOUNT_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");

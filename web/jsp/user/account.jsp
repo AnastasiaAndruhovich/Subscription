@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10">
-                ${requestScope.message}
+                ${sessionScope.message}
                 <c:choose>
                     <c:when test="${account!=null}">
                         <table class="table table-bordered">

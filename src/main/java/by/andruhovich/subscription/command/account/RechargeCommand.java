@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class RechargeCommand extends BaseCommand {
@@ -39,19 +40,21 @@ public class RechargeCommand extends BaseCommand {
 
         Integer userId = (Integer) request.getSession().getAttribute(CLIENT_ID);
         String rechargeSum = request.getParameter(RECHARGE_SUM_ATTRIBUTE);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         try {
             if (!ServiceValidator.verifyPrice(rechargeSum)) {
                 String incorrectPriceMessage = localeManager.getProperty(INCORRECT_PRICE_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, incorrectPriceMessage);
                 Account account = accountService.findAccountByUserId(userId.toString());
-                request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
+                session.setAttribute(ACCOUNT_ATTRIBUTE, account);
                 page = pageManager.getProperty(ACCOUNT_USER_PAGE);
                 return new CommandResult(TransitionType.FORWARD, page);
             }
 
             Account account = accountService.recharge(userId.toString(), rechargeSum);
-            request.getSession().setAttribute(ACCOUNT_ATTRIBUTE, account);
+            session.setAttribute(ACCOUNT_ATTRIBUTE, account);
             page = pageManager.getProperty(ACCOUNT_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
