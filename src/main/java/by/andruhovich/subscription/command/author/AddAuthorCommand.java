@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class AddAuthorCommand extends BaseCommand {
@@ -40,15 +41,17 @@ public class AddAuthorCommand extends BaseCommand {
         String lastName = request.getParameter(LAST_NAME_ATTRIBUTE);
         String firstName = request.getParameter(FIRST_NAME_ATTRIBUTE);
         String publisherName = request.getParameter(PUBLISHER_NAME_ATTRIBUTE);
+        HttpSession session = request.getSession();
+        session.removeAttribute(MESSAGE_ATTRIBUTE);
 
         try {
             int authorId = authorService.addAuthor(firstName, lastName, publisherName);
             if (authorId != -1) {
                 String successfulAddedPublicationMessage = localeManager.getProperty(SUCCESSFUL_ADD_AUTHOR_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, successfulAddedPublicationMessage);
             } else {
                 String errorAddedPublicationMessage = localeManager.getProperty(ERROR_ADD_AUTHOR_MESSAGE);
-                request.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
+                session.setAttribute(MESSAGE_ATTRIBUTE, errorAddedPublicationMessage);
             }
             page = pageManager.getProperty(ADD_AUTHOR_ADMIN_PAGE);
         } catch (ServiceTechnicalException e) {
