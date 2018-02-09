@@ -21,7 +21,7 @@ public class ImageTag extends TagSupport {
         try {
             byte[] picture = publicationService.findPictureByPublicationId(publicationId);
             if (picture == null) {
-                pageContext.getOut().write("<img src=\"../../images/cover.jpg\" alt=\"publication\" class=\"image img-responsive\">");
+                pageContext.getOut().write("<img src=\"../../../images/cover.jpg\" alt=\"publication\" class=\"image img-responsive\">");
             } else {
                 BASE64Encoder base64Encoder = new BASE64Encoder();
                 String image = "<img src=\"data:image/jpg;base64," + base64Encoder.encode(picture) + "\"alt=\"publication\" class=\"image img-responsive\">";
