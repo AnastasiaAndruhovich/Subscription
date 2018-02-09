@@ -41,7 +41,7 @@ public class ServletSecurityFilter implements Filter {
             int clientId = -1;
             session.setAttribute(CLIENT_ID, clientId);
             ShowPublicationCommand showPublicationCommand = new ShowPublicationCommand();
-            String page = showPublicationCommand.execute(req, resp);
+            String page = showPublicationCommand.execute(req, resp).getPage();
             RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher(page);
             dispatcher.forward(req, resp);
             return;
