@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nastya
-  Date: 26.01.2018
-  Time: 14:42
+  Date: 10.02.2018
+  Time: 9:48
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -40,7 +40,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style><%@include file="../../../css/style.css"%></style>
 </head>
 <body>
 <ctg:role/>
@@ -63,21 +62,23 @@
                                         <div class="col-8">
                                             <p>${Name}: ${publication.name}</p>
                                             <p>
-                                                ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}"> ${publication.publicationType.name}</a>
+                                                    ${Type}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${publication.publicationType.publicationTypeId}&pageNumber=1"> ${publication.publicationType.name}</a>
                                             </p>
                                             <p>
-                                                ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${publication.genre.genreId}"> ${publication.genre.name}</a>
+                                                    ${Genre}:<a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${publication.genre.genreId}&pageNumber=1"> ${publication.genre.name}</a>
                                             </p>
                                             <c:choose>
                                                 <c:when test="${publication.authors!=null}">
                                                     <div class="row">
-                                                        ${Authors}:
-                                                        <c:forEach var="author" items="${publication.authors}">
-                                                            <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}"> ${author.authorLastName} ${author.authorFirstName}</a>
-                                                        </c:forEach>
+                                                        <p>
+                                                                ${Authors}:
+                                                            <c:forEach var="author" items="${publication.authors}">
+                                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                            </c:forEach>
+                                                        </p>
                                                     </div>
                                                     <p>
-                                                        ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>
+                                                            ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${publication.authors[0].authorId}&pageNumber=1">${publication.authors[0].publisherName}</a>
                                                     </p>
                                                 </c:when>
                                             </c:choose>
@@ -99,7 +100,6 @@
                                                     <input type="hidden" name="publicationId" value="${publication.publicationId}">
                                                     <button class="btn btn-outline-danger my-2 my-sm-0">${Delete}</button>
                                                 </form>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${currentPage-1}" aria-label="Previous">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${sessionScope.genreId}&pageNumber=${currentPage-1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -146,12 +146,12 @@
                 <c:choose>
                     <c:when test="${currentPage eq i}">
                         <li class="page-item active">
-                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${i}">${i}</a>
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${sessionScope.genreId}&pageNumber=${i}">${i}</a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="page-item">
-                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${i}">${i}</a>
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${sessionScope.genreId}&pageNumber=${i}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -167,7 +167,7 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=${currentPage+1}" aria-label="Next">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${sessionScope.genreId}&pageNumber=${currentPage+1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>

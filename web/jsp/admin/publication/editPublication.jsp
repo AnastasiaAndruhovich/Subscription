@@ -91,46 +91,42 @@
                                                    alphabetic characters."/>
                                         </div>
                                     </div>
-                                    <c:choose>
-                                        <c:when test="${publication.authors!=null}">
-                                            <c:forEach var="author" items="${publication.authors}">
-                                                <div class="form-group row">
-                                                    <label for="lastName"
-                                                           class="col-sm-3 col-form-label">${AuthorLastName}</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="lastName"
-                                                               id="lastName" value="${author.authorLastName}"
-                                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
-                                                               title="Last name must be between 1 and 30 characters,
-                                                               contain only alphabetic characters."/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="firstName"
-                                                           class="col-sm-3 col-form-label">${AuthorFirstName}</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="firstName"
-                                                               id="firstName" value="${author.authorFirstName}"
-                                                               pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
-                                                               title="First name must be between 1 and 30 characters,
-                                                               contain only alphabetic characters."/>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                            <div class="form-group row">
-                                                <label for="publisherName"
-                                                       class="col-sm-3 col-form-label">${Publisher}</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="publisherName"
-                                                           id="publisherName"
-                                                           value="${publication.authors[0].publisherName}"
-                                                           pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
-                                                           title="Publisher name must be between 1 and 30 characters,
-                                                           contain only alphabetic characters."/>
-                                                </div>
+                                    <c:forEach var="author" items="${publication.authors}">
+                                        <div class="form-group row">
+                                            <label for="lastName"
+                                                   class="col-sm-3 col-form-label">${AuthorLastName}</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="lastName"
+                                                       id="lastName" value="${author.authorLastName}"
+                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                       title="Last name must be between 1 and 30 characters,
+                                                       contain only alphabetic characters."/>
                                             </div>
-                                        </c:when>
-                                    </c:choose>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="firstName"
+                                                   class="col-sm-3 col-form-label">${AuthorFirstName}</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="firstName"
+                                                       id="firstName" value="${author.authorFirstName}"
+                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                       title="First name must be between 1 and 30 characters,
+                                                       contain only alphabetic characters."/>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                    <div class="form-group row">
+                                        <label for="publisherName"
+                                               class="col-sm-3 col-form-label">${Publisher}</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="publisherName"
+                                                   id="publisherName"
+                                                   value="${publication.authors[0].publisherName}"
+                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   title="Publisher name must be between 1 and 30 characters,
+                                                   contain only alphabetic characters."/>
+                                        </div>
+                                    </div>
                                     <div class="form-group row">
                                         <label for="description" class="col-sm-3 col-form-label">${Description}</label>
                                         <div class="col-sm-9">
