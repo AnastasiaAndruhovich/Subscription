@@ -64,12 +64,6 @@ scope="session"/>
             <li class="nav-item">
                 <a href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">${Subscription}</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">${Feedback}</a>
-            </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <a href="${pageContext.servletContext.contextPath}/controller?command=logout&pageNumber=1" type="button" class="btn btn-outline-success my-2 my-sm-0">${Logout}</a>

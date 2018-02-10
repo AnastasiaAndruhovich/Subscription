@@ -59,12 +59,6 @@ To change this template use File | Settings | File Templates.
             <li class="nav-item">
                 <a href="${pageContext.servletContext.contextPath}/controller?command=show_publication_types&pageNumber=1" class="nav-link">${PublicationTypes}</a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">${Subscription}</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">${Feedback}</a>
-            </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <a href="${pageContext.servletContext.contextPath}/jsp/user/user/login.jsp" type="button" class="btn btn-outline-success my-2 my-sm-0">${Login}</a>

@@ -5,7 +5,16 @@ Date: 20.12.2017
 Time: 0:02
 To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setBundle basename="locale.locale" var="loc"/>
+<fmt:message bundle="${loc}" key="label.feedback" var="Feedback"/>
 
 <html lang="en">
 <head>
@@ -19,10 +28,10 @@ To change this template use File | Settings | File Templates.
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container text-center">
+        <div class="text-muted credit">${Feedback}: anastasia.andruhovich@gmail.com</div>
+        <div class="text-muted credit">Copyrights 2018</div>
+    </div>
 </nav>
 
 <!-- Optional JavaScript -->
