@@ -40,6 +40,8 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <style><%@include file="../../../css/style.css"%></style>
+    <script><%@include file="../../../js/confirmPassword.js"%></script>
+    
 </head>
 <body>
 <ctg:role/>
@@ -97,7 +99,7 @@
                                     <label class="col-sm-3 control-label" for="password">${Password}</label>
                                     <div class="col-sm-9">
                                         <input id="password" name="password" type="password" placeholder="Password"
-                                               class="form-control input-md" required=""
+                                               class="form-control input-md" required="" onchange="checkPassword();"
                                                pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$"
                                                title="Password must be between 8 and 10 characters, contain at least
                                                one digit and one alphabetic character, and must not contain special
@@ -109,7 +111,8 @@
                                     <div class="col-sm-9">
                                         <input id="confirmPassword" name="confirmPassword" type="password"
                                                placeholder="Repeat password" class="form-control input-md" required=""
-                                               pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$">
+                                               pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$"
+                                               onchange="checkPassword();">
                                     </div>
                                 </div>
 

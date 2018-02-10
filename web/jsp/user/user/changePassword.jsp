@@ -32,9 +32,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <style>
-        <%@include file="../../../css/style.css" %>
-    </style>
+    <style><%@include file="../../../css/style.css" %></style>
+    <script><%@include file="../../../js/confirmPassword.js"%></script>
+
 </head>
 <body>
 <ctg:role/>
@@ -46,6 +46,7 @@
             <div class="col-10">
                 <div class="author card">
                     ${sessionScope.message}
+                    <span id='message'></span>
                     <form name="changePasswordForm" method="POST"
                           action="${pageContext.servletContext.contextPath}/controller">
                         <input type="hidden" name="command" value="change_password"/>
@@ -58,10 +59,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="newPassword" class="col-sm-2 col-form-label">${NewPassword}</label>
+                            <label for="password" class="col-sm-2 col-form-label">${NewPassword}</label>
                             <div class="col-sm-10">
-                                <input id="newPassword" name="newPassword" type="password" placeholder="New password"
-                                       class="form-control input-md" required=""
+                                <input id="password" name="newPassword" type="password" placeholder="New password"
+                                       class="form-control input-md" required="" onchange="checkPassword();"
                                        pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,18})$"
                                        title="Password must be between 6 and 18 characters, contain at least
                                                one digit and one alphabetic character, and must not contain special
@@ -69,13 +70,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="repeatPassword" class="col-sm-2 col-form-label">${RepeatPassword}</label>
+                            <label for="confirmPassword" class="col-sm-2 col-form-label">${RepeatPassword}</label>
                             <div class="col-sm-10">
-                                <input type="password" class="form-control" name="repeatPassword" id="repeatPassword"
-                                       placeholder="Repeat password" required=""/>
+                                <input type="password" class="form-control" name="repeatPassword" id="confirmPassword"
+                                       placeholder="Repeat password" required="" onchange="checkPassword();"/>
                             </div>
                         </div>
-                        <button class="btn btn-outline-success my-2 my-sm-0">${Change}</button>
+                        <button id="change" class="btn btn-outline-success my-2 my-sm-0">${Change}</button>
                     </form>
                 </div>
             </div>
