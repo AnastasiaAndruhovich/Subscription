@@ -220,19 +220,24 @@ public class ShowEntityList {
 
         final String SUBSCRIPTION_USER_PAGE = "path.page.admin.subscriptionList";
         final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
+        final String CURRENT_DATE_ATTRIBUTE = "currentDate";
 
         String page;
         PageManager pageManager = PageManager.getInstance();
+        HttpSession session = request.getSession();
 
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
 
+        Date date = Calendar.getInstance().getTime();
+        session.setAttribute(CURRENT_DATE_ATTRIBUTE, date);
+
         try {
             List<Subscription> subscriptions = subscriptionService.showSubscriptions(pageNumber);
             int pageCount = subscriptionService.findSubscriptionPageCount();
-            request.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
-            request.setAttribute(PAGE_NUMBER, pageNumber);
-            request.setAttribute(PAGE_COUNT, pageCount);
+            session.setAttribute(SUBSCRIPTION_LIST_ATTRIBUTE, subscriptions);
+            session.setAttribute(PAGE_NUMBER, pageNumber);
+            session.setAttribute(PAGE_COUNT, pageCount);
             page = pageManager.getProperty(SUBSCRIPTION_USER_PAGE);
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
@@ -275,6 +280,7 @@ public class ShowEntityList {
         SubscriptionService subscriptionService = new SubscriptionService();
 
         final String USER_ID_ATTRIBUTE = "userId";
+        final String CLIENT_ID_ATTRIBUTE = "clientId";
         final String SUBSCRIPTION_LIST_ATTRIBUTE = "subscriptions";
         final String CURRENT_DATE_ATTRIBUTE = "currentDate";
 
@@ -287,6 +293,9 @@ public class ShowEntityList {
         String pageNumber = request.getParameter(PAGE_NUMBER);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
         String userId = request.getParameter(USER_ID_ATTRIBUTE);
+        if (userId == null) {
+            userId = session.getAttribute(CLIENT_ID_ATTRIBUTE).toString();
+        }
         session.setAttribute(USER_ID_ATTRIBUTE, userId);
 
         Date date = Calendar.getInstance().getTime();
