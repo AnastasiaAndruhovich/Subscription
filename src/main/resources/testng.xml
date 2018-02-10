@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite verbose="1" name="TrialTest" annotations="JDK">
+    <test name="TestSet" enabled="true">
+        <groups>
+            <run>
+                <include name="PostalIndex"/>
+                <include name="Login"/>
+                <include name="Password"/>
+                <include name="Name"/>
+                <include name="Price"/>
+            </run>
+        </groups>
+        <classes><class name="by.andruhovich.subscription.ValidatorTest"/></classes>
+    </test>
+</suite>
