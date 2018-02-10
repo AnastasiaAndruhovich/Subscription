@@ -27,7 +27,7 @@ class FillOutEntityService {
                 publication.setGenre(publicationManagerDAO.findGenreByPublicationId(publication.getPublicationId()));
                 publication.setPublicationType(publicationManagerDAO.findPublicationTypeByPublicationId(publication.getPublicationId()));
                 List<Author> authors = authorPublicationManagerDAO.findAuthorsByPublicationId(publication.getPublicationId());
-                publication.setAuthors(correctAuthorList(authors));
+                publication.setAuthors(authors);
             }
             return publications;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
@@ -127,17 +127,5 @@ class FillOutEntityService {
                 connectionFactory.returnConnection(connection);
             }
         }
-    }
-
-    private static List<Author> correctAuthorList(List<Author> authors) {
-        for (Author author : authors) {
-            if ("-".equals(author.getAuthorFirstName())) {
-                author.setAuthorFirstName(null);
-            }
-            if ("-".equals(author.getAuthorLastName())) {
-                author.setAuthorLastName(null);
-            }
-        }
-        return authors;
     }
 }
