@@ -156,14 +156,6 @@ To change this template use File | Settings | File Templates.
         </form>
     </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <ul class="navbar-nav ml-auto">
-        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=ru_RU"> <img
-                class="lang" src="${pageContext.servletContext.contextPath}/images/rus_flag.jpg"></a>
-        <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&language=en_US"> <img
-                class="lang" src="${pageContext.servletContext.contextPath}/images/gbr_flag.jpg"></a>
-    </ul>
-</nav>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
