@@ -54,7 +54,7 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <c:choose>
-                    <c:when test="${sessionScope.payments!=null||!sessionScope.payments.isEmpty()}">
+                    <c:when test="${sessionScope.payments!=null && !sessionScope.payments.isEmpty()}">
                         <div class="scrolling outer">
                             <div class="inner">
                                 <table class="table table-striped table-hover table-condensed table-bordered">
@@ -77,17 +77,19 @@
                                             <th>${payment.paymentNumber}</th>
                                             <td>${payment.subscription.user.login}</td>
                                             <td>${payment.subscription.publication.name}</td>
-                                            <td>${payment.subscription.publication.publicationType.name}</td>
+                                            <td>
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${payment.subscription.publication.publicationType.publicationTypeId}">${payment.subscription.publication.publicationType.name}</a>
+                                            </td>
                                             <td>
                                                 <c:if test="${payment.subscription.publication.authors!=null}">
                                                     <c:forEach var="author" items="${payment.subscription.publication.authors}">
-                                                        ${author.authorLastName} ${author.authorFirstName}
+                                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1">${author.authorLastName} ${author.authorFirstName}</a>
                                                     </c:forEach>
                                                 </c:if>
                                             </td>
                                             <td>
                                                 <c:if test="${payment.subscription.publication.authors!=null}">
-                                                    ${payment.subscription.publication.authors[0].publisherName}
+                                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${payment.subscription.publication.authors[0].authorId}&pageNumber=1">${payment.subscription.publication.authors[0].publisherName}</a>
                                                 </c:if>
                                             </td>
                                             <td>${payment.date}</td>
@@ -114,62 +116,63 @@
 <c:set var="currentPage" value="${(sessionScope.pageNumber==null) ? 1 : sessionScope.pageNumber}"/>
 <c:set var="lastPage" value="${(sessionScope.pageCount==null) ? 1 : sessionScope.pageCount}"/>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <c:choose>
-            <c:when test="${currentPage==1}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&pageNumber=${currentPage-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            </c:otherwise>
-        </c:choose>
-        <%--For displaying all available pages--%>
-        <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
+<c:if test="${sessionScope.payments!=null && !sessionScope.payments.isEmpty()}">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
             <c:choose>
-                <c:when test="${currentPage eq i}">
-                    <li class="page-item active">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&pageNumber=${i}">${i}</a>
+                <c:when test="${currentPage==1}">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&pageNumber=${i}">${i}</a>
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}&pageNumber=${currentPage-1}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 </c:otherwise>
             </c:choose>
-        </c:forEach>
-        <c:choose>
-            <c:when test="${currentPage eq lastPage}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </c:when>
-            <c:otherwise>
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&pageNumber=${currentPage+1}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </c:otherwise>
-        </c:choose>
-
-    </ul>
-</nav>
+                <%--For displaying all available pages--%>
+            <c:forEach begin="${(currentPage-1<1)?1:currentPage-1}" end="${(currentPage+1>lastPage)?lastPage:currentPage+1}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <li class="page-item active">
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}&pageNumber=${i}">${i}</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}&pageNumber=${i}">${i}</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${currentPage eq lastPage}">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_payment_by_user&userId=${sessionScope.clientId}&pageNumber=${currentPage+1}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </nav>
+</c:if>
 
 <%@include file="../../../static/common/footer.html" %>
 

@@ -99,7 +99,7 @@
                                             </td>
                                             <td>
                                                 <c:if test="${subscription.publication.authors!=null}">
-                                                    ${Publisher}: <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${subscription.publication.authors[0].authorId}&pageNumber=1">${subscription.publication.authors[0].publisherName}</a>
+                                                    <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${subscription.publication.authors[0].authorId}&pageNumber=1">${subscription.publication.authors[0].publisherName}</a>
                                                 </c:if>
                                             </td>
                                             <td>${subscription.startDate}</td>
