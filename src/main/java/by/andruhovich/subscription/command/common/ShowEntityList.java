@@ -200,14 +200,11 @@ public class ShowEntityList {
 
         try {
             List<User> users = userService.showUsers(pageNumber);
-            if (!users.isEmpty()) {
-                int pageCount = userService.findUserPageCount();
-                session.setAttribute(USER_LIST_ATTRIBUTE, users);
-                session.setAttribute(PAGE_NUMBER, pageNumber);
-                session.setAttribute(PAGE_COUNT, pageCount);
-            }
+            int pageCount = userService.findUserPageCount();
+            session.setAttribute(USER_LIST_ATTRIBUTE, users);
+            session.setAttribute(PAGE_NUMBER, pageNumber);
+            session.setAttribute(PAGE_COUNT, pageCount);
             page = pageManager.getProperty(USER_ADMIN_PAGE);
-
         } catch (ServiceTechnicalException e) {
             LOGGER.log(Level.ERROR, "Database error connection");
             page = ERROR_PAGE;
