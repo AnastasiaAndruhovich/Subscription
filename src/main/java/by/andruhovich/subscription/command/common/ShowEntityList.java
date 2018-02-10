@@ -43,12 +43,10 @@ public class ShowEntityList {
 
         try {
             List<Author> authors = authorService.showAuthors(pageNumber);
-            if (!authors.isEmpty()) {
-                int pageCount = authorService.findAuthorPageCount();
-                session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, authors);
-                session.setAttribute(PAGE_NUMBER, pageNumber);
-                session.setAttribute(PAGE_COUNT, pageCount);
-            }
+            int pageCount = authorService.findAuthorPageCount();
+            session.setAttribute(PUBLICATION_LIST_ATTRIBUTE, authors);
+            session.setAttribute(PAGE_NUMBER, pageNumber);
+            session.setAttribute(PAGE_COUNT, pageCount);
 
             ClientType type = (ClientType) session.getAttribute(CLIENT_TYPE);
             if (type.equals(ClientType.ADMIN)) {
