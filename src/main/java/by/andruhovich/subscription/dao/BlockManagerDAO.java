@@ -13,7 +13,9 @@ public abstract class BlockManagerDAO extends ManagerDAO<Block> {
     }
 
     public abstract boolean deleteBlockByUserId(int id) throws DAOTechnicalException;
-    
+
+    public abstract int findBlockedUsersCountByAdminId(int adminId) throws DAOTechnicalException;
+
     public abstract List<User> findUsersByAdminId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
     public abstract User findAdminByUserId(int id) throws DAOTechnicalException;
 }

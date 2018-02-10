@@ -35,7 +35,7 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
             "u.birthdate, u.address, u.city, u.postal_index, u.login, u.password FROM subscriptions JOIN users u USING (user_id) " +
             "WHERE subscription_id = ?";
     private static final String SELECT_SUBSCRIPTIONS_BY_USER_ID = "SELECT subscription_id, start_date, end_date, " +
-            "subscription_is_active FROM subscriptions WHERE user_id = ? ORDER BY user_id DESC LIMIT ?, ?";
+            "subscription_is_active FROM subscriptions WHERE user_id = ? ORDER BY subscription_id DESC LIMIT ?, ?";
 
     private static final String SELECT_COUNT_BY_USER_ID = "SELECT COUNT(subscription_id) AS count FROM subscriptions WHERE user_id = ?";
 

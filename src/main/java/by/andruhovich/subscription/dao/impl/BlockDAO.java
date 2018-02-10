@@ -51,6 +51,7 @@ public class BlockDAO extends BlockManagerDAO {
             "admin_birthdate, a.address admin_address, a.city admin_city, a.postal_index admin_postal_index, " +
             "a.login admin_login, a.password admin_password FROM users a) a USING (admin_id) WHERE u.user_id = ?";
     private static final String SELECT_COUNT = "SELECT COUNT(user_id) AS count FROM block";
+    private static final String SELECT_COUNT_BY_ADMIN_ID = "SELECT COUNT(user_id) AS count FROM block WHERE admin_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(BlockDAO.class);
 
@@ -206,6 +207,12 @@ public class BlockDAO extends BlockManagerDAO {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public int findBlockedUsersCountByAdminId(int adminId) throws DAOTechnicalException {
+        LOGGER.log(Level.INFO, "Request for find blocked users count by admin id");
+        return findEntityCountById(SELECT_COUNT_BY_ADMIN_ID, adminId);
     }
 
     public int findEntityCount() throws DAOTechnicalException {
