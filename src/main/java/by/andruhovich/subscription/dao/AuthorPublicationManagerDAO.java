@@ -15,6 +15,5 @@ public abstract class AuthorPublicationManagerDAO extends BaseDAO {
     public abstract boolean createRecord(Author author, Publication publication) throws DAOTechnicalException;
     public abstract List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException;
     public abstract List<Publication> findPublicationsByAuthorId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
-    public abstract boolean deletePublicationsByAuthorId(int authorId) throws DAOTechnicalException;
     public abstract boolean deleteRecordByPublicationId(int id) throws DAOTechnicalException;
 }

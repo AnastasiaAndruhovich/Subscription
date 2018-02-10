@@ -96,21 +96,6 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
         }
     }
 
-    public boolean deletePublicationsByAuthorId(int authorId) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for delete publications by author id");
-        /*List<Publication> publications = findPublicationsByAuthorId(authorId);
-        if (!publications.isEmpty()) {
-            PublicationDAO publicationDAO = new PublicationDAO(connection);
-            for (Publication publication : publications) {
-                publicationDAO.delete(publication.getPublicationId());
-            }
-            LOGGER.log(Level.INFO, "Request for delete publications by author id - succeed");
-            return true;
-        }
-        LOGGER.log(Level.INFO, "Request for delete publications by author id - not succeed");*/
-        return false;
-    }
-
     public boolean deleteRecordByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete record by publication id");
         PreparedStatement preparedStatement = null;
