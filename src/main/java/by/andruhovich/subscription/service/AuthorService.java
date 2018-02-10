@@ -2,9 +2,12 @@ package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.dao.AuthorManagerDAO;
 import by.andruhovich.subscription.dao.AuthorPublicationManagerDAO;
+import by.andruhovich.subscription.dao.PublicationManagerDAO;
 import by.andruhovich.subscription.dao.impl.AuthorDAO;
 import by.andruhovich.subscription.dao.impl.AuthorPublicationDAO;
+import by.andruhovich.subscription.dao.impl.PublicationDAO;
 import by.andruhovich.subscription.entity.Author;
+import by.andruhovich.subscription.entity.Publication;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -57,10 +60,17 @@ public class AuthorService extends BaseService{
 
         try {
             connection = connectionFactory.getConnection();
-            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            PublicationManagerDAO publicationManagerDAO = new PublicationDAO(connection);
             AuthorPublicationManagerDAO authorPublicationManagerDAO = new AuthorPublicationDAO(connection);
-            /*authorPublicationDAO = connectionFactory.createAuthorPublicationDAO();
-            return authorPublicationDAO.deletePublicationsByAuthorId(intAuthorId);*/
+            AuthorManagerDAO authorManagerDAO = new AuthorDAO(connection);
+            int entityCount = publicationManagerDAO.findPublicationCountByAuthorId(intAuthorId);
+            List<Publication> publications = authorPublicationManagerDAO.findPublicationsByAuthorId(intAuthorId, 0, entityCount);
+            if (!publications.isEmpty()) {
+                PublicationDAO publicationDAO = new PublicationDAO(connection);
+                for (Publication publication : publications) {
+                    publicationDAO.delete(publication.getPublicationId());
+                }
+            }
             return authorManagerDAO.delete(intAuthorId);
         } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
