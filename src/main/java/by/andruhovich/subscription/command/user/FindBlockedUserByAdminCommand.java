@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Finds page according to relevant command find blocked entity user by admin id
+ */
 public class FindBlockedUserByAdminCommand extends BaseCommand {
     private UserService userService = new UserService();
 
@@ -27,7 +30,11 @@ public class FindBlockedUserByAdminCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(FindBlockedUserByAdminCommand.class);
 
-
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

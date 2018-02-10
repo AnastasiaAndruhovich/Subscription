@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Finds page according to relevant command parse author entity
+ */
 public class ParseAuthorCommand extends BaseCommand {
     private static final String EDIT_AUTHOR_ADMIN_PAGE = "path.page.admin.editAuthor";
 
@@ -25,6 +28,11 @@ public class ParseAuthorCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(EditAuthorCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

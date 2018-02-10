@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
+/**
+ * Finds page according to relevant command add publication type entity
+ */
 public class AddPublicationTypeCommand extends BaseCommand {
     private PublicationTypeService publicationTypeService = new PublicationTypeService();
 
@@ -30,6 +33,11 @@ public class AddPublicationTypeCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(AddPublicationTypeCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

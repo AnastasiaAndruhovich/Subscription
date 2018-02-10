@@ -1,5 +1,8 @@
 package by.andruhovich.subscription.command;
 
+/**
+ * Stores command types
+ */
 public enum CommandType {
     //account
     FIND_ACCOUNT_BY_USER, RECHARGE, TAKE_LOAN,

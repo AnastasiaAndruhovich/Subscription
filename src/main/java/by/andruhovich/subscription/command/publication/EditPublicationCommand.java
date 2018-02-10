@@ -21,6 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Finds page according to relevant command edit payment entity
+ */
 public class EditPublicationCommand extends BaseCommand {
     private PublicationService publicationService = new PublicationService();
 
@@ -44,6 +47,11 @@ public class EditPublicationCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(EditPublicationCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

@@ -15,6 +15,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Finds page according to relevant command find account entity by user
+ */
 public class FindAccountByUserCommand extends BaseCommand {
     private AccountService accountService = new AccountService();
 
@@ -24,6 +27,11 @@ public class FindAccountByUserCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(FindAccountByUserCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

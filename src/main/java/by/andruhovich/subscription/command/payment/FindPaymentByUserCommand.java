@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Finds page according to relevant command find payment entity by user id
+ */
 public class FindPaymentByUserCommand extends BaseCommand {
     private PaymentService paymentService = new PaymentService();
 
@@ -29,6 +32,11 @@ public class FindPaymentByUserCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(FindPaymentByUserCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

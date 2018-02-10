@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Defines command from http request
+ */
 public class CommandFactory {
     private static final Logger LOGGER = LogManager.getLogger(CommandFactory.class);
 

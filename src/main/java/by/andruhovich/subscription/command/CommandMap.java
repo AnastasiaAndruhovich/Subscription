@@ -18,6 +18,9 @@ import by.andruhovich.subscription.exception.UndefinedCommandTechnicalException;
 
 import java.util.EnumMap;
 
+/**
+ * Stores command types and relevant commands
+ */
 public class CommandMap {
     private static EnumMap<CommandType, BaseCommand> commandMap;
     private static CommandMap instance;

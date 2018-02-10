@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
+/**
+ * Finds page according to relevant command delete publication type entity
+ */
 public class DeletePublicationTypeCommand extends BaseCommand {
     private PublicationTypeService publicationTypeService = new PublicationTypeService();
 
@@ -27,6 +30,11 @@ public class DeletePublicationTypeCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(AddGenreCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(LOCALE);

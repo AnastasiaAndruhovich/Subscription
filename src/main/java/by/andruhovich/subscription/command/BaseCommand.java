@@ -3,6 +3,9 @@ package by.andruhovich.subscription.command;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Provides general method execute to define result page and transaction type
+ */
 public abstract class BaseCommand {
     protected static final String ERROR_PAGE = "/jsp/error/error.jsp";
 

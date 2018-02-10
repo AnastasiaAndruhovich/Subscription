@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Finds page according to relevant command parse publication type entity
+ */
 public class ParsePublicationTypeCommand extends BaseCommand {
     private static final String EDIT_PUBLICATION_TYPE_ADMIN_PAGE = "path.page.admin.editPublicationType";
 
@@ -23,6 +26,11 @@ public class ParsePublicationTypeCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(EditPublicationTypeCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Finds page according to relevant command find publication entity by publication type id
+ */
 public class FindPublicationByPublicationTypeCommand extends BaseCommand {
     private PublicationService publicationService = new PublicationService();
 
@@ -31,6 +34,11 @@ public class FindPublicationByPublicationTypeCommand extends BaseCommand {
 
     private static final Logger LOGGER = LogManager.getLogger(FindPublicationByPublicationTypeCommand.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String page;

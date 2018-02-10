@@ -1,5 +1,8 @@
 package by.andruhovich.subscription.command;
 
+/**
+ * Contains transition type and page
+ */
 public class CommandResult {
     private TransitionType transitionType;
     private String page;
@@ -11,10 +14,6 @@ public class CommandResult {
 
     public TransitionType getTransitionType() {
         return transitionType;
-    }
-
-    public void setTransitionType(TransitionType transitionType) {
-        this.transitionType = transitionType;
     }
 
     public String getPage() {

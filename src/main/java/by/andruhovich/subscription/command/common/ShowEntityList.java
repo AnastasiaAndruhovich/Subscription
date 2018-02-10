@@ -17,6 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Finds page according to relevant show entity command
+ */
 public class ShowEntityList {
     private static final String ERROR_PAGE = "/jsp/error/error.jsp";
 
@@ -27,6 +30,11 @@ public class ShowEntityList {
 
     private static final Logger LOGGER = LogManager.getLogger(ShowEntityList.class);
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showAuthorList(HttpServletRequest request, HttpServletResponse response) {
         AuthorService authorService = new AuthorService();
 
@@ -65,6 +73,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showPublicationList(HttpServletRequest request, HttpServletResponse response) {
         PublicationService publicationService = new PublicationService();
 
@@ -105,6 +118,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showGenreList(HttpServletRequest request, HttpServletResponse response) {
         GenreService genreService = new GenreService();
 
@@ -145,6 +163,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showPublicationTypeList(HttpServletRequest request, HttpServletResponse response) {
         PublicationTypeService publicationTypeService = new PublicationTypeService();
 
@@ -183,6 +206,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showUserList(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = new UserService();
 
@@ -213,6 +241,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showSubscriptionList(HttpServletRequest request, HttpServletResponse response) {
         SubscriptionService subscriptionService = new SubscriptionService();
 
@@ -247,6 +280,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showUser(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = new UserService();
 
@@ -274,6 +312,11 @@ public class ShowEntityList {
         return page;
     }
 
+    /**
+     * @param request http request
+     * @param response http response
+     * @return relevant command page
+     */
     public static String showSubscriptionByUser(HttpServletRequest request, HttpServletResponse response) {
         SubscriptionService subscriptionService = new SubscriptionService();
 

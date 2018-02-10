@@ -10,7 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Finds page according to relevant command logout
+ */
 public class LogoutCommand extends BaseCommand {
+    /**
+     * @param request http request
+     * @param response http response
+     * @return command result including page and transition type
+     */
+    @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         int clientId = -1;
         HttpSession session = request.getSession();
