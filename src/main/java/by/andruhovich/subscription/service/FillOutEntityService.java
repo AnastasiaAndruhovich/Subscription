@@ -74,11 +74,11 @@ class FillOutEntityService {
             for (User user : users) {
                 user.setAccount(userManagerDAO.findAccountByUserId(user.getUserId()));
                 user.setRole(userManagerDAO.findRoleByUserId(user.getUserId()));
-                entityCount = subscriptionManagerDAO.findEntityCount();
-                user.setSubscriptions(subscriptionManagerDAO.findSubscriptionsByUserId(user.getUserId(), 1, entityCount));
+                entityCount = subscriptionManagerDAO.findSubscriptionCountByUserId(user.getUserId());
+                user.setSubscriptions(subscriptionManagerDAO.findSubscriptionsByUserId(user.getUserId(), 0, entityCount));
                 user.setAdmin(blockManagerDAO.findAdminByUserId(user.getUserId()));
-                entityCount = blockManagerDAO.findEntityCount();
-                user.setUsers(blockManagerDAO.findUsersByAdminId(user.getUserId(), 1, entityCount));
+                entityCount = blockManagerDAO.findBlockedUsersCountByAdminId(user.getUserId());
+                user.setUsers(blockManagerDAO.findUsersByAdminId(user.getUserId(), 0, entityCount));
             }
             return users;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {

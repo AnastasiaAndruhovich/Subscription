@@ -331,4 +331,23 @@ public class UserService extends BaseService{
         }
     }
 
+    public List<User> findBlockedUsersByAdminId(String adminId, String pageNumber) throws ServiceTechnicalException {
+        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
+        Connection connection = null;
+        int page = Integer.parseInt(pageNumber);
+        int id = Integer.parseInt(adminId);
+
+        try {
+            connection = connectionFactory.getConnection();
+            BlockManagerDAO blockManagerDAO = new BlockDAO(connection);
+            int startIndex = (page - 1) * ENTITY_COUNT_FOR_ONE_PAGE;
+            List<User> users = blockManagerDAO.findUsersByAdminId(id, startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
+            return FillOutEntityService.fillOutUserList(users);
+        } catch (DAOTechnicalException | ConnectionTechnicalException e) {
+            throw new ServiceTechnicalException(e);
+        } finally {
+            connectionFactory.returnConnection(connection);
+        }
+    }
+
 }
