@@ -22,10 +22,10 @@ public class FindPaymentByUserCommand extends BaseCommand {
 
     private static final String PAGE_NUMBER_ATTRIBUTE = "pageNumber";
     private static final String PAGE_COUNT_ATTRIBUTE = "pageCount";
-    private static final String USER_ID = "userId";
+    private static final String USER_ID_ATTRIBUTE = "userId";
     private static final String PAYMENT_LIST_ATTRIBUTE = "payments";
 
-    private static final String PUBLICATION_USER_PAGE = "path.page.user.paymentList";
+    private static final String PUBLICATION_USER_PAGE = "path.page.user.paymentByUser";
 
     private static final Logger LOGGER = LogManager.getLogger(FindPaymentByUserCommand.class);
 
@@ -38,10 +38,7 @@ public class FindPaymentByUserCommand extends BaseCommand {
 
         String pageNumber = request.getParameter(PAGE_NUMBER_ATTRIBUTE);
         pageNumber = (pageNumber == null) ? "1" : pageNumber;
-        String userId = request.getParameter(USER_ID);
-        if (userId == null) {
-            userId = ((Integer) session.getAttribute(CLIENT_ID)).toString();
-        }
+        String userId = request.getParameter(USER_ID_ATTRIBUTE);
 
         try {
             List<Payment> payments = paymentService.findPaymentByUserId(userId, pageNumber);
