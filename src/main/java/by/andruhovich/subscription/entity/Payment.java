@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Entity payment
+ */
 public class Payment extends Entity{
     private int paymentNumber;
     private BigDecimal sum;

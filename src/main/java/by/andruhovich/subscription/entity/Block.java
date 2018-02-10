@@ -3,7 +3,9 @@ package by.andruhovich.subscription.entity;
 import java.util.Date;
 import java.util.Objects;
 
-
+/**
+ * Entity block
+ */
 public class Block  extends Entity{
     private Date date;
     private User user;
