@@ -87,11 +87,13 @@
                                             <td>
                                                 <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_publication_type&publicationTypeId=${subscription.publication.publicationType.publicationTypeId}">${subscription.publication.publicationType.name}</a>
                                             </td>
-                                            <td>${subscription.publication.genre.name}</td>
+                                            <td>
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_genre&genreId=${subscription.publication.genre.genreId}">${subscription.publication.genre.name}</a>
+                                            </td>
                                             <td>
                                                 <c:if test="${subscription.publication.authors!=null}">
                                                     <c:forEach var="author" items="${subscription.publication.authors}">
-                                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1"> ${author.authorLastName} ${author.authorFirstName}</a>
+                                                        <a href="${pageContext.servletContext.contextPath}/controller?command=find_publication_by_author&authorId=${author.authorId}&pageNumber=1">${author.authorLastName} ${author.authorFirstName}</a>
                                                     </c:forEach>
                                                 </c:if>
                                             </td>
