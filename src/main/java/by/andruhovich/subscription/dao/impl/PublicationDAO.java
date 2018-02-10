@@ -282,27 +282,6 @@ public class PublicationDAO extends PublicationManagerDAO {
     }
 
     @Override
-    public List<Publication> findPublicationByName(String name) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find publication by name");
-        PreparedStatement preparedStatement = null;
-        List<Publication> publications;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_PUBLICATION_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            PublicationMapper mapper = new PublicationMapper();
-            publications = mapper.mapResultSetToEntity(resultSet);
-            LOGGER.log(Level.INFO, "Request for find publication by name - succeed");
-            return publications;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
     public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication by subscription id");
         PreparedStatement preparedStatement = null;

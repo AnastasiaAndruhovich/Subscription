@@ -12,7 +12,6 @@ public abstract class UserManagerDAO extends ManagerDAO<User> {
         super(connection);
     }
 
-    public abstract User findUserByAccountNumber(int id) throws DAOTechnicalException;
     public abstract Role findRoleByUserId(int id) throws DAOTechnicalException;
     public abstract Account findAccountByUserId(int id) throws DAOTechnicalException;
 

@@ -150,28 +150,6 @@ public class UserDAO extends UserManagerDAO {
     }
 
     @Override
-    public User findUserByAccountNumber(int accountNumber) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for user by account number");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_USER_BY_ACCOUNT_NUMBER);
-            preparedStatement.setInt(1, accountNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<User> users = new UserMapper().mapResultSetToEntity(resultSet);
-            LOGGER.log(Level.INFO, "Request for user by account number - succeed");
-            if (!users.isEmpty()) {
-                return users.get(0);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
     public String findPasswordById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find password by id");
         PreparedStatement preparedStatement = null;

@@ -15,7 +15,6 @@ public abstract class PublicationManagerDAO extends ManagerDAO<Publication> {
 
     public abstract Genre findGenreByPublicationId(int id) throws DAOTechnicalException;
     public abstract PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException;
-    public abstract List<Publication> findPublicationByName(String name) throws DAOTechnicalException;
     public abstract int findEntityCount() throws DAOTechnicalException;
     public abstract byte[] findPictureByPublicationId(int publicationId) throws DAOTechnicalException;
     public abstract String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException;

@@ -14,5 +14,4 @@ public abstract class PaymentManagerDAO extends ManagerDAO<Payment> {
 
     public abstract Subscription findSubscriptionByPaymentNumber(int id) throws DAOTechnicalException;
     public abstract List<Payment> findPaymentsByUserId(int userId, int startIndex, int endIndex) throws DAOTechnicalException;
-    public abstract List<Payment> findPaymentsBySubscriptionId(int id, int startIndex, int endIndex) throws DAOTechnicalException;
 }

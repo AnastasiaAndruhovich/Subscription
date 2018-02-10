@@ -13,8 +13,6 @@ import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
 import by.andruhovich.subscription.pool.ConnectionFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.util.Calendar;
@@ -23,8 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SubscriptionService extends BaseService {
-    private static final Logger LOGGER = LogManager.getLogger(SubscriptionService.class);
-
     public List<Subscription> showSubscriptions(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

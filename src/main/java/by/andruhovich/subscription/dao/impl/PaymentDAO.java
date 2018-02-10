@@ -172,27 +172,6 @@ public class PaymentDAO extends PaymentManagerDAO {
     }
 
     @Override
-    public List<Payment> findPaymentsBySubscriptionId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
-        LOGGER.log(Level.INFO, "Request for find payments by subscription id");
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_PAYMENTS_BY_SUBSCRIPTION_ID);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, startIndex);
-            preparedStatement.setInt(3, endIndex);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.log(Level.INFO, "Request for find payments by subscription id - succeed");
-            PaymentMapper paymentMapper = new PaymentMapper();
-            return paymentMapper.mapResultSetToEntity(resultSet);
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Execute statement error. ", e);
-        } finally {
-            close(preparedStatement);
-        }
-    }
-
-    @Override
     public List<Payment> findPaymentsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find payments by user id");
         PreparedStatement preparedStatement = null;

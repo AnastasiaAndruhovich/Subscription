@@ -1,9 +1,16 @@
 package by.andruhovich.subscription.service;
 
 import by.andruhovich.subscription.coder.PasswordCoder;
-import by.andruhovich.subscription.dao.*;
-import by.andruhovich.subscription.dao.impl.*;
-import by.andruhovich.subscription.entity.*;
+import by.andruhovich.subscription.dao.AccountManagerDAO;
+import by.andruhovich.subscription.dao.BlockManagerDAO;
+import by.andruhovich.subscription.dao.UserManagerDAO;
+import by.andruhovich.subscription.dao.impl.AccountDAO;
+import by.andruhovich.subscription.dao.impl.BlockDAO;
+import by.andruhovich.subscription.dao.impl.UserDAO;
+import by.andruhovich.subscription.entity.Account;
+import by.andruhovich.subscription.entity.Block;
+import by.andruhovich.subscription.entity.Role;
+import by.andruhovich.subscription.entity.User;
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.exception.ServiceTechnicalException;
@@ -195,59 +202,6 @@ public class UserService extends BaseService{
             List<User> users = userManagerDAO.findAll(startIndex, ENTITY_COUNT_FOR_ONE_PAGE);
             return FillOutEntityService.fillOutUserList(users);
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public User findUserByAccountNumber(String accountNumber) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            UserManagerDAO userManagerDAO = new UserDAO(connection);
-            int intAccountNumber = Integer.parseInt(accountNumber);
-            return userManagerDAO.findUserByAccountNumber(intAccountNumber);
-        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public User findUserBySubscriptionId(String id) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            SubscriptionManagerDAO subscriptionManagerDAO = new SubscriptionDAO(connection);
-            int intId = Integer.parseInt(id);
-            return subscriptionManagerDAO.findUserBySubscriptionId(intId);
-        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
-            throw new ServiceTechnicalException(e);
-        } finally {
-            connectionFactory.returnConnection(connection);
-        }
-    }
-
-    public User findUserByPaymentNumber(String paymentNumber) throws ServiceTechnicalException {
-        ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-        Connection connection = null;
-
-        try {
-            connection = connectionFactory.getConnection();
-            PaymentManagerDAO paymentManagerDAO = new PaymentDAO(connection);
-            int intPaymentNumber = Integer.parseInt(paymentNumber);
-            Subscription subscription = paymentManagerDAO.findSubscriptionByPaymentNumber(intPaymentNumber);
-            if (subscription != null) {
-                SubscriptionDAO subscriptionDAO = new SubscriptionDAO(connection);
-                return subscriptionDAO.findUserBySubscriptionId(subscription.getSubscriptionId());
-            }
-            return null;
-        } catch (ConnectionTechnicalException | DAOTechnicalException e) {
             throw new ServiceTechnicalException(e);
         } finally {
             connectionFactory.returnConnection(connection);
