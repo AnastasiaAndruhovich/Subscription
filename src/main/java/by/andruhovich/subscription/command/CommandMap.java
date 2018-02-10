@@ -65,6 +65,7 @@ public class CommandMap {
         commandMap.put(CommandType.UPDATE_USER, new UpdateUserCommand());
         commandMap.put(CommandType.CHANGE_PASSWORD, new ChangePasswordCommand());
         commandMap.put(CommandType.FIND_PAYMENT_BY_USER, new FindPaymentByUserCommand());
+        commandMap.put(CommandType.FIND_BLOCKED_USERS_BY_ADMIN, new FindBlockedUserByAdminCommand());
     }
 
     private CommandMap() {}
