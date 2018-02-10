@@ -190,7 +190,7 @@
     </nav>
 </c:if>
 
-<%@include file="../../../static/common/footer.html" %>
+<%@include file="../../../static/common/footer.jsp" %>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
