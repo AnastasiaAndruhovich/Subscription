@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nastya
-  Date: 04.02.2018
-  Time: 23:49
+  Date: 10.02.2018
+  Time: 11:24
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -63,7 +63,7 @@
                             <c:when test="${sessionScope.users!=null && !sessionScope.users.isEmpty()}">
                                 ${sessionScope.result}
                                 <table class="table table-striped table-hover table-condensed table-bordered">
-                                <thead>
+                                    <thead>
                                     <tr>
                                         <th>#</th>
                                         <td>${Role}</td>
@@ -80,8 +80,8 @@
                                         <td>${Block}</td>
                                         <td>${BlockedUsers}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     <c:forEach var="user" items="${sessionScope.users}">
                                         <tr>
                                             <th>1</th>
@@ -165,7 +165,7 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=${currentPage-1}" aria-label="Previous">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_user_by_admin&admin_id=${sessionScope.admin_id}&pageNumber=${currentPage-1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -177,12 +177,12 @@
                 <c:choose>
                     <c:when test="${currentPage eq i}">
                         <li class="page-item active">
-                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=${i}">${i}</a>
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_user_by_admin&admin_id=${sessionScope.admin_id}&pageNumber=${i}">${i}</a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="page-item">
-                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=${i}">${i}</a>
+                            <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_user_by_admin&admin_id=${sessionScope.admin_id}&pageNumber=${i}">${i}</a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -198,7 +198,7 @@
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=show_users&pageNumber=${currentPage+1}" aria-label="Next">
+                        <a class="page-link" href="${pageContext.servletContext.contextPath}/controller?command=find_user_by_admin&admin_id=${sessionScope.admin_id}&pageNumber=${currentPage+1}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
