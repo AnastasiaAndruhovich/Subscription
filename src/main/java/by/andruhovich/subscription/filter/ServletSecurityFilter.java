@@ -40,11 +40,13 @@ public class ServletSecurityFilter implements Filter {
             session.setAttribute(LOCALE, locale);
             int clientId = -1;
             session.setAttribute(CLIENT_ID, clientId);
+            ShowPublicationCommand showPublicationCommand = new ShowPublicationCommand();
+            String page = showPublicationCommand.execute(req, resp).getPage();
+            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(req, resp);
+            return;
         }
-        ShowPublicationCommand showPublicationCommand = new ShowPublicationCommand();
-        String page = showPublicationCommand.execute(req, resp).getPage();
-        RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher(page);
-        dispatcher.forward(req, resp);
+        chain.doFilter(request, response);
     }
 
     public void destroy() {
