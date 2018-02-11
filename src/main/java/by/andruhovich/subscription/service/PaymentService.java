@@ -21,7 +21,17 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to process payment information
+ */
 public class PaymentService extends BaseService {
+    /**
+     * @param userId User id
+     * @param subscriptionId Subscription id
+     * @return Created Payment
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public Payment addPayment(String userId, String subscriptionId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -58,6 +68,13 @@ public class PaymentService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id in database
+     * @param pageNumber Current page number in database
+     * @return Payment list relevant to user in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Payment> findPaymentByUserId(String userId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -80,6 +97,11 @@ public class PaymentService extends BaseService {
 
     }
 
+    /**
+     * @return Payment count in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPaymentPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

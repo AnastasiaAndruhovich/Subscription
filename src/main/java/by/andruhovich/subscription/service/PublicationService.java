@@ -22,9 +22,18 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to process publication information
+ */
 public class PublicationService extends BaseService {
     private static final Logger LOGGER = LogManager.getLogger(PublicationService.class);
 
+    /**
+     * @param pageNumber Current page from jsp
+     * @return Publication list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Publication> showPublications(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -43,6 +52,19 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param name Publication name
+     * @param authorFirstNames Author first name
+     * @param authorLastNames Author last name
+     * @param publisherName Publisher name
+     * @param publicationTypeName Publication type name
+     * @param genreName Genre name
+     * @param description Publication description
+     * @param price Publication price
+     * @return Publication id from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int addPublication(String name, List<String> authorFirstNames, List<String> authorLastNames,
                               String publisherName, String publicationTypeName, String genreName, String description,
                               String price) throws ServiceTechnicalException {
@@ -108,6 +130,13 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationId Publication id in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean deletePublication(String publicationId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -125,7 +154,22 @@ public class PublicationService extends BaseService {
         }
     }
 
-    public boolean updatePublication(String oldPublicationId, String name, List<String> authorFirstNames,
+    /**
+     * @param publicationId Publication id in database
+     * @param name Publication name
+     * @param authorFirstNames Author last name
+     * @param authorLastNames Author first name
+     * @param publisherName Publisher name
+     * @param publicationTypeName Publication type name
+     * @param genreName Genre name
+     * @param description Publication description
+     * @param price Publication price
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
+    public boolean updatePublication(String publicationId, String name, List<String> authorFirstNames,
                                      List<String> authorLastNames, String publisherName, String publicationTypeName,
                                      String genreName, String description, String price) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -150,7 +194,7 @@ public class PublicationService extends BaseService {
         publicationType = new PublicationType(publicationTypeId, publicationTypeName);
         List<Author> authors = authorService.createAuthorList(authorFirstNames, authorLastNames, publisherName);
         BigDecimal decimalPrice = new BigDecimal(price);
-        int intOldPublicationId = Integer.parseInt(oldPublicationId);
+        int intOldPublicationId = Integer.parseInt(publicationId);
 
         try {
             connection = connectionFactory.getConnection();
@@ -189,6 +233,13 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param authorId Author id
+     * @param pageNumber Current page number from jsp
+     * @return Publication list relevant to author id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Publication> findPublicationByAuthorId(String authorId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -208,6 +259,13 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param genreId Genre id
+     * @param pageNumber Current page number form jsp
+     * @return Publication list relevant to genre id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Publication> findPublicationByGenreId(String genreId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -227,6 +285,13 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationTypeId Publication type id
+     * @param pageNumber Current page number from jsp
+     * @return Publication list relevant tp publication type id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Publication> findPublicationByPublicationTypeId(String publicationTypeId, String pageNumber)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -247,6 +312,11 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @return Publication count in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPublicationPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -263,6 +333,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param authorId Author id in database
+     * @return Publication count relevant to author in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPublicationByAuthorIdPageCount(String authorId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -280,6 +356,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param genreId Genre id
+     * @return Publication count relevant to genre in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPublicationByGenreIdPageCount(String genreId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -297,6 +379,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationTypeId Publication type id
+     * @return Publication count relevant to publication type id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPublicationByPublicationTypeIdPageCount(String publicationTypeId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -314,6 +402,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publication Publication entity
+     * @return Relevant publication id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     private int findIdByPublication(Publication publication)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -330,6 +424,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationId Publication id
+     * @return Publication relevant to id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public Publication findPublicationById(int publicationId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -349,6 +449,12 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationId Publication id
+     * @return Relevant picture from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public byte[] findPictureByPublicationId(int publicationId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -364,6 +470,16 @@ public class PublicationService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationId Publication id
+     * @param picture Picture
+     * @param pictureName Picture name
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+ *              {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     */
     public boolean insertImage(String publicationId, byte[] picture, String pictureName) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

@@ -14,7 +14,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Fills out object fields of entities
+ */
 class FillOutEntityService {
+    /**
+     * @param publications Publication list for fill out
+     * @return Filled out publication list
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     static List<Publication> fillOutPublicationList(List<Publication> publications) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -37,6 +46,12 @@ class FillOutEntityService {
         }
     }
 
+    /**
+     * @param subscriptions Subscription list for fill out
+     * @return Filled out subscription list
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     static List<Subscription> fillOutSubscriptionList(List<Subscription> subscriptions) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -51,7 +66,7 @@ class FillOutEntityService {
                 Publication publication = publicationManagerDAO.findPublicationBySubscriptionId(subscription.getSubscriptionId());
                 publications.add(publication);
                 subscription.setPublication(fillOutPublicationList(publications).get(0));
-                checkSubscriptionActive(subscription);
+                updateSubscriptionActive(subscription);
             }
             return subscriptions;
         } catch (DAOTechnicalException | ConnectionTechnicalException e) {
@@ -61,6 +76,12 @@ class FillOutEntityService {
         }
     }
 
+    /**
+     * @param users User list for fill out
+     * @return Filled out user list
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     static List<User> fillOutUserList(List<User> users) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -88,6 +109,12 @@ class FillOutEntityService {
         }
     }
 
+    /**
+     * @param payments Payment list for fill out
+     * @return Filled out payment list
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     static List<Payment> fillOutPaymentList(List<Payment> payments) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -110,7 +137,12 @@ class FillOutEntityService {
         }
     }
 
-    private static void checkSubscriptionActive(Subscription subscription) throws ServiceTechnicalException {
+    /**
+     * @param subscription Subscription for update activity
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
+    private static void updateSubscriptionActive(Subscription subscription) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
         Date date = Calendar.getInstance().getTime();

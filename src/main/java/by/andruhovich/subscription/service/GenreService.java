@@ -11,8 +11,16 @@ import by.andruhovich.subscription.pool.ConnectionFactory;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Provides methods to process genre information
+ */
 public class GenreService extends BaseService {
-
+    /**
+     * @param genreName Genre name to found
+     * @return Genre id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     int findIdByGenreName(String genreName) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -29,6 +37,13 @@ public class GenreService extends BaseService {
         }
     }
 
+    /**
+     * @param name Genre name
+     * @param description Genre description
+     * @return Genre id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int addGenre(String name, String description) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -45,6 +60,12 @@ public class GenreService extends BaseService {
         }
     }
 
+    /**
+     * @param pageNumber Current page number from jsp
+     * @return Genre list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Genre> showGenres(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -62,6 +83,13 @@ public class GenreService extends BaseService {
         }
     }
 
+    /**
+     * @param genreId Genre id in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean deleteGenre(String genreId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -78,6 +106,15 @@ public class GenreService extends BaseService {
         }
     }
 
+    /**
+     * @param genreId Genre id in database
+     * @param name Genre name
+     * @param description Genre description
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean updateGenre(String genreId, String name, String description) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -95,6 +132,11 @@ public class GenreService extends BaseService {
         }
     }
 
+    /**
+     * @return Genre count in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findGenrePageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

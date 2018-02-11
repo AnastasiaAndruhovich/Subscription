@@ -13,10 +13,18 @@ import by.andruhovich.subscription.pool.ConnectionFactory;
 import java.math.BigDecimal;
 import java.sql.Connection;
 
+/**
+ * Provides methods to process account information
+ */
 public class AccountService extends BaseService {
     private static final BigDecimal ZERO = new BigDecimal(0.00);
     private static final BigDecimal MAX_LOAN = new BigDecimal(50.00);
 
+    /**
+     * @param userId User id in database
+     * @return Relevant Account
+     * @throws ServiceTechnicalException
+     */
     public Account findAccountByUserId(String userId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -34,6 +42,12 @@ public class AccountService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id in database
+     * @param sum Sum to recharge
+     * @return Updated Account
+     * @throws ServiceTechnicalException
+     */
     public Account recharge(String userId, String sum) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -58,6 +72,12 @@ public class AccountService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id in database
+     * @param sum Sum to take loan
+     * @return Updated Account
+     * @throws ServiceTechnicalException
+     */
     public Account takeLoan(String userId, String sum) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

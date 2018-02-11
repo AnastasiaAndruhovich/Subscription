@@ -17,7 +17,18 @@ import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to process author information
+ */
 public class AuthorService extends BaseService{
+    /**
+     * @param authorFirstName Author first name
+     * @param authorLastName Author last name
+     * @param publisherName Publisher name
+     * @return Author id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int addAuthor(String authorFirstName, String authorLastName, String publisherName)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -35,6 +46,16 @@ public class AuthorService extends BaseService{
         }
     }
 
+    /**
+     * @param id Author id in database
+     * @param authorLastName Author last name
+     * @param authorFirstName Author first name
+     * @param publisherName Publisher name
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean updateAuthor(String id, String authorLastName, String authorFirstName, String publisherName)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -53,6 +74,13 @@ public class AuthorService extends BaseService{
         }
     }
 
+    /**
+     * @param authorId Author id in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean deleteAuthor(String authorId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -79,6 +107,11 @@ public class AuthorService extends BaseService{
         }
     }
 
+    /**
+     * @return Author count in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findAuthorPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -95,6 +128,12 @@ public class AuthorService extends BaseService{
         }
     }
 
+    /**
+     * @param pageNumber Current page number from jsp
+     * @return Author list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Author> showAuthors(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -112,6 +151,14 @@ public class AuthorService extends BaseService{
         }
     }
 
+    /**
+     * @param authorFirstNames Author last name
+     * @param authorLastNames Author first name
+     * @param publisherName Publisher name
+     * @return Author list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Author> createAuthorList(List<String> authorFirstNames, List<String> authorLastNames,
                                          String publisherName) throws ServiceTechnicalException {
         List<Author> authors = new LinkedList<>();
@@ -127,6 +174,14 @@ public class AuthorService extends BaseService{
         return authors;
     }
 
+    /**
+     * @param authorFirstName Author first name
+     * @param authorLastName Author last name
+     * @param publisherName Publisher name
+     * @return Author id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     private int findIdByAuthorName(String authorFirstName, String authorLastName, String publisherName)
             throws ServiceTechnicalException {
         Author author = new Author(publisherName, authorLastName, authorFirstName);

@@ -20,7 +20,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to process subscription information
+ */
 public class SubscriptionService extends BaseService {
+    /**
+     * @param pageNumber Current page number from jsp
+     * @return Subscription list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Subscription> showSubscriptions(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -40,6 +49,13 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id
+     * @param publicationId Publication id
+     * @return Relevant subscription from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public Subscription addSubscription(String userId, String publicationId)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -70,6 +86,13 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @param subscriptionId Subscription id
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean deleteSubscription(String subscriptionId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -87,6 +110,12 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @param subscriptionId Subscription id
+     * @return Relevant subscription from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public Subscription findSubscriptionById(String subscriptionId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -107,6 +136,11 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @return SubscriptionPageCount from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findSubscriptionPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -123,6 +157,13 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id
+     * @param pageNumber Current page number
+     * @return Relevant subscription list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<Subscription> findSubscriptionByUserId(String userId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -142,6 +183,12 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @param userId User id
+     * @return Relevant Subscription
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findSubscriptionByUserPageCount(String userId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -159,6 +206,9 @@ public class SubscriptionService extends BaseService {
         }
     }
 
+    /**
+     * @return Calculated subscription start date
+     */
     private Date defineStartDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
@@ -167,6 +217,10 @@ public class SubscriptionService extends BaseService {
         return date.getTime();
     }
 
+    /**
+     * @param date Subscription start date
+     * @return Calculated subscription end date
+     */
     private Date defineEndDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

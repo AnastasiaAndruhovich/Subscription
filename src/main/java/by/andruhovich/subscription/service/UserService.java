@@ -26,9 +26,19 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to process user information
+ */
 public class UserService extends BaseService{
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
+    /**
+     * @param userId User id
+     * @param password Password
+     * @return Result from confirm password from jsp and from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean confirmPassword(String userId, String password) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -47,6 +57,12 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param login Login
+     * @return Relevant User
+     * @throws ServiceTechnicalException
+ *              If there was an error during processing operation
+     */
     public int findUserIdByLogin(String login) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -62,6 +78,12 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @return Relevant role from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public Role findRoleByUserId(int userId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -77,6 +99,19 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param lastName User last name
+     * @param firstName User first name
+     * @param birthDate User birth date
+     * @param address User address
+     * @param city User city
+     * @param postalIndex User postal index
+     * @param login User login
+     * @param password User password
+     * @return Created user id from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int signUp(String lastName, String firstName, Date birthDate, String address, String city,
                           String postalIndex, String login, String password) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -119,6 +154,14 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @param adminId User with role admin id
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean blockUser(String userId, String adminId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -144,6 +187,14 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @param adminId User with role admin id
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean unblockUser(String userId, String adminId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -165,6 +216,20 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @param lastName User last name
+     * @param firstName User first name
+     * @param birthDate User birth date
+     * @param address User address
+     * @param city User city
+     * @param postalIndex User postal index
+     * @param login User login
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean updateUser(String userId, String lastName, String firstName, Date birthDate, String address, String city,
                               String postalIndex, String login) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -190,6 +255,12 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param pageNumber Current page number from jsp
+     * @return User list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<User> showUsers(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -208,6 +279,11 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @return User count from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findUserPageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -224,6 +300,12 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @return Relevant blocked user result
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean isUserBlocked(String userId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -242,6 +324,12 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @return Relevant user from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public User findUserById(String userId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -259,6 +347,14 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param userId User id
+     * @param password  User password
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean changePassword(String userId, String password) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -285,6 +381,13 @@ public class UserService extends BaseService{
         }
     }
 
+    /**
+     * @param adminId User with role admin id
+     * @param pageNumber Current page number from jsp
+     * @return User list relevant to admin id
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<User> findBlockedUsersByAdminId(String adminId, String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;

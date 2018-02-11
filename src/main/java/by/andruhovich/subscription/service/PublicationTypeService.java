@@ -11,7 +11,16 @@ import by.andruhovich.subscription.pool.ConnectionFactory;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Provides methods to process publication type information
+ */
 public class PublicationTypeService extends BaseService {
+    /**
+     * @param publicationTypeName Publication type name
+     * @return Relevant id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findIdByPublicationTypeName(String publicationTypeName) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -28,6 +37,12 @@ public class PublicationTypeService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationTypeName Publication type name
+     * @return Created publication type id in database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int addPublicationType(String publicationTypeName) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -44,6 +59,13 @@ public class PublicationTypeService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationTypeId Publication type id
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean deletePublicationType(String publicationTypeId) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -60,6 +82,14 @@ public class PublicationTypeService extends BaseService {
         }
     }
 
+    /**
+     * @param publicationTypeId Publication type id
+     * @param publicationTypeName Publication type name
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public boolean updatePublicationType(String publicationTypeId, String publicationTypeName)
             throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
@@ -78,6 +108,12 @@ public class PublicationTypeService extends BaseService {
         }
     }
 
+    /**
+     * @param pageNumber Current page number from jsp
+     * @return Publication type list from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public List<PublicationType> showPublicationTypes(String pageNumber) throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
@@ -95,6 +131,11 @@ public class PublicationTypeService extends BaseService {
         }
     }
 
+    /**
+     * @return Publication type count from database
+     * @throws ServiceTechnicalException
+     *          If there was an error during processing operation
+     */
     public int findPublicationTypePageCount() throws ServiceTechnicalException {
         ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
         Connection connection = null;
