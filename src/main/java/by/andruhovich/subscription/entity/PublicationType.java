@@ -17,20 +17,9 @@ public class PublicationType extends Entity{
         this.name = name;
     }
 
-    public PublicationType(String name, List<Publication> publications) {
-        this.name = name;
-        this.publications = publications;
-    }
-
     public PublicationType(int publicationTypeId, String name) {
         this.publicationTypeId = publicationTypeId;
         this.name = name;
-    }
-
-    public PublicationType(int publicationTypeId, String name, List<Publication> publications) {
-        this.publicationTypeId = publicationTypeId;
-        this.name = name;
-        this.publications = publications;
     }
 
     public int getPublicationTypeId() {

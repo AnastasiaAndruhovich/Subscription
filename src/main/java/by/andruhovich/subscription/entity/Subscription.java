@@ -18,24 +18,6 @@ public class Subscription extends Entity{
     private Publication publication;
     private List<Payment> payments = new LinkedList<>();
 
-    public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, Payment payment) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.subscriptionIsActive = subscriptionIsActive;
-        this.user = user;
-        this.publication = publication;
-        payments.add(payment);
-    }
-
-    public Subscription(Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.subscriptionIsActive = subscriptionIsActive;
-        this.user = user;
-        this.publication = publication;
-        this.payments = payments;
-    }
-
     public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive) {
         this.subscriptionId = subscriptionId;
         this.startDate = startDate;
@@ -49,16 +31,6 @@ public class Subscription extends Entity{
         this.subscriptionIsActive = subscriptionIsActive;
         this.user = user;
         this.publication = publication;
-    }
-
-    public Subscription(int subscriptionId, Date startDate, Date endDate, boolean subscriptionIsActive, User user, Publication publication, List<Payment> payments) {
-        this.subscriptionId = subscriptionId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.subscriptionIsActive = subscriptionIsActive;
-        this.user = user;
-        this.publication = publication;
-        this.payments = payments;
     }
 
     public int getSubscriptionId() {

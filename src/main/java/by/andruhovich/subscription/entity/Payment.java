@@ -15,12 +15,6 @@ public class Payment extends Entity{
 
     private Subscription subscription;
 
-    public Payment(BigDecimal sum, Date date, boolean statement) {
-        this.sum = sum;
-        this.date = date;
-        this.statement = statement;
-    }
-
     public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement) {
         this.paymentNumber = paymentNumber;
         this.sum = sum;
@@ -29,14 +23,6 @@ public class Payment extends Entity{
     }
 
     public Payment(BigDecimal sum, Date date, boolean statement, Subscription subscription) {
-        this.sum = sum;
-        this.date = date;
-        this.statement = statement;
-        this.subscription = subscription;
-    }
-
-    public Payment(int paymentNumber, BigDecimal sum, Date date, boolean statement, Subscription subscription) {
-        this.paymentNumber = paymentNumber;
         this.sum = sum;
         this.date = date;
         this.statement = statement;

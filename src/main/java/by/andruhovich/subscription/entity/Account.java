@@ -13,17 +13,6 @@ public class Account extends Entity{
 
     private User user;
 
-    public Account(BigDecimal balance, BigDecimal loan) {
-        this.balance = balance;
-        this.loan = loan;
-    }
-
-    public Account(BigDecimal balance, BigDecimal loan, User user) {
-        this.balance = balance;
-        this.loan = loan;
-        this.user = user;
-    }
-
     public Account(int accountNumber, BigDecimal balance, BigDecimal loan) {
         this.accountNumber = accountNumber;
         this.balance = balance;

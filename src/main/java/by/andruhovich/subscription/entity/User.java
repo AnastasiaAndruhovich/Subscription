@@ -26,19 +26,6 @@ public class User extends Entity{
     private List<User> users;
 
     public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
-                String login, String password, Account account) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.city = city;
-        this.postalIndex = postalIndex;
-        this.login = login;
-        this.password = password;
-        this.account = account;
-    }
-
-    public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
                 String login, String password, Role role, Account account) {
         this.lastName = lastName;
         this.firstName = firstName;
@@ -50,24 +37,6 @@ public class User extends Entity{
         this.password = password;
         this.role = role;
         this.account = account;
-    }
-
-    public User(String lastName, String firstName, Date birthDate, String address, String city, int postalIndex,
-                String login, String password, Role role, Account account, List<Subscription> subscriptions,
-                User admin, List<User> users) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.city = city;
-        this.postalIndex = postalIndex;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.account = account;
-        this.subscriptions = subscriptions;
-        this.admin = admin;
-        this.users = users;
     }
 
     public User(int userId, String lastName, String firstName, Date birthDate, String address, String city, int postalIndex, String login, String password) {
@@ -94,25 +63,6 @@ public class User extends Entity{
         this.password = password;
         this.role = role;
         this.account = account;
-    }
-
-    public User(int userId, String lastName, String firstName, Date birthDate, String address, String city,
-                int postalIndex, String login, String password, Role role, Account account,
-                List<Subscription> subscriptions, User admin, List<User> users) {
-        this.userId = userId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.city = city;
-        this.postalIndex = postalIndex;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.account = account;
-        this.subscriptions = subscriptions;
-        this.admin = admin;
-        this.users = users;
     }
 
     public int getUserId() {

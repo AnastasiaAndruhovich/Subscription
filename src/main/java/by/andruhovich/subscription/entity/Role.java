@@ -13,24 +13,9 @@ public class Role extends Entity{
 
     private List<User> users = new LinkedList<>();
 
-    public Role(String name) {
-        this.name = name;
-    }
-
     public Role(int roleId, String name) {
         this.roleId = roleId;
         this.name = name;
-    }
-
-    public Role(String name, List<User> users) {
-        this.name = name;
-        this.users = users;
-    }
-
-    public Role(int roleId, String name, List<User> users) {
-        this.roleId = roleId;
-        this.name = name;
-        this.users = users;
     }
 
     public int getRoleId() {

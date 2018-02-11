@@ -15,22 +15,10 @@ public class Author extends Entity{
 
     private List<Publication> publications = new LinkedList<>();
 
-    public Author(String authorLastName, String authorFirstName) {
-        this.authorLastName = authorLastName;
-        this.authorFirstName = authorFirstName;
-    }
-
     public Author(String publisherName, String authorLastName, String authorFirstName) {
         this.publisherName = publisherName;
         this.authorLastName = authorLastName;
         this.authorFirstName = authorFirstName;
-    }
-
-    public Author(String publisherName, String authorLastName, String authorFirstName, List<Publication> publications) {
-        this.publisherName = publisherName;
-        this.authorLastName = authorLastName;
-        this.authorFirstName = authorFirstName;
-        this.publications = publications;
     }
 
     public Author(int authorId, String publisherName, String authorLastName, String authorFirstName) {

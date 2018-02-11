@@ -28,23 +28,10 @@ public class Genre extends Entity{
         this.description = description;
     }
 
-    public Genre(String name, String description, List<Publication> publications) {
-        this.name = name;
-        this.description = description;
-        this.publications = publications;
-    }
-
     public Genre(int genreId, String name, String description) {
         this.genreId = genreId;
         this.name = name;
         this.description = description;
-    }
-
-    public Genre(int genreId, String name, String description, List<Publication> publications) {
-        this.genreId = genreId;
-        this.name = name;
-        this.description = description;
-        this.publications = publications;
     }
 
     public int getGenreId() {

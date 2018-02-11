@@ -2,7 +2,6 @@ package by.andruhovich.subscription.entity;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,37 +20,6 @@ public class Publication extends Entity{
     private Genre genre;
     private PublicationType publicationType;
 
-    public Publication(String name, String description, BigDecimal price, String pictureName,
-                       byte[] picture, List<Author> authors, Genre genre, PublicationType publicationType) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.pictureName = pictureName;
-        this.picture = picture;
-        this.authors = authors;
-        this.genre = genre;
-        this.publicationType = publicationType;
-    }
-
-    public Publication(String name, String description, BigDecimal price, Author author, Genre genre,
-                       PublicationType publicationType) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        authors = new LinkedList<>();
-        authors.add(author);
-        this.genre = genre;
-        this.publicationType = publicationType;
-    }
-
-    public Publication(String name, String description, BigDecimal price, String pictureName, byte[] picture) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.pictureName = pictureName;
-        this.picture = picture;
-    }
-
     public Publication(String name, String description, BigDecimal price, List<Author> authors, Genre genre,
                        PublicationType publicationType) {
         this.name = name;
@@ -69,17 +37,6 @@ public class Publication extends Entity{
         this.price = price;
         this.pictureName = pictureName;
         this.picture = picture;
-    }
-
-    public Publication(int publicationId, String name, String description, BigDecimal price, List<Author> authors,
-                       Genre genre, PublicationType publicationType) {
-        this.publicationId = publicationId;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.authors = authors;
-        this.genre = genre;
-        this.publicationType = publicationType;
     }
 
     public Publication(int publicationId, String name, String description, BigDecimal price, String pictureName,
