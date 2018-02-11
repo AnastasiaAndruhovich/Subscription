@@ -1,15 +1,13 @@
 package by.andruhovich.subscription.exception;
 
+/**
+ * An exception that provides information on Define command error.
+ */
 public class UndefinedCommandTechnicalException extends Exception{
+    /**
+     * @param message a description of the exception
+     */
     public UndefinedCommandTechnicalException(String message) {
         super(message);
-    }
-
-    public UndefinedCommandTechnicalException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public UndefinedCommandTechnicalException(Throwable cause) {
-        super(cause);
     }
 }
