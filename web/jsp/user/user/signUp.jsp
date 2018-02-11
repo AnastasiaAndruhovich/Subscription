@@ -131,7 +131,7 @@
                                     <label class="col-sm-3 control-label" for="address">${Address}</label>
                                     <div class="col-sm-9">
                                         <input id="address" name="address" type="text" placeholder="Address"
-                                               class="form-control input-md" required="">
+                                               class="form-control input-md" required="" maxlength="30">
                                     </div>
                                 </div>
                                 <div class="form-group row">
