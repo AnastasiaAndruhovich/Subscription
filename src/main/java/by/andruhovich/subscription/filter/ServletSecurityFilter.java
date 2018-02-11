@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * Set correct parametres on HttpRequest and HttpResponse and protect from illegal access
+ */
 @WebFilter(dispatcherTypes = {
         DispatcherType.REQUEST,
         DispatcherType.FORWARD,

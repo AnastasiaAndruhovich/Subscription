@@ -6,6 +6,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Provides methods to get information from locale property files
+ */
 public class LocaleManager {
     private static ResourceBundle resourceBundle;
     private static final String MESSAGES = "locale/locale";

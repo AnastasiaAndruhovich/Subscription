@@ -7,6 +7,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+/**
+ * Displays headers on jsp
+ */
 public class HeaderTag extends TagSupport {
     private static final String CLIENT_TYPE = "clientType";
 

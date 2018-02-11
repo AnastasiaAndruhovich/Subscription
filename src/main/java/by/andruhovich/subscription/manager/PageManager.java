@@ -5,6 +5,9 @@ import by.andruhovich.subscription.exception.MissingResourceTechnicalException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Provides methods to get information from database property file
+ */
 public class PageManager {
     private static PageManager instance;
     private static ResourceBundle resourceBundle;

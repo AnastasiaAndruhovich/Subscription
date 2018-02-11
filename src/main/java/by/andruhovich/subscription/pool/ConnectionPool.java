@@ -18,6 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Contains database connection queue and provides methods to work with it
+ */
 public class ConnectionPool {
     private static ConnectionPool instance ;
     private static AtomicBoolean instanceCreated = new AtomicBoolean();
@@ -28,6 +31,9 @@ public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
+    /**
+     * Initialize connection pool variables
+     */
     private ConnectionPool() {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
         try {
@@ -64,6 +70,9 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * @return ConnectionPool reference
+     */
     public static ConnectionPool getInstance() {
         if (!instanceCreated.get()) {
             try {
@@ -79,6 +88,9 @@ public class ConnectionPool {
         return instance;
     }
 
+    /**
+     * @return java.sql.Connection or null in exception case
+     */
     public Connection getConnection() {
         Connection connection;
         try {
@@ -94,6 +106,9 @@ public class ConnectionPool {
         return null;
     }
 
+    /**
+     * @param connection java.sql.Connection for return in connection pool
+     */
     public void returnConnection(Connection connection) {
         connections.add(connection);
     }
@@ -109,6 +124,9 @@ public class ConnectionPool {
         deregisterDriver();
     }
 
+    /**
+     * Deregister database driver. It should be call before closing application.
+     */
     private void deregisterDriver() {
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {

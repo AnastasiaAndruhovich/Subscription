@@ -11,19 +11,27 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to prepare Payment entity for setting and getting from database
+ */
 public class PaymentMapper implements EntityMapper<Payment> {
+    /**
+     * @param resultSet java.sql.ResultSet from database to map on entity
+     * @return Payment list from resultSet
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public List<Payment> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
         List<Payment> subscriptions = new LinkedList<>();
         Payment payment;
-        TypeConverter typeConverter = new TypeConverter();
 
         try {
             while (resultSet.next()) {
                 int paymentNumber = resultSet.getInt("payment_number");
                 BigDecimal sum = resultSet.getBigDecimal("sum");
                 java.util.Date date = new java.util.Date(resultSet.getDate("date").getTime());
-                boolean statement = typeConverter.convertStringToBoolean(resultSet.getString("statement"));
+                boolean statement = TypeConverter.convertStringToBoolean(resultSet.getString("statement"));
                 payment = new Payment(paymentNumber, sum, date, statement);
                 subscriptions.add(payment);
             }
@@ -33,6 +41,13 @@ public class PaymentMapper implements EntityMapper<Payment> {
         }
     }
 
+    /**
+     * @param preparedStatement java.sql.Statement with all necessary parameters
+     * @param entity Payment to be set in database
+     * @return Filled out statement by entity
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Payment entity) throws DAOTechnicalException {
         Date date = new Date(entity.getDate().getTime());

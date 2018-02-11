@@ -8,6 +8,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+/**
+ * Displays images on jsp
+ */
 public class ImageTag extends TagSupport {
     private int publicationId;
 

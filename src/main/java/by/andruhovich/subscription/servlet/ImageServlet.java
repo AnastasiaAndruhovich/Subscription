@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Process all actions with images
+ */
 @WebServlet("/imageController")
 @MultipartConfig
 public class ImageServlet extends HttpServlet {

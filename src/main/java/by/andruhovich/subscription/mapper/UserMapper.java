@@ -10,7 +10,16 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to prepare User entity for setting and getting from database
+ */
 public class UserMapper implements EntityMapper<User> {
+    /**
+     * @param resultSet java.sql.ResultSet from database to map on entity
+     * @return User list from resultSet
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public List<User> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
         List<User> users = new LinkedList<>();
@@ -35,6 +44,13 @@ public class UserMapper implements EntityMapper<User> {
         }
     }
 
+    /**
+     * @param preparedStatement java.sql.Statement with all necessary parameters
+     * @param entity User to be set in database
+     * @return Filled out statement by entity
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, User entity) throws DAOTechnicalException {
         Date birthDate = new Date(entity.getBirthDate().getTime());

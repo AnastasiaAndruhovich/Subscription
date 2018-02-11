@@ -1,21 +1,26 @@
 package by.andruhovich.subscription.pool;
 
 import by.andruhovich.subscription.exception.ConnectionTechnicalException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
+/**
+ * Provides methods to work with database connections
+ */
 public class ConnectionFactory {
     private static ConnectionFactory instance;
     private ConnectionPool connectionPool;
 
-    private static final Logger LOGGER = LogManager.getLogger(ConnectionFactory.class);
-
+    /**
+     * Initialize connection pool reference
+     */
     private ConnectionFactory() {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    /**
+     * @return Connection pool reference
+     */
     public static ConnectionFactory getInstance() {
         if (instance == null) {
             instance = new ConnectionFactory();
@@ -23,6 +28,11 @@ public class ConnectionFactory {
         return instance;
     }
 
+    /**
+     * @return java.sql.Connection
+     * @throws ConnectionTechnicalException
+     *          If there was an error during getting connection
+     */
     public Connection getConnection() throws ConnectionTechnicalException {
         Connection connection = connectionPool.getConnection();
         if (connection != null) {
@@ -33,6 +43,9 @@ public class ConnectionFactory {
         }
     }
 
+    /**
+     * @param connection java.sql.Connection for return in connection pool
+     */
     public void returnConnection(Connection connection) {
         if (connection != null) {
             connectionPool.returnConnection(connection);

@@ -10,7 +10,16 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to prepare Publication entity for setting and getting from database
+ */
 public class PublicationMapper implements EntityMapper<Publication> {
+    /**
+     * @param resultSet java.sql.ResultSet from database to map on entity
+     * @return Publication list from resultSet
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public List<Publication> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
         List<Publication> publications = new LinkedList<>();
@@ -39,6 +48,13 @@ public class PublicationMapper implements EntityMapper<Publication> {
         }
     }
 
+    /**
+     * @param preparedStatement java.sql.Statement with all necessary parameters
+     * @param entity Publication to be set in database
+     * @return Filled out statement by entity
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Publication entity)
             throws DAOTechnicalException {

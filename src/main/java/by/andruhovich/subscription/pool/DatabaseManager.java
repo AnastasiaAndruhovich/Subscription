@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Provides methods to get information from database property files
+ */
 class DatabaseManager {
     private static DatabaseManager instance;
     private static ResourceBundle resourceBundle;
@@ -17,6 +20,9 @@ class DatabaseManager {
 
     private DatabaseManager() {}
 
+    /**
+     * @return DatabaseManager reference
+     */
     static DatabaseManager getInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -30,6 +36,12 @@ class DatabaseManager {
         return instance;
     }
 
+    /**
+     * @param key String key for property file relevant required variable
+     * @return Required variable
+     * @throws MissingResourceTechnicalException
+     *          If there is no such key in property file
+     */
     String getProperty(String key) throws MissingResourceTechnicalException {
         try {
             return resourceBundle.getString(key);

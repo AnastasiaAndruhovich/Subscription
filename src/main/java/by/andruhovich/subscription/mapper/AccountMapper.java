@@ -1,8 +1,7 @@
 package by.andruhovich.subscription.mapper;
 
-import by.andruhovich.subscription.exception.DAOTechnicalException;
-import by.andruhovich.subscription.mapper.EntityMapper;
 import by.andruhovich.subscription.entity.Account;
+import by.andruhovich.subscription.exception.DAOTechnicalException;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -11,7 +10,17 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provides methods to prepare Account entity for setting and getting from database
+ */
 public class AccountMapper implements EntityMapper<Account> {
+
+    /**
+     * @param resultSet java.sql.ResultSet from database to map on entity
+     * @return Account list from resultSet
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public List<Account> mapResultSetToEntity(ResultSet resultSet) throws DAOTechnicalException {
         List<Account> accounts = new LinkedList<>();
@@ -30,6 +39,13 @@ public class AccountMapper implements EntityMapper<Account> {
         }
     }
 
+    /**
+     * @param preparedStatement java.sql.Statement with all necessary parameters
+     * @param entity Account to be set in database
+     * @return Filled out statement by entity
+     * @throws DAOTechnicalException
+     *          If there was an error during mapping resultSet
+     */
     @Override
     public PreparedStatement mapEntityToPreparedStatement(PreparedStatement preparedStatement, Account entity) throws DAOTechnicalException {
         try {

@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * Process HttpRequest and HttpResponse
+ */
 @WebServlet("/controller")
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(ControllerServlet.class);

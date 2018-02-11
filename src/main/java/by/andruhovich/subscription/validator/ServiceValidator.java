@@ -2,6 +2,9 @@ package by.andruhovich.subscription.validator;
 
 import java.util.regex.Pattern;
 
+/**
+ * Validates service parameters from jsp
+ */
 public class ServiceValidator {
     private static final String REGEX_POSTAL_INDEX_ = "[0-9]{6}";
     private static final String REGEX_LOGIN = "^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,30}[a-zA-Z0-9]$";
