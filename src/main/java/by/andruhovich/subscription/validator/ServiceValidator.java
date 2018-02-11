@@ -11,7 +11,7 @@ public class ServiceValidator {
     private static final String REGEX_PASSWORD = "(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{3,15})$";
     private static final String REGEX_PRICE = "^[\\d]+?\\.[\\d]{2}$";
     private static final String REGEX_DATE = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
-    private static final String REGEX_NAME = "([а-яёА-ЯЁ]|[a-zA-Z]){1,30}";
+    private static final String REGEX_NAME = "([а-яёА-ЯЁ]|[a-zA-Z]|\\s|-){1,30}";
 
     public static boolean verifyPostalIndex(String postalIndex) {
         return postalIndex != null && Pattern.matches(REGEX_POSTAL_INDEX_, postalIndex);
