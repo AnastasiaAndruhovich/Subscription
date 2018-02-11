@@ -64,31 +64,29 @@
                             </form>
                         </div>
                         <div class="col-8">
-                            <div class="publication card">
-                                <c:choose>
-                                    <c:when test="${publication!=null}">
-                                        <p>${sessionScope.message}</p>
-                                        <p>${Name}: ${publication.name}</p>
-                                        <p>${Type}: ${publication.publicationType.name}</p>
-                                        <p>${Genre}: ${publication.genre.name}</p>
-                                        <c:choose>
-                                            <c:when test="${publication.authors!=null}">
-                                                <div class="row">${Authors}:
-                                                    <c:forEach var="author" items="${publication.authors}">
-                                                        ${author.authorLastName} ${author.authorFirstName}
-                                                    </c:forEach>
-                                                </div>
-                                                <p>${Publisher}: ${publication.authors[0].publisherName}</p>
-                                            </c:when>
-                                        </c:choose>
-                                        <p>${Description}: ${publication.description}</p>
-                                        <p>${Price}: ${publication.price} ${MoneyUnit}</p>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <p>${InformationIsAbsent}</p>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                            <c:choose>
+                                <c:when test="${publication!=null}">
+                                    <p>${sessionScope.message}</p>
+                                    <p>${Name}: ${publication.name}</p>
+                                    <p>${Type}: ${publication.publicationType.name}</p>
+                                    <p>${Genre}: ${publication.genre.name}</p>
+                                    <c:choose>
+                                        <c:when test="${publication.authors!=null}">
+                                            <div class="row">${Authors}:
+                                                <c:forEach var="author" items="${publication.authors}">
+                                                    ${author.authorLastName} ${author.authorFirstName}
+                                                </c:forEach>
+                                            </div>
+                                            <p>${Publisher}: ${publication.authors[0].publisherName}</p>
+                                        </c:when>
+                                    </c:choose>
+                                    <p>${Description}: ${publication.description}</p>
+                                    <p>${Price}: ${publication.price} ${MoneyUnit}</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>${InformationIsAbsent}</p>
+                                </c:otherwise>
+                            </c:choose>
                             <a href="${pageContext.servletContext.contextPath}/controller?command=show_publications&pageNumber=1" class="btn btn-outline-success my-2 my-sm-0">${Finish}</a>
                         </div>
                     </div>

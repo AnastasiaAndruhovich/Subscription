@@ -66,7 +66,7 @@
                                         <label for="name" class="col-sm-3 col-form-label">${Name}</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" name="name" id="name" required=""
-                                                   value="${publication.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   value="${publication.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                    title="Publication name must be between 1 and 30 characters, contain only
                                                    alphabetic characters."/>
                                         </div>
@@ -77,7 +77,7 @@
                                             <input type="text" class="form-control" name="publicationType"
                                                    id="publicationType" required=""
                                                    value="${publication.publicationType.name}"
-                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                    title="Publication type must be between 1 and 30 characters, contain only
                                                    alphabetic characters."/>
                                         </div>
@@ -86,7 +86,7 @@
                                         <label for="genre" class="col-sm-3 col-form-label">${Genre}</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" name="genre" id="genre" required=""
-                                                   value="${publication.genre.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   value="${publication.genre.name}" pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                    title="Genre must be between 1 and 30 characters, contain only
                                                    alphabetic characters."/>
                                         </div>
@@ -98,7 +98,7 @@
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="lastName"
                                                        id="lastName" value="${author.authorLastName}"
-                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                        title="Last name must be between 1 and 30 characters,
                                                        contain only alphabetic characters."/>
                                             </div>
@@ -109,7 +109,7 @@
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="firstName"
                                                        id="firstName" value="${author.authorFirstName}"
-                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                       pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                        title="First name must be between 1 and 30 characters,
                                                        contain only alphabetic characters."/>
                                             </div>
@@ -122,7 +122,7 @@
                                             <input type="text" class="form-control" name="publisherName"
                                                    id="publisherName"
                                                    value="${publication.authors[0].publisherName}"
-                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                                    title="Publisher name must be between 1 and 30 characters,
                                                    contain only alphabetic characters."/>
                                         </div>
@@ -130,11 +130,8 @@
                                     <div class="form-group row">
                                         <label for="description" class="col-sm-3 col-form-label">${Description}</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="description" id="description"
-                                                   required="" value="${publication.description}"
-                                                   pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
-                                                   title="Description must be between 1 and 30 characters, contain only
-                                                   alphabetic characters."/>
+                                            <textarea class="form-control" name="description" id="description"
+                                                      required="" value="${publication.description}"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row">

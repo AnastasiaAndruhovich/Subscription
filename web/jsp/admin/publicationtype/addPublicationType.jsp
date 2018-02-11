@@ -48,7 +48,7 @@
                             <label for="update" class="col-sm-2 col-form-label">${Name}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" id="update" placeholder="Name"
-                                       required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]){1,30}"
+                                       required="" pattern="([а-яёА-ЯЁ]|[a-zA-Z]|\s|-){1,30}"
                                        title="Publication type must be between 1 and 30 characters, contain only alphabetic
                                        characters."/>
                             </div>
