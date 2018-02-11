@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends GenreManagerDAO
+ */
 public class GenreDAO extends GenreManagerDAO {
     private static final String INSERT_GENRE= "INSERT INTO genres(name, description) VALUES (?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT genre_id FROM genres ORDER BY genre_id DESC LIMIT 1";
@@ -28,10 +31,19 @@ public class GenreDAO extends GenreManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(GenreDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public GenreDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Genre entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create genre");
@@ -62,12 +74,25 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete genre");
         return delete(id, DELETE_GENRE_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Genre findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -92,6 +117,13 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Genre> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -114,6 +146,13 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Genre entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update genre");
@@ -137,6 +176,12 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
+    /**
+     * @param genre Genre to be found in database
+     * @return Genre id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findIdByEntity(Genre genre) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
@@ -159,6 +204,12 @@ public class GenreDAO extends GenreManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

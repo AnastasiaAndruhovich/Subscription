@@ -17,6 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends AuthorPublicationManagerDAO
+ */
 public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
     private final static String INSERT_RECORD = "INSERT INTO authors_publications(author_id, publication_id) VALUES(?, ?)";
     private final static String SELECT_AUTHOR_BY_PUBLICATION_ID = "SELECT a.author_id, a.publisher_name, a.author_lastname, " +
@@ -28,10 +31,21 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorPublicationDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public AuthorPublicationDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param author Author entity to be added in database
+     * @param publication Publication entity to be added in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean createRecord(Author author, Publication publication) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request fo create record");
@@ -54,6 +68,13 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Publication id in database
+     * @return Author list relevant to publication id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public List<Author> findAuthorsByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find author by publication id");
         PreparedStatement preparedStatement = null;
@@ -74,6 +95,15 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Author id in database
+     * @param startIndex Relevant to author id publication start index in database
+     * @param endIndex Relevant to author id publication end index in database
+     * @return Publication list relevant to author id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public List<Publication> findPublicationsByAuthorId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publications by author id");
         PreparedStatement preparedStatement = null;
@@ -96,6 +126,14 @@ public class AuthorPublicationDAO extends AuthorPublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Publication id in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public boolean deleteRecordByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete record by publication id");
         PreparedStatement preparedStatement = null;

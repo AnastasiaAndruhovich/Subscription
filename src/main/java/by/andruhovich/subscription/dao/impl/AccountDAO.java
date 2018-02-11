@@ -16,6 +16,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends AccountManagerDAO
+ */
 public class AccountDAO extends AccountManagerDAO {
     private static final String INSERT_ACCOUNT= "INSERT INTO accounts(balance, loan) VALUES (?, ?)";
     private static final String SELECT_LAST_INSERT_ID = "SELECT account_number FROM accounts ORDER BY account_number " +
@@ -32,10 +35,19 @@ public class AccountDAO extends AccountManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public AccountDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Account entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create account");
@@ -67,12 +79,26 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param accountNumber Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+
     @Override
     public boolean delete(int accountNumber) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete account");
         return delete(accountNumber, DELETE_ACCOUNT_BY_ACCOUNT_NUMBER);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Account findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -98,6 +124,13 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Account> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -121,6 +154,13 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Account entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update account");
@@ -141,6 +181,11 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @return Account entity with default fields values
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Account createEmptyAccount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create empty account");
@@ -170,6 +215,14 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param accountNumber Account id in database
+     * @param rechargeSum Sum to be recharged
+     * @param loanSum Loan sum (if exist)
+     * @return Updated Account
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Account recharge(int accountNumber, BigDecimal rechargeSum, BigDecimal loanSum) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for sumBalance");
@@ -190,6 +243,13 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param accountNumber Account id in database
+     * @param sum Loan sum
+     * @return Updated Account
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Account takeLoan(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for take loan");
@@ -210,6 +270,13 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @param accountNumber Account id in database
+     * @param sum Withdraw sum
+     * @return Updated Account
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Account withdraw(int accountNumber, BigDecimal sum) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for withdraw");
@@ -229,6 +296,11 @@ public class AccountDAO extends AccountManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

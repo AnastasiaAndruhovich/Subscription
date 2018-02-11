@@ -17,6 +17,9 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.sql.*;
 import java.util.List;
 
+/**
+ * Concrete DAO extends PublicationManagerDAO
+ */
 public class PublicationDAO extends PublicationManagerDAO {
     private static final String INSERT_PUBLICATION = "INSERT INTO publications(name, publication_type_id, genre_id, " +
             "description, price, picture_name, picture) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -41,8 +44,6 @@ public class PublicationDAO extends PublicationManagerDAO {
             "ORDER BY publication_type_id DESC LIMIT ?, ?";
     private static final String SELECT_PUBLICATION_ID_BY_PUBLICATION_FIELDS = "SELECT publication_id FROM publications " +
             "WHERE name = ? && publication_type_id = ? && genre_id = ? && description = ? && price = ?";
-    private static final String SELECT_PUBLICATION_BY_NAME = "SELECT publication_id, name, description, price, " +
-            "picture_name, picture FROM publications WHERE name = ?";
     private static final String SELECT_PICTURE_BY_PUBLICATION_ID = "SELECT picture FROM publications WHERE publication_id = ?";
     private static final String INSERT_IMAGE = "UPDATE publications SET picture = ?, picture_name = ? WHERE publication_id = ?";
     private static final String SELECT_PUBLICATION_BY_SUBSCRIPTION_ID = "SELECT p.publication_id, p.name, p.description, " +
@@ -58,10 +59,19 @@ public class PublicationDAO extends PublicationManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(PublicationDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public PublicationDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Publication entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create publication");
@@ -92,12 +102,25 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete publication");
         return delete(id, DELETE_PUBLICATION_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Publication findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -122,6 +145,13 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Publication> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -144,6 +174,13 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Publication entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update publication");
@@ -164,6 +201,12 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Publication id in database
+     * @return Genre relevant to publication in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Genre findGenreByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find genre by publication id");
@@ -188,6 +231,12 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Publication id in database
+     * @return Publication type relevant to database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public PublicationType findPublicationTypeByPublicationId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication type bby publication id");
@@ -212,6 +261,12 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param publication Publication in database
+     * @return Relevant id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findIdByEntity(Publication publication) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
@@ -238,6 +293,14 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Genre id in database
+     * @param startIndex Publication start index in database
+     * @param endIndex Publication end index in database
+     * @return Publication list relevant to genre in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Publication> findPublicationsByGenreId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication by genre id");
@@ -259,6 +322,14 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Publication type id in database
+     * @param startIndex Publication start index in database
+     * @param endIndex Publication end index in database
+     * @return Publication list relevant to publication type in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Publication> findPublicationsByPublicationTypeId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publications by publication type id");
@@ -281,6 +352,12 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param id Subscription id in database
+     * @return Publication relevant to subscription in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Publication findPublicationBySubscriptionId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find publication by subscription id");
@@ -305,12 +382,23 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);
     }
 
+    /**
+     * @param publicationId Publication id in database
+     * @return Picture relevant to publication in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public byte[] findPictureByPublicationId(int publicationId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find picture by publication id");
@@ -338,6 +426,12 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param publicationId Publication id in database
+     * @return Picture name relevant to publication in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public String findPictureNameByPublicationId(int publicationId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find picture name by publication id");
@@ -360,6 +454,15 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param publicationId Publication id in database
+     * @param picture Picture in bytes
+     * @param pictureName String picture name
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean insertImage(int publicationId, byte[] picture, String pictureName) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for insert image");
@@ -382,18 +485,36 @@ public class PublicationDAO extends PublicationManagerDAO {
         }
     }
 
+    /**
+     * @param authorId Author id in database
+     * @return Publication count relevant to author in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findPublicationCountByAuthorId(int authorId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count by author id");
         return findEntityCountById(SELECT_COUNT_BY_AUTHOR_ID, authorId);
     }
 
+    /**
+     * @param genreId Genre id in database
+     * @return Publication count relevant to genre in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findPublicationCountByGenreId(int genreId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count by genre id");
         return findEntityCountById(SELECT_COUNT_BY_GENRE_ID, genreId);
     }
 
+    /**
+     * @param publicationTypeId Publication type id in database
+     * @return Publication count relevant to publicatino type in databases
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findPublicationCountByPublicationTypeId(int publicationTypeId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count by publication type id");

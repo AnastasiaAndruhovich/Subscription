@@ -16,6 +16,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends BlockManagerDAO
+ */
 public class BlockDAO extends BlockManagerDAO {
     private static final String INSERT_BLOCK = "INSERT INTO block (user_id, admin_id, date) VALUES(?, ?, ?)";
     private static final String DELETE_BLOCK_BY_USER_ID = "DELETE FROM block WHERE user_id = ?";
@@ -55,10 +58,19 @@ public class BlockDAO extends BlockManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(BlockDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public BlockDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Block entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create block");
@@ -78,12 +90,26 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param userId Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int userId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete block");
         return delete(userId, DELETE_BLOCK_BY_USER_ID);
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Block> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -106,6 +132,13 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Block entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update block");
@@ -125,6 +158,14 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param id User id with admin role in database
+     * @param startIndex User start index relevant to user-admin id in database
+     * @param endIndex User end index relevant to user-admin id in database
+     * @return Blocked user list relevant to user id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<User> findUsersByAdminId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find user by admin id");
@@ -148,6 +189,12 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @return  User with admin role blocked user with relevant id
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public User findAdminByUserId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find admin by user id");
@@ -171,6 +218,12 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param id User id with admin role in database
+     * @return Blocked user count relevant to user id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean deleteBlockByUserId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete block by user id");
@@ -189,6 +242,12 @@ public class BlockDAO extends BlockManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Block findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find block by id");
@@ -215,6 +274,12 @@ public class BlockDAO extends BlockManagerDAO {
         return findEntityCountById(SELECT_COUNT_BY_ADMIN_ID, adminId);
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

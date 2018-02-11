@@ -1,6 +1,6 @@
 package by.andruhovich.subscription.dao.impl;
 
-import by.andruhovich.subscription.dao.RoleManagerDAO;
+import by.andruhovich.subscription.dao.ManagerDAO;
 import by.andruhovich.subscription.entity.Role;
 import by.andruhovich.subscription.exception.DAOTechnicalException;
 import by.andruhovich.subscription.mapper.RoleMapper;
@@ -15,7 +15,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class RoleDAO extends RoleManagerDAO {
+/**
+ * Concrete DAO extends ManagerDAO parametrize Role entity
+ */
+public class RoleDAO extends ManagerDAO<Role> {
     private static final String SELECT_LAST_INSERT_ID = "SELECT role_id FROM roles ORDER BY role_id DESC LIMIT 1";
     private static final String INSERT_ROLE= "INSERT INTO roles(name) VALUE (?)";
     private static final String DELETE_ROLE_BY_ID = "DELETE FROM roles WHERE role_id = ?";
@@ -26,10 +29,19 @@ public class RoleDAO extends RoleManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(RoleDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public RoleDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Role entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create role");
@@ -60,12 +72,25 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete role");
         return delete(id, DELETE_ROLE_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Role findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -87,6 +112,13 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Role> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -109,6 +141,13 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Role entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update role");
@@ -128,6 +167,11 @@ public class RoleDAO extends RoleManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");

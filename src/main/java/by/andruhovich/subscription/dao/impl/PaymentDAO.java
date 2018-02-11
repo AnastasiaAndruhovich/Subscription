@@ -17,6 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends PaymentManagerDAO
+ */
 public class PaymentDAO extends PaymentManagerDAO {
     private static final String INSERT_PAYMENT = "INSERT INTO payments(subscription_id, sum, date, statement) " +
             "VALUES (?, ?, ?, ?)";
@@ -34,18 +37,25 @@ public class PaymentDAO extends PaymentManagerDAO {
     private static final String SELECT_SUBSCRIPTION_BY_PAYMENT_NUMBER = "SELECT  s.subscription_id, s.start_date, " +
             "s.end_date, s.subscription_is_active FROM payments JOIN subscriptions s USING (subscription_id) " +
             "WHERE payment_number = ?";
-    private static final String SELECT_PAYMENTS_BY_SUBSCRIPTION_ID = "SELECT payment_number, sum, date, statement " +
-            "FROM payments WHERE subscription_id = ? ORDER BY subscription_id DESC LIMIT ?, ?";
     private static final String SELECT_PAYMENTS_BY_USER_ID = "SELECT p.payment_number, p.sum, p.date, p.statement " +
             "FROM payments p JOIN subscriptions s ON p.subscription_id = s.subscription_id WHERE s.user_id = ? " +
             "ORDER BY p.payment_number DESC LIMIT ?, ?";
 
     private static final Logger LOGGER = LogManager.getLogger(PaymentDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public PaymentDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Payment entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create payment");
@@ -76,12 +86,25 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete payment");
         return delete(id, DELETE_PAYMENT_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Payment findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -106,6 +129,13 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Payment> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -128,6 +158,13 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Payment entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update payment");
@@ -147,6 +184,12 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @param id Payment id in database
+     * @return  Subscription relevant to payment id
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Subscription findSubscriptionByPaymentNumber(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find subscription by payment number");
@@ -171,6 +214,14 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @param startIndex Payment start index in database
+     * @param endIndex Payment end index in database
+     * @return Payment list relevant to user id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Payment> findPaymentsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find payments by user id");
@@ -192,6 +243,12 @@ public class PaymentDAO extends PaymentManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

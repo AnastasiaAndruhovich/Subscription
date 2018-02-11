@@ -19,6 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends UserManagerDAO
+ */
 public class UserDAO extends UserManagerDAO {
     private static final String SELECT_PASSWORD_BY_ID = "SELECT password FROM users WHERE user_id = ?";
     private static final String SELECT_LAST_INSERT_ID = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
@@ -34,8 +37,6 @@ public class UserDAO extends UserManagerDAO {
     private static final String UPDATE_USER = "UPDATE users SET role_id = ?, firstname = ?, lastname = ?, birthdate = ?, " +
             "address = ?, city = ?, postal_index = ?, account_number = ?, login = ?, password = ? WHERE user_id = ?";
 
-    private static final String SELECT_USER_BY_ACCOUNT_NUMBER = "SELECT user_id, lastname, firstname, birthdate, " +
-            "address, city, postal_index, login, password FROM users WHERE account_number = ?";
     private static final String SELECT_ROLE_BY_USER_ID = "SELECT  r.role_id, r.name FROM users " +
             "JOIN roles r USING (role_id) WHERE user_id = ?";
     private static final String SELECT_ACCOUNT_BY_USER_ID = "SELECT a.account_number, a.balance, a.loan FROM users " +
@@ -43,10 +44,19 @@ public class UserDAO extends UserManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public UserDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param user Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(User user) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create user");
@@ -77,12 +87,25 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete user");
         return delete(id, DELETE_USER_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public User findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -107,6 +130,13 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<User> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -129,6 +159,13 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(User entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update user");
@@ -149,6 +186,12 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @return String password relevant to user in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public String findPasswordById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find password by id");
@@ -171,6 +214,12 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param login String login in database
+     * @return User id relevant to login in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findUserIdByLogin(String login) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for is login exist");
@@ -193,6 +242,12 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @return Role relevant to user in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Role findRoleByUserId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find role by user id");
@@ -217,6 +272,12 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @return Account relevant to user in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Account findAccountByUserId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find account by user id");
@@ -241,6 +302,12 @@ public class UserDAO extends UserManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

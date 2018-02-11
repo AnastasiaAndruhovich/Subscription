@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends AuthorManagerDAO
+ */
 public class AuthorDAO extends AuthorManagerDAO {
     private static final String INSERT_AUTHOR = "INSERT INTO authors(publisher_name, author_lastname, author_firstname) " +
             "VALUES (?, ?, ?)";
@@ -31,10 +34,19 @@ public class AuthorDAO extends AuthorManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public AuthorDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Author entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for author create");
@@ -65,12 +77,25 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
+    /**
+     * @param authorId Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int authorId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for author delete");
         return delete(authorId, DELETE_AUTHOR_BY_ID);
     }
 
+    /**
+     * @param id Author id to be found in database
+     * @return Author id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public Author findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -95,6 +120,13 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Author> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -117,6 +149,13 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Author entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update author");
@@ -140,6 +179,12 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
+    /**
+     * @param author Author to found in database
+     * @return Author id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findIdByEntity(Author author) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find id by entity");
@@ -164,6 +209,11 @@ public class AuthorDAO extends AuthorManagerDAO {
         }
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);

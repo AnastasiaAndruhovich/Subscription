@@ -17,6 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Concrete DAO extends SubscriptionManagerDAO
+ */
 public class SubscriptionDAO extends SubscriptionManagerDAO {
     private static final String INSERT_SUBSCRIPTION= "INSERT INTO subscriptions(user_id, publication_id, start_date, " +
             "end_date, subscription_is_active) VALUES (?, ?, ?, ?, ?)";
@@ -41,10 +44,19 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(SubscriptionDAO.class);
 
+    /**
+     * @param connection java.sql.Connection to initialize super class
+     */
     public SubscriptionDAO(Connection connection) {
         super(connection);
     }
 
+    /**
+     * @param entity Entity to be set in database
+     * @return The entity id in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int create(Subscription entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for create subscription");
@@ -75,12 +87,25 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param id Entity id to be deleted from database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean delete(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for delete subscription");
         return delete(id, DELETE_SUBSCRIPTION_BY_ID);
     }
 
+    /**
+     * @param id Entity id to be found in database
+     * @return Entity extends T from database
+     * @throws DAOTechnicalException
+     *              If there was an error during query execute
+     */
     @Override
     public Subscription findEntityById(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find entity by id");
@@ -105,6 +130,13 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param startIndex Entity start index in database
+     * @param endIndex Entity end index in database
+     * @return Entity List from database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Subscription> findAll(int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find all");
@@ -127,6 +159,13 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param  entity Entity to be updated in database
+     * @return {@code true} if the operation has been completed successfully
+     *         {@code false} otherwise
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public boolean update(Subscription entity) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for update subscription");
@@ -147,6 +186,12 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param id Subscription id in database
+     * @return User relevant to subscription in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public User findUserBySubscriptionId(int id) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find user by subscription id");
@@ -171,6 +216,14 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param id User id in database
+     * @param startIndex Subscription start index in database
+     * @param endIndex Subscription end index in database
+     * @return Subscription list relevant to user in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public List<Subscription> findSubscriptionsByUserId(int id, int startIndex, int endIndex) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find subscriptions by user id");
@@ -192,12 +245,24 @@ public class SubscriptionDAO extends SubscriptionManagerDAO {
         }
     }
 
+    /**
+     * @param userId User id in database
+     * @return Subscription count relevant to user in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
     @Override
     public int findSubscriptionCountByUserId(int userId) throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for find subscription count by user id");
         return findEntityCountById(SELECT_COUNT_BY_USER_ID, userId);
     }
 
+    /**
+     * @return Entity extends T count in database
+     * @throws DAOTechnicalException
+     *          If there was an error during query execute
+     */
+    @Override
     public int findEntityCount() throws DAOTechnicalException {
         LOGGER.log(Level.INFO, "Request for get count");
         return findEntityCount(SELECT_COUNT);
