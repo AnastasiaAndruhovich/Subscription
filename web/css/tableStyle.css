@@ -11,7 +11,7 @@
     position: absolute;
     *position: relative; /*ie7*/
     left: 0;
-    width: 120px;
+    width: 220px;
 }
 .outer {
     position: relative
@@ -19,5 +19,5 @@
 .inner {
     overflow-x: auto;
     overflow-y: visible;
-    margin-left: 120px;
+    margin-left: 220px;
 }

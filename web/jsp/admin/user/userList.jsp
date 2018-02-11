@@ -65,9 +65,8 @@
                                 <table class="table table-striped table-hover table-condensed table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>${Login}</th>
                                         <td>${Role}</td>
-                                        <td>${Login}</td>
                                         <td>${LastName}</td>
                                         <td>${FirstName}</td>
                                         <td>${Address}</td>
@@ -84,9 +83,8 @@
                                 <tbody>
                                     <c:forEach var="user" items="${sessionScope.users}">
                                         <tr>
-                                            <th>1</th>
+                                            <th>${user.login}</th>
                                             <td>${user.role.name}</td>
-                                            <td>${user.login}</td>
                                             <td>${user.lastName}</td>
                                             <td>${user.firstName}</td>
                                             <td>${user.address}</td>
