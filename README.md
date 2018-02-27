@@ -1,8 +1,8 @@
-#contact-web-app-java-ee
+# contact-web-app-java-ee
 Web app designed to subscribe on publications.
 
-#Used technologies
+# Used technologies
 - Java EE technologies (Servlets, filters, jsp, jstl etc)
 - Twitter bootstrap
-- JUnit for testing
+- TestNG for testing
 - MySQL database
